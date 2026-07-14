@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "title": "PROGRAM — Determination — Service Blueprint",
+    "subtitle": "",
+    "authorityLabel": "Multiple policies",
+    "authorityBadge": "Multiple policies",
+    "sources": [
+      {
+        "label": "STATE statute — cite (esp. relevant sections)",
+        "url": null,
+        "note": "Local file — not linked to a web source · <exact-filename>.md"
+      },
+      {
+        "label": "STATE regulation — cite",
+        "url": null,
+        "note": "Local file — not linked to a web source · <exact-filename>.md"
+      },
+      {
+        "label": "Federal regulation — cite",
+        "url": "https://www.ecfr.gov/current/title-XX/part-XXX",
+        "note": "Local file <exact-filename>.md · cross-linked to eCFR"
+      },
+      {
+        "label": "Agency operating procedure — cite",
+        "url": null,
+        "note": "Local file — not linked to a web source · <exact-filename>.md · operating procedure"
+      }
+    ]
+  },
+  "tiers": [
+    { "key": "federal_reg", "label": "Federal regulation (cite)", "rank": 1, "color": "#1a4480" },
+    { "key": "state_statute", "label": "State statute (cite)", "rank": 2, "color": "#54278f" },
+    { "key": "state_reg", "label": "State regulation (cite)", "rank": 3, "color": "#0c4e29" },
+    { "key": "agency_ops", "label": "Agency operating procedure", "rank": 4, "color": "#07648d" }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "topic": "Topic name",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "Cite the single most specific provision",
+      "citationUrl": null,
+      "statement": "Plain-language, implementation-facing paraphrase of the rule.",
+      "quote": "VERBATIM source text — exact words from the document.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "OPS-01",
+      "topic": "Operating-procedure rule",
+      "tier": "agency_ops",
+      "actor": "system",
+      "nature": "operational",
+      "citation": "Agency procedure name / code",
+      "citationUrl": null,
+      "statement": "What the system/agency does by practice (mark operational).",
+      "quote": "VERBATIM procedure text.",
+      "authority": null,
+      "forms": null,
+      "gap": "Note where this is operating practice rather than statute/regulation."
+    }
+  ],
+  "blueprint": {
+    "intro": "",
+    "claimLane": "Claimant is asked / attests",
+    "outcomeLane": "Outcome",
+    "actors": [
+      { "key": "claimant", "label": "Claimant action" },
+      { "key": "system", "label": "System (automated)" },
+      { "key": "caseworker", "label": "Caseworker (manual)" }
+    ],
+    "columns": [
+      {
+        "id": "C1",
+        "title": "Step title",
+        "q": "The claimant-facing question at this step?",
+        "inputs": ["Factor 1", "Factor 2"],
+        "reqs": ["REQ-01", "OPS-01"],
+        "out": [
+          { "t": "Pass → continue", "kind": "good" },
+          { "t": "Issue → review", "kind": "nd" }
+        ]
+      }
+    ],
+    "crosscut": {
+      "label": "Applies across every step",
+      "reqs": ["OPS-01"]
+    }
+  }
+}

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy Service Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     USWDS v3.13 tokens (subset) inlined so this file stays a single
+     portable HTML with no build step. Only the tokens used here are
+     included. Swap the #data JSON to retarget this engine to any policy.
+     ============================================================ */
+  :root{
+    --usa-blue-5:#eff6fb; --usa-blue-10:#d9e8f6; --usa-blue-20:#aacdec;
+    --usa-blue-60v:#005ea2; --usa-blue-70v:#1a4480;
+    --usa-blue-warm-70v:#1a4480; --usa-blue-warm-80v:#162e51; --usa-blue-cool-60v:#07648d;
+    --usa-violet-70v:#54278f; --usa-green-cool-60v:#216e1f;
+    --usa-orange-5:#f6efe9; --usa-orange-10:#f2e4d4; --usa-orange-50v:#c05600; --usa-orange-60:#775540;
+    --usa-gold-20v:#ffbe2e; --usa-gold-50v:#936f38; --usa-red-60v:#b50909;
+    --gray-cool-1:#fbfcfd; --gray-cool-2:#f7f9fa; --gray-cool-3:#f5f6f7; --gray-cool-5:#edeff0;
+    --gray-cool-10:#dfe1e2; --gray-cool-20:#c6cace; --gray-cool-30:#a9aeb1;
+    --gray-cool-50:#71767a; --gray-cool-60:#565c65; --gray-cool-70:#3d4551; --gray-cool-80:#2d2e2f;
+    --gray-5:#f0f0f0; --gray-90:#1b1b1b;
+    --bg:#ffffff; --panel:#ffffff; --ink:var(--gray-90);
+    --muted:var(--gray-cool-60); --subtle:var(--gray-cool-50);
+    --line:var(--gray-cool-10); --line-strong:var(--gray-cool-20);
+    --primary:var(--usa-blue-60v); --primary-dark:var(--usa-blue-warm-70v); --primary-darker:var(--usa-blue-warm-80v);
+    --link:var(--usa-blue-60v); --link-hover:var(--usa-blue-warm-70v);
+    --focus:var(--usa-gold-20v);
+    --flag-op:var(--usa-orange-50v); --flag-warn:var(--usa-gold-50v); --flag-auth:var(--usa-blue-60v);
+    --font-serif:"Source Serif 4","Source Serif Pro",Georgia,Cambria,"Times New Roman",serif;
+    --font-sans:"Inter","Public Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --radius-sm:2px; --radius-md:.25rem; --radius-lg:.5rem; --radius-pill:99rem;
+    --shadow-1:0 1px 4px 0 rgba(0,0,0,.08); --shadow-2:0 4px 8px 0 rgba(0,0,0,.1); --shadow-4:0 12px 24px 0 rgba(0,0,0,.14);
+    --ease:.15s ease-in-out;
+  }
+  *{box-sizing:border-box}
+  html{font-size:100%}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+    font-size:.9375rem;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  a{color:var(--link);text-decoration:underline;text-underline-offset:.15em}
+  a:hover{color:var(--link-hover)}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,.chip:focus-visible,tr:focus-visible,th:focus-visible{
+    outline:.25rem solid var(--focus);outline-offset:2px}
+  .ic{width:1em;height:1em;fill:var(--ink);flex:none;vertical-align:-.14em}
+  .ic path{fill:var(--ink)}
+  .chip .chip-mk .ic,.chip .chip-mk .ic path{fill:#fff}
+  /* header */
+  header{background:var(--panel);border-top:4px solid var(--primary);border-bottom:1px solid var(--line);
+    padding:.85rem 1.5rem;position:sticky;top:0;z-index:30}
+  .htop{display:flex;align-items:center;gap:1rem 1.25rem;flex-wrap:wrap}
+  h1{font-family:var(--font-serif);font-size:1.125rem;line-height:1.25;margin:0;font-weight:700;letter-spacing:-.005em;color:var(--ink)}
+  .sub{color:var(--muted);font-size:.8125rem;margin-top:.25rem;line-height:1.45}
+  .spacer{flex:1}
+  select,button,input[type=text]{font:inherit;font-size:.875rem;border:1px solid var(--line-strong);border-radius:var(--radius-md);
+    padding:.4rem .7rem;background:#fff;color:var(--ink)}
+  button{cursor:pointer;font-weight:600}
+  button:hover{border-color:var(--muted)}
+  #sourcesBtn{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;color:var(--primary);border:1px solid var(--primary);background:#fff}
+  #sourcesBtn:hover{background:var(--usa-blue-5);border-color:var(--primary-dark);color:var(--primary-dark)}
+  #sourcesBtn .ic{font-size:1rem}
+  /* tabs */
+  .tabs{display:flex;gap:.25rem;margin-left:auto;align-self:stretch;align-items:flex-end;margin-bottom:-.85rem}
+  .tab{padding:.35rem .8rem 1.05rem;border:none;border-bottom:3px solid transparent;background:transparent;white-space:nowrap;
+    color:var(--muted);font-weight:600;font-size:.9375rem;cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+  .tab:hover{color:var(--ink);border-bottom-color:var(--line-strong)}
+  .tab.active{color:var(--primary-dark);border-bottom-color:var(--primary)}
+  main{padding:1.5rem;max-width:1600px;margin:0 auto}
+  #bpIntro{max-width:70ch;font-size:.9375rem;color:var(--muted);line-height:1.55;margin:0 0 .25rem}
+  /* filters */
+  .tfilters{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;font-size:.875rem}
+  .tfilters .tflabel{font-weight:700;color:var(--muted);text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+  .tfilters label{display:flex;align-items:center;gap:.4rem;cursor:pointer}
+  .tfilters label .ic{font-size:1.05rem}
+  .tfilters input[type=checkbox]{width:1rem;height:1rem;accent-color:var(--primary);margin:0}
+  /* requirements table */
+  .rtwrap{background:transparent;overflow-x:auto}
+  .rtable{width:100%;border-collapse:collapse;font-size:.875rem}
+  .rtable th{text-align:left;font-size:.875rem;font-weight:700;color:var(--ink);background:transparent;
+    border-bottom:2px solid var(--ink);padding:.7rem .9rem;white-space:nowrap}
+  .rtable th.sortable{cursor:pointer;user-select:none}
+  .rtable th.sortable:hover{background:var(--gray-cool-3)}
+  .rtable .sortind{display:inline-flex;vertical-align:middle;margin-left:.15rem;opacity:.9}
+  .rtable .sortind .ic{font-size:1rem}
+  .rtable td{padding:.7rem .9rem;border-top:1px solid var(--line);vertical-align:top}
+  .rtable tbody tr{cursor:pointer}
+  .rtable tbody tr:hover{background:var(--usa-blue-5)}
+  .rtable .tname{font-weight:600;max-width:380px;color:var(--ink)}
+  .rtable .tflags{white-space:nowrap}
+  .rtable .tflags .flag{display:inline-flex;font-size:1.05rem;margin-right:.35rem}
+  .rtable td.empty{text-align:center;color:var(--muted);padding:2rem;cursor:default}
+  .authlink{color:var(--link);font-weight:600;text-decoration:underline;text-underline-offset:.15em;cursor:pointer}
+  .authlink:hover{color:var(--link-hover)}
+  .authlink .ext{font-size:.9em;margin-left:.1rem;text-decoration:none;vertical-align:-.1em}
+  /* legend */
+  .legend{display:flex;gap:.75rem 1.25rem;flex-wrap:wrap;background:var(--gray-cool-3);border:1px solid var(--line);
+    border-radius:var(--radius-lg);padding:.7rem 1rem;margin-bottom:2rem;font-size:.8125rem;align-items:center;color:var(--muted)}
+  .legend .lg{display:flex;align-items:center;gap:.35rem}
+  .legend .lg .flag{display:inline-flex;font-size:1.05rem}
+  .typepill{display:inline-block;font-size:.6875rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-sm);
+    color:#fff;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em;line-height:1.3}
+  /* drawer detail */
+  .rdetail{display:flex;flex-direction:column;gap:.65rem}
+  .badges{display:flex;gap:.4rem;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.6875rem;font-weight:700;padding:.15rem .5rem;
+    border-radius:var(--radius-sm);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+  .badge .ic{font-size:.95rem}
+  .b-op{background:var(--usa-orange-50v);color:#fff;border:none}
+  .b-op .ic,.b-op .ic path{fill:#fff}
+  .stmt{margin:0;font-size:1rem;line-height:1.55;color:var(--ink)}
+  .rdsub{display:flex;align-items:center;gap:.4rem;font-family:var(--font-serif);font-size:1rem;font-weight:700;color:var(--ink);
+    border-top:1px solid var(--line);padding-top:.65rem;margin-top:.15rem}
+  .rdsub .rdi{font-size:1.05rem;color:var(--primary)}
+  .rdmeta{display:flex;align-items:center;gap:.35rem;font-size:.8125rem;color:var(--usa-blue-cool-60v);font-weight:600;margin-top:-.2rem}
+  .rdmeta .rdi{font-size:1rem}
+  .rdline{font-size:.8125rem;color:var(--ink);line-height:1.5}
+  .rdnote{font-size:.8125rem;color:var(--muted);line-height:1.55}
+  blockquote{margin:0;padding:.6rem .85rem;background:var(--gray-cool-2);border-left:4px solid var(--line-strong);
+    font-size:.8125rem;color:var(--gray-cool-70);font-style:italic;line-height:1.55;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+  /* blueprint */
+  .bpwrap{overflow-x:auto}
+  #bp{display:flex;flex-direction:column;gap:0;margin-bottom:3rem}
+  .bptable{padding:0;background:transparent;border:none;box-shadow:none}
+  .bptable + .bptable{margin-top:3.5rem;padding-top:3.5rem;border-top:1px solid var(--line)}
+  .bptitle{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;font-family:var(--font-serif);font-size:1.5rem;font-weight:700;text-transform:capitalize;
+    padding:0;margin:.1rem 0 1.1rem;line-height:1.2}
+  .bptitle .altpath{font-family:var(--font-sans);font-size:.625rem;font-weight:600;color:var(--muted);text-transform:uppercase;white-space:nowrap;
+    letter-spacing:.05em;background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius-pill);padding:.1rem .5rem;align-self:center}
+  .bpgrid{display:grid;gap:.5rem;align-items:stretch;width:100%}
+  .colhead{padding:.5rem .1rem;border-radius:0;background:transparent;color:var(--ink);border-bottom:2px solid var(--ink);font-size:.875rem;font-weight:700;line-height:1.3}
+  .colhead .step{font-size:.75rem;opacity:.85;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.1rem;font-weight:400}
+  .lanelbl{display:flex;flex-direction:column;justify-content:center;font-size:.75rem;font-weight:400;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--ink);background:transparent;border-radius:0;border-right:2px solid var(--ink);padding:.5rem .7rem .5rem .1rem;text-align:right;line-height:1.25}
+  .lane-claim,.lane-input,.lane-actor,.lane-out{background:transparent}
+  .cell{background:var(--gray-cool-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:.55rem;font-size:.875rem;line-height:1.45}
+  .cell.q{background:var(--gray-cool-2);border-color:var(--line);color:var(--ink)}
+  .cell.inputs{background:var(--gray-cool-2);border-color:var(--line);display:flex;flex-wrap:wrap;gap:.3rem;align-items:flex-start}
+  .cell.inputs.empty{background:transparent;border:1px dashed var(--line-strong)}
+  .qi{background:#fff;border:1px solid var(--line-strong);color:var(--gray-cool-70);border-radius:var(--radius-pill);
+    font-size:.8125rem;font-weight:600;padding:.15rem .5rem;height:fit-content}
+  .cell.actor{display:flex;flex-direction:column;gap:.35rem;background:var(--gray-cool-2);border-color:var(--line);padding:.5rem}
+  .cell.actor.empty{background:transparent;border:1px dashed var(--line)}
+  .cell.out{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;background:var(--gray-cool-2);border-color:var(--line);padding:.5rem}
+  .chip{display:inline-flex;align-items:center;gap:.4rem;border:none;border-radius:var(--radius-md);color:#fff;
+    font-family:var(--font-sans);font-size:.875rem;font-weight:600;padding:.4rem .55rem;cursor:pointer;text-align:left;width:100%;line-height:1.3}
+  .chip:hover{filter:brightness(1.08)}
+  .chip .chip-t{flex:1}
+  .chip .chip-mk{display:inline-flex;align-items:center;gap:.15rem;opacity:.9}
+  .chip .chip-mk .ic{width:.9em;height:.9em}
+  .opill{font-size:.8125rem;font-weight:700;border:1px solid transparent;border-radius:var(--radius-pill);padding:.4rem .75rem;display:inline-block;text-align:left;line-height:1.4}
+  .crosscut{margin-top:1rem;background:#d9e8f6;color:var(--ink);border-radius:var(--radius-md);padding:.8rem 1rem;
+    display:flex;gap:.6rem .7rem;flex-wrap:wrap;flex-direction:row;align-items:center}
+  .crosscut b{display:flex;align-items:center;gap:.4rem;font-family:var(--font-serif);font-size:1.05rem;font-weight:700;text-transform:none;letter-spacing:0;color:var(--ink)}
+  .crosscut b .cc{font-size:1.05rem}
+  .crosscut .cc-chips{display:flex;gap:.4rem;flex-wrap:wrap}
+  .crosscut .chip{width:auto}
+  /* drawer shell */
+  #scrim{position:fixed;inset:0;background:rgba(27,27,27,.35);opacity:0;pointer-events:none;transition:opacity var(--ease);z-index:40}
+  #scrim.open{opacity:1;pointer-events:auto}
+  #drawer{position:fixed;top:0;right:-560px;width:540px;max-width:92vw;height:100%;background:var(--bg);
+    box-shadow:var(--shadow-4);transition:right .25s ease-in-out;z-index:50;display:flex;flex-direction:column}
+  #drawer.open{right:0}
+  .dhead{background:var(--panel);border-bottom:1px solid var(--line);padding:1rem 1.15rem;display:flex;align-items:flex-start;gap:.6rem}
+  .dhead h2{font-family:var(--font-serif);margin:0;font-size:1.25rem;line-height:1.25;color:var(--ink)}
+  #dType{margin-top:.5rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .dbody{overflow:auto;padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.9rem}
+  .x{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;padding:.15rem;display:inline-flex;border-radius:var(--radius-sm)}
+  .x .ic{font-size:1.4rem}
+  .x:hover{color:var(--ink);background:var(--gray-cool-3)}
+  .empty{color:var(--muted);text-align:center;padding:2.5rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="htop">
+    <div>
+      <h1 id="hTitle">Policy Service Blueprint</h1>
+      <div class="sub" id="hSub"></div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-view="blueprint">Service blueprint</button>
+      <button class="tab" data-view="table">All requirements</button>
+    </div>
+    <button id="sourcesBtn" title="Policy sources used to build this tool">View sources</button>
+  </div>
+</header>
+
+<main>
+  <section id="view-blueprint">
+    <p class="sub" id="bpIntro" style="max-width:940px;font-size:13px;margin-top:0"></p>
+    <div class="legend" id="legend"></div>
+    <div class="bpwrap">
+      <div id="bp"></div>
+      <div class="crosscut" id="crosscut" style="display:none"></div>
+    </div>
+  </section>
+
+  <section id="view-table" style="display:none">
+    <div class="tfilters">
+      <span class="tflabel">Filter:</span>
+      <label><input type="checkbox" id="fOp"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-op)"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"></path></svg> Operational (agency practice, not strict policy)</label>
+      <label><input type="checkbox" id="fGap"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-warn)"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg> Potential issue (AI-suggested)</label>
+      <label><input type="checkbox" id="fAuth"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-auth)"><path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"></path></svg> Multiple policies</label>
+    </div>
+    <div class="rtwrap">
+      <table class="rtable">
+        <thead><tr><th>Name</th><th>Citation</th><th class="sortable" id="thType" title="Sort by type">Type <span class="sortind" id="typeSortInd"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path></svg></span></th><th>Flags</th></tr></thead>
+        <tbody id="rtbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="scrim"></div>
+<div id="drawer">
+  <div class="dhead">
+    <div><h2 id="dTitle">Requirement</h2><div id="dType"></div></div>
+    <button class="x" id="dClose" title="Close" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+  </div>
+  <div class="dbody" id="dBody"></div>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+
+<script>
+// ============================================================================
+//  Policy Service Blueprint — generic engine. All domain content lives in the
+//  #data JSON block above; this script renders it and never hardcodes a domain.
+//  The blueprint is the single source of truth (there is no flowchart): each
+//  column carries its own header, questions, input factors, requirement ids,
+//  and outcomes. Requirements are distributed into actor swimlanes.
+// ============================================================================
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const META = DATA.meta||{};
+const RAW = DATA.requirements||[];
+const REQ = {}; RAW.forEach(r=>REQ[r.id]=r);
+const TIERS = DATA.tiers||[];
+const TIER = {}; TIERS.forEach(t=>TIER[t.key]=t);
+const BP = DATA.blueprint||{columns:[]};
+const COLS = BP.columns||[];
+// actor swimlanes — configurable per domain; fall back to a single policy lane
+const ACTORS = (Array.isArray(BP.actors)&&BP.actors.length)?BP.actors:[{key:'policy',label:(BP.policyLane||'Policy requires')}];
+const ACTOR = {}; ACTORS.forEach(a=>ACTOR[a.key]=a);
+const LAST_ACTOR = ACTORS[ACTORS.length-1].key;
+const OUTCOME_KINDS = Object.assign(
+  {good:'#216e1f',bad:'#b50909',partial:'#c05600',nd:'#775540',na:'#565c65',proc:'#3d4551'},
+  DATA.outcomeKinds||{});
+const AUTH_LABEL = (META.authorityLabel||'Multiple policies');
+
+// ---- dynamic theming from tiers + outcome kinds ----
+function safe(k){return String(k).replace(/[^a-zA-Z0-9_]/g,'_');}
+(function injectTheme(){
+  let css='';
+  TIERS.forEach(t=>{const k=safe(t.key);
+    css+=`.t-${k}{border-left-color:${t.color}} .b-${k}{background:${t.color}} .c-${k}{background:${t.color}}\n`;});
+  Object.entries(OUTCOME_KINDS).forEach(([k,c])=>{css+=`.o-${safe(k)}{background:${c}1f;color:${c};border-color:${c}66}\n`;});
+  const s=document.createElement('style'); s.textContent=css; document.head.appendChild(s);
+})();
+
+// ---- helpers ----
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+// --- inline USWDS SVG icons (self-contained; fill=currentColor) ---
+const ICONS={
+  warning:'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z',
+  launch:'M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z',
+  build:'M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z',
+  balance:'M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z',
+  description:'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z',
+  layers:'M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27-7.38 5.74zM12 16l7.36-5.73L21 9l-9-7-9 7 1.63 1.27L12 16z',
+  expand_less:'M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z',
+  expand_more:'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z'
+};
+function ic(name,cls){return '<svg class="ic'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="'+ICONS[name]+'"></path></svg>';}
+function isOp(r){ return r && r.nature==='operational'; }
+function laneOf(r){ return (r&&ACTOR[r.actor])?r.actor:LAST_ACTOR; } // requirements w/o a known actor fall to the last lane
+
+// ---- requirement card ----
+// render a citation in an authority callout. Link ONLY when the dataset gives an
+// explicit ref to another requirement that actually exists and isn't the current one.
+function authCite(cite, url, ref, currentId){
+  if(url) return `<a class="authlink" href="${esc(url)}" target="_blank" rel="noopener">${esc(cite)}${ic('launch','ext')}</a>`;
+  const id = (ref && ref!==currentId && REQ[ref]) ? ref : null;
+  return id ? `<a class="authlink" data-open="${esc(id)}">${esc(cite)}</a>` : `<b>${esc(cite)}</b>`;
+}
+// One clean requirement block for the side panel — no card chrome.
+function reqDetail(id){
+  const r=REQ[id]; if(!r)return '';
+  const a=r.authority;
+  return `<div class="rdetail" data-id="${id}">
+    <p class="stmt">${esc(r.statement)}</p>
+    <div class="rdsub">${r.citationUrl?`<a class="authlink" href="${esc(r.citationUrl)}" target="_blank" rel="noopener">${esc(r.citation)}${ic('launch','ext')}</a>`:esc(r.citation)}</div>
+    ${r.forms&&r.forms.length?`<div class="rdmeta">${ic('description','rdi')} ${r.forms.map(esc).join(' · ')}</div>`:''}
+    <blockquote>${esc(r.quote)}</blockquote>
+    ${a?`<div class="rdsub">${ic('balance','rdi')} ${esc(AUTH_LABEL)}</div>
+    <div class="rdline">Higher: ${authCite(a.higher,a.higherUrl,a.higherRef,id)} · Lower: ${authCite(a.lower,a.lowerUrl,a.lowerRef,id)} · Controls: <b>${esc(a.controls)}</b></div>
+    <div class="rdnote">${esc(a.note)}</div>`:''}
+    ${r.gap?`<div class="rdsub">${ic('warning','rdi')} Potential issue (AI-suggested)</div>
+    <div class="rdnote">${esc(r.gap)}</div>`:''}
+  </div>`;
+}
+
+// ---- drawer ----
+function openReq(id){
+  const r=REQ[id]; if(!r)return;
+  const tcolor=(TIER[r.tier]||{}).color||'#565c65';
+  document.getElementById('dTitle').textContent=r.topic;
+  const dt=document.getElementById('dType');
+  dt.innerHTML=`<span class="typepill" style="background:${tcolor}">${esc(typeLabel(r.tier))}</span>`
+    + (isOp(r)?`<span class="badge b-op">${ic('build')} operational</span>`:'');
+  dt.style.display='';
+  document.getElementById('dBody').innerHTML=reqDetail(id);
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('scrim').classList.add('open');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('open');}
+document.getElementById('dClose').onclick=closeDrawer;
+document.getElementById('scrim').onclick=closeDrawer;
+
+// ---- blueprint ----
+function chip(id){
+  const r=REQ[id]; if(!r)return '';
+  let mk=''; if(r.authority)mk+=ic('balance','mk'); if(isOp(r))mk+=ic('build','mk');
+  return `<button class="chip c-${safe(r.tier)} ${isOp(r)?'op':''}" data-id="${id}" title="${esc(r.citation)}"><span class="chip-t">${esc(nameOf(r))}</span>${mk?`<span class="chip-mk">${mk}</span>`:''}</button>`;
+}
+function outPill(o){
+  return `<span class="opill o-${safe(o.kind||'proc')}">${esc(o.t)}</span>`;
+}
+// group columns into contiguous runs sharing a `group` label. Each run renders as
+// its own stacked table, so alternative paths read as separate journeys.
+function columnGroups(){
+  const groups=[]; let cur=null;
+  COLS.forEach(c=>{
+    const g=c.group||null;
+    if(cur && cur.key===g){ cur.cols.push(c); }
+    else { cur={key:g,label:g,cols:[c]}; groups.push(cur); }
+  });
+  return groups;
+}
+const GROUP_PALETTE=['#1a4480','#c05600','#216e1f','#54278f','#07648d'];
+// render one blueprint grid for a set of columns
+function gridFor(cols){
+  const n=cols.length;
+  let g=`<div class="bpgrid" style="grid-template-columns:140px repeat(${n},minmax(250px,1fr));min-width:${140+n*250}px">`;
+  // headers
+  g+='<div style="background:transparent"></div>';
+  cols.forEach((c,i)=>{g+=`<div class="colhead"><span class="step">Step ${i+1}</span>${esc((c.title||'').replace(/\s*\?\s*$/,''))}</div>`;});
+  // claimant lane: the question asked
+  g+=`<div class="lanelbl lane-claim">${esc(BP.claimLane||'Claimant sees / is asked')}</div>`;
+  cols.forEach(c=>{g+=`<div class="cell q">${esc(c.q||'')}</div>`;});
+  // inputs lane: the factors that drive each step
+  g+=`<div class="lanelbl lane-input">${esc(BP.inputLane||'Inputs')}</div>`;
+  cols.forEach(c=>{
+    const inputs=(c.inputs||[]).map(x=>`<span class="qi">${esc(x)}</span>`).join('');
+    g+=`<div class="cell inputs ${inputs?'':'empty'}">${inputs}</div>`;
+  });
+  // one lane per actor
+  ACTORS.forEach(a=>{
+    g+=`<div class="lanelbl lane-actor">${esc(a.label)}</div>`;
+    cols.forEach(c=>{
+      const ids=(c.reqs||[]).filter(id=>REQ[id]&&laneOf(REQ[id])===a.key);
+      g+=`<div class="cell actor ${ids.length?'':'empty'}">${ids.map(chip).join('')}</div>`;
+    });
+  });
+  // outcome lane
+  g+=`<div class="lanelbl lane-out">${esc(BP.outcomeLane||'Outcome')}</div>`;
+  cols.forEach(c=>{g+=`<div class="cell out">${(c.out||[]).map(outPill).join('')}</div>`;});
+  g+='</div>';
+  return g;
+}
+function buildBlueprint(){
+  const bp=document.getElementById('bp');
+  const groups=columnGroups();
+  const showTitles = groups.length>1 || groups.some(g=>g.key);
+  let h='';
+  groups.forEach((grp,gi)=>{
+    const color=grp.key?GROUP_PALETTE[gi%GROUP_PALETTE.length]:'#3d4551';
+    h+=`<div class="bptable">`;
+    if(showTitles && grp.label){
+      h+=`<div class="bptitle">${esc(grp.label)}</div>`;
+    }
+    h+=gridFor(grp.cols);
+    h+=`</div>`;
+  });
+  bp.innerHTML=h;
+  // crosscut
+  const cc=document.getElementById('crosscut');
+  if(BP.crosscut&&BP.crosscut.reqs&&BP.crosscut.reqs.length){
+    cc.style.display='';
+    cc.innerHTML=`<b>${esc(BP.crosscut.label||'Applies across every step')}</b><div class="cc-chips">${BP.crosscut.reqs.map(chip).join('')}</div>`;
+  } else cc.style.display='none';
+}
+document.getElementById('bp').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(b){openReq(b.dataset.id);return;}
+});
+document.getElementById('crosscut').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)openReq(b.dataset.id);});
+
+// ---- all-requirements table ----
+function typeLabel(k){ return ((TIER[k]||{}).label||k).replace(/\s*\([^)]*\)\s*$/,''); } // tier label without the parenthetical
+function nameOf(r){ const i=r.topic.indexOf(' — '); return i>=0 ? r.topic.slice(i+3) : r.topic; } // drop a leading "Program — " prefix
+function reqFlags(r){
+  let s='';
+  if(isOp(r)) s+=`<span class="flag" style="color:var(--flag-op)" title="Operational (agency practice, not strict policy)">${ic('build')}</span>`;
+  if(r.gap) s+=`<span class="flag" style="color:var(--flag-warn)" title="Potential issue (AI-suggested)">${ic('warning')}</span>`;
+  if(r.authority) s+=`<span class="flag" style="color:var(--flag-auth)" title="${esc(AUTH_LABEL)}">${ic('balance')}</span>`;
+  return s||'<span style="color:var(--subtle)">—</span>';
+}
+// sort by type: federal tiers first, then state, then other; within a jurisdiction by authority rank
+let typeSortDir = 1; // 1 = federal-first (default), -1 = reversed
+function jurRank(k){
+  const key=(k||'').toLowerCase(), lbl=((TIER[k]||{}).label||'').toLowerCase();
+  if(key.includes('federal')||lbl.includes('federal')) return 0;
+  if(key.includes('state')||lbl.includes('state')) return 1;
+  return 2;
+}
+function typeKey(r){ return [jurRank(r.tier), (TIER[r.tier]||{}).rank||99]; }
+function typeCmp(a,b){ const ka=typeKey(a), kb=typeKey(b); return (ka[0]-kb[0])||(ka[1]-kb[1]); }
+function buildTable(){
+  const op=document.getElementById('fOp').checked,
+        gap=document.getElementById('fGap').checked,
+        auth=document.getElementById('fAuth').checked;
+  const rows=RAW.filter(r=>(!op||isOp(r)) && (!gap||r.gap) && (!auth||r.authority));
+  rows.sort((a,b)=> typeSortDir*typeCmp(a,b) || nameOf(a).localeCompare(nameOf(b)));
+  document.getElementById('rtbody').innerHTML = rows.length ? rows.map(r=>{
+    const color=(TIER[r.tier]||{}).color||'#565c65';
+    const cite = r.citationUrl
+      ? `<a class="authlink" href="${esc(r.citationUrl)}" target="_blank" rel="noopener">${esc(r.citation)}${ic('launch','ext')}</a>`
+      : esc(r.citation);
+    return `<tr data-id="${esc(r.id)}">
+      <td class="tname">${esc(nameOf(r))}</td>
+      <td>${cite}</td>
+      <td><span class="typepill" style="background:${color}">${esc(typeLabel(r.tier))}</span></td>
+      <td class="tflags">${reqFlags(r)}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty">No requirements match these filters.</td></tr>';
+}
+document.getElementById('rtbody').addEventListener('click',e=>{
+  if(e.target.closest('a')) return; // let citation links open normally
+  const tr=e.target.closest('tr'); if(tr&&tr.dataset.id) openReq(tr.dataset.id);
+});
+['fOp','fGap','fAuth'].forEach(id=>document.getElementById(id).addEventListener('change',buildTable));
+document.getElementById('thType').addEventListener('click',()=>{
+  typeSortDir*=-1;
+  document.getElementById('typeSortInd').innerHTML = ic(typeSortDir===1?'expand_less':'expand_more');
+  buildTable();
+});
+
+// ---- tab switching ----
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  const v=tab.dataset.view;
+  document.getElementById('view-blueprint').style.display=v==='blueprint'?'':'none';
+  document.getElementById('view-table').style.display=v==='table'?'':'none';
+  if(v==='table')buildTable();
+});
+
+// ---- link handler (authority cross-links) ----
+document.addEventListener('click',e=>{
+  const link=e.target.closest('.authlink');
+  if(link && link.dataset.open){ e.preventDefault(); openReq(link.dataset.open); return; }
+});
+
+// ---- view sources ----
+const SOURCES = META.sources||[];
+function openSources(){
+  document.getElementById('dTitle').textContent='Sources';
+  const dt=document.getElementById('dType'); dt.innerHTML=''; dt.style.display='none';
+  const body = SOURCES.length
+    ? `<ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">`+
+      SOURCES.map(s=>`<li style="background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px">`+
+        (s.url
+          ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:600;text-decoration:underline;word-break:break-word">${esc(s.label||s.url)}</a>`
+          : `<span style="color:var(--ink);font-weight:600;word-break:break-word">${esc(s.label)}</span>`)+
+        (s.note?`<div style="color:var(--muted);font-size:11.5px;margin-top:5px">${esc(s.note)}</div>`:'')+
+      `</li>`).join('')+`</ul>`
+    : '<p class="empty">No sources were recorded for this tool.</p>';
+  document.getElementById('dBody').innerHTML=body;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('scrim').classList.add('open');
+}
+document.getElementById('sourcesBtn').onclick=openSources;
+
+// ---- init ----
+(function init(){
+  document.title = META.title||'Policy Service Blueprint';
+  document.getElementById('hTitle').textContent = META.title||'Policy Service Blueprint';
+  const hSub=document.getElementById('hSub');
+  if(META.subtitle){ hSub.textContent=META.subtitle; } else { hSub.style.display='none'; }
+  const introEl=document.getElementById('bpIntro');
+  if(BP.intro){ introEl.textContent=BP.intro; } else { introEl.style.display='none'; }
+  // legend: only tiers actually used, labeled exactly as the All-requirements table's Type column
+  const usedTiers=new Set(RAW.map(r=>r.tier));
+  let lg='';
+  TIERS.filter(t=>usedTiers.has(t.key)).forEach(t=>{lg+=`<span class="typepill" style="background:${t.color}">${esc(typeLabel(t.key))}</span>`;});
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-op)">${ic('build')}</span> Operational (agency practice, not strict policy)</span>`;
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-warn)">${ic('warning')}</span> Potential issue (AI-suggested)</span>`;
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-auth)">${ic('balance')}</span> ${esc(AUTH_LABEL)}</span>`;
+  document.getElementById('legend').innerHTML=lg;
+  buildBlueprint();
+})();
+</script>
+</body>
+</html>

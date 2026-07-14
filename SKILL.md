@@ -1,0 +1,213 @@
+---
+name: policy-service-blueprinter
+description: >
+  Turn a few policy-document links (statutes, regulations, sub-regulatory manuals, agency
+  operating procedures) into a claimant-side service blueprint for any government benefits or
+  services use case (UI, SNAP, Medicaid, PFML, VA, and others). Produces a single self-contained
+  HTML tool with actor swimlanes (claimant / system / caseworker), operational-vs-policy flags,
+  per-step input factors, verbatim source quotes, authority/precedence callouts, and plain-language
+  outcomes — in one locked house style every time. Requirements come from policy alone, never the
+  current app, UI, or legacy system. Use when the blueprint is being built FROM policy: someone
+  pastes statute/regulation/official-agency-guidance links, or says "map these regulations for
+  [program]" or "turn this policy into a blueprint/requirements view." If someone asks for a service
+  blueprint but the source is unclear — or looks like a legacy system, current implementation, or
+  "how it works today" documentation — ask whether the blueprint should be derived from policy
+  before proceeding, and do NOT use this skill to blueprint legacy-system or current-implementation
+  behavior. Paste links, answer one scope question, get the tool. Results must be reviewed by a
+  policy SME before use.
+---
+
+# Policy Service Blueprinter (Team Edition)
+
+This is a team-hardened build of the Policy Service Blueprinter. It produces the **same polished
+output every time** from nothing but a few policy links, so people with no AI or coding background
+can run it and get an identical, review-ready result. The visual design and conventions are locked
+in — do not re-derive them and do not ask the user about styling.
+
+> ⚠️ **Human review required.** This tool AI-extracts legal requirements. Every blueprint is a
+> **draft for discovery and alignment** and must be reviewed by a policy subject-matter expert
+> before it informs any decision, system, or communication. Say this to the user on delivery, every
+> time.
+
+## Prerequisites
+
+- **Python 3** — to run `scripts/build.py` (standard library only; no packages to install).
+- **`policy-document-analysis` skill (recommended, not required)** — the intended companion for the
+  analysis step. If it isn't installed, do the same analysis inline to the same rigor (see Step 3);
+  the skill still works, it just does more of the reading itself.
+
+## Policy is the single source of truth — extract from policy alone
+
+**This is the first principle of the skill; it overrides any instinct to describe the system as it
+exists today.** The blueprint represents **policy, and policy only**. Every requirement is extracted
+from an authoritative policy document — a statute, a regulation, or official sub-regulatory policy
+(an agency operating manual, a program guidance letter, an official policy memo). Nothing else
+generates a requirement.
+
+**Never derive requirements from — or organize the blueprint around — the current implementation.**
+The existing application or intake form, UI screens or screenshots, a legacy system's rules /
+screening logic / code / configuration, data dictionaries, vendor documentation, prior tools, or
+"how it works today" are **not policy** and are **never sources of truth**. If the user provides
+them, or you encounter them while researching, treat them strictly as non-authoritative context for
+*scoping* — they must never become a requirement, a tier, a column, a chip, an input factor, or an
+outcome, and they must never shape how the blueprint is structured.
+
+Organize the blueprint around the **policy determination itself** — its legal requirement areas
+(e.g., valid claim, monetary eligibility, separation, ability & availability) — **never** around the
+sections of a form or the screens of a system. Frame each requirement as *what the law requires and
+the constraint on it* (mandatory vs. permissive, federal floor vs. state discretion, controlling
+authority, conditions, ambiguities). Where a policy document delegates a detail to agency discretion,
+capture that **as a constraint** in `gap`/`authority` — do **not** import the implementation that
+filled the gap.
+
+Why this matters: the whole value of the blueprint is a clean, standalone statement of what policy
+requires. Mixing in current-implementation or legacy-system behavior makes people mistake "how it's
+done" for "what's required" — the exact confusion this tool exists to remove.
+
+## Bundled engine — never swap it, never re-style
+
+This skill ships its own rendering engine and build script. Always build with the **bundled** files:
+
+- `assets/template.html` — the fixed engine with the locked house style baked in.
+- `scripts/build.py` — validates a dataset and splices it into the bundled template.
+
+Build command (from the skill directory, or with absolute paths):
+
+```
+python3 scripts/build.py <domain>.json --out <Domain>-Blueprint.html
+```
+
+Do **not** use any other template, and do **not** hand-edit the generated HTML for styling — the
+locked patterns below are already in the engine. Your only job each run is to produce a correct
+dataset JSON, then build.
+
+### Locked design patterns (already in the engine — do not touch)
+
+1. **Local-only sources render as plain text.** In the "View sources" drawer, a source with
+   `"url": null` shows as bold plain text (no broken link); put the file name in `note`. Web sources
+   keep a real `url` and render as a link.
+2. **Crosscut bar:** light-blue (`#d9e8f6`) background, dark text, a **serif subheading** label
+   (no icon, no trailing colon, not uppercase), with the requirement chip(s) inline to the right,
+   wrapping in a row.
+3. **Roomier outcome pills** (`padding:.4rem .75rem`) so text never touches the border.
+4. **Wider columns + horizontal scroll** (label 140px, steps `minmax(250px,1fr)`, grid min-width
+   forces side-scroll).
+
+### Locked dataset conventions (set these in every dataset — identical every time)
+
+- **USWDS tier palette**, highest authority first. Reuse these hex values; add/drop tiers to fit the
+  program's sovereignty story but always pull colors from this set:
+  - `federal_reg` → `#1a4480` (USWDS blue-warm-70v)
+  - `state_statute` → `#54278f` (USWDS violet-70v)
+  - `state_reg` → `#0c4e29` (USWDS mint-70v)
+  - `agency_ops` → `#07648d` (USWDS blue-cool-60v)
+- **`meta.subtitle` and `blueprint.intro` are always `""`** — the header stays clean.
+- **Crosscut `label`** is a short plain phrase — no trailing colon, no explanatory sentence (the
+  chip carries the meaning). e.g. `"Applies across every certification question"`.
+- **Actor lanes** default to claimant / system / caseworker; adapt names to the domain if needed.
+- **Every requirement gets a unique display name.** `topic` doubles as the chip label and the
+  side-panel title, so **no two requirements may share the same `topic`** — duplicate topics render
+  as identical, indistinguishable chips. Use the format `"<Area> — <Unique name>"` (e.g.
+  `"Pension offset — 60-day rollover exemption"`): the engine drops the `"<Area> — "` prefix on the
+  chip, so chip labels stay short and unique while the full name (with its area grouping) shows in
+  the side panel and the All-requirements table. Check uniqueness before building.
+- **`nature: "operational"`** only for a step that is *itself official agency policy* — a published
+  operating manual or sub-regulatory guidance document — so it stays visually distinct (🛠) from
+  statute/regulation; note the murkiness in `gap`. **This is not a back door for the current
+  implementation.** A legacy system's screening logic, code tables, or matrices, and anything read
+  off the live form/UI, are not policy and do not belong in the dataset at all — do not label them
+  operational, just leave them out (see "Policy is the single source of truth"). Default to `policy`;
+  reach for `operational` sparingly and only when a real policy document is the source.
+- **Verbatim `quote` only; never invent a `citation`; `citationUrl` only when a reliable public URL
+  exists** (else `null`, with the local file name in `meta.sources[].note`).
+
+Copy `examples/blueprint-starter.json` — it already encodes all of the above.
+
+## Order of operations
+
+### Step 1 — Intake (ONE question, forgiving defaults)
+
+Non-technical users will usually paste **only links**. Do not hard-stop for a long spec. Confirm you
+have the documents, then ask exactly **one** scope question with a sensible default pre-selected:
+
+> "I'll map the **whole determination** in these documents into a service blueprint. Want me to
+> narrow it to one slice (e.g. just the weekly certification decision, or just verification at
+> application), or model the whole thing?"
+> — Default: **model the whole determination.**
+
+If they don't answer or say "just do it," proceed with the whole-determination default. Never block.
+Record every link in `meta.sources` (mark local files with `url: null` + file name).
+
+### Step 2 — Gather the sources (self-healing; never make the user debug)
+
+For each link, get clean source text automatically:
+
+1. Fetch the URL (WebFetch / web_fetch).
+2. **Detect a thin/JS-rendered result** — a near-empty body, a "please enable JavaScript" shell,
+   only nav/boilerplate, or content that clearly lacks the policy text. Government portals like
+   state admin-code sites and VA's KnowVA (M21-1) commonly return this.
+3. If thin, **automatically escalate to a rendering browser** (Claude in Chrome: navigate →
+   get_page_text) to read the JS-rendered page.
+4. Prefer official static text (eCFR, Cornell LII, govinfo) for verbatim regulation/statute language
+   when both exist.
+5. Only if a source still can't be read after the browser fallback, tell the user plainly which link
+   failed and ask them to paste the text or a different link — never leave them guessing.
+
+### Step 3 — Analyze the sources
+
+Decompose each **policy** source into anchored, verbatim rules with conditions, precedence, and
+ambiguity flags. Use the `policy-document-analysis` skill if it is installed; otherwise analyze
+inline holding to the same rigor. Every requirement in the dataset must trace to a real rule in a
+**policy document** with a verbatim quote — if the only thing that supports it is the current form,
+a screenshot, or a legacy system's behavior, it is not a requirement and does not go in (see "Policy
+is the single source of truth"). Analyze only policy; ignore non-policy artifacts except to bound
+scope.
+
+### Step 4 — Build the dataset (follow the locked conventions)
+
+Map the analysis into the dataset per `reference/schema.md` and `reference/extraction-guide.md`,
+applying the locked conventions above. Assign each requirement an `actor` and `nature`.
+
+**Default column-split rule (so density never blocks a non-expert):** no single actor cell may hold
+more than 6 requirement chips. If a step would exceed that, **split it by sub-topic in reading
+order** into adjacent columns (same `group` if grouped), and briefly tell the user you did so. Do not
+stop to ask how to split unless the sub-topics are genuinely unclear.
+
+### Step 5 — Build, verify, deliver
+
+1. `python3 scripts/build.py <domain>.json --out <Domain>-Blueprint.html`. Fix every ❌ error and
+   review ⚠️ warnings.
+2. Verify: embedded JSON parses; every requirement surfaces in a column or the crosscut; quotes and
+   citations match the sources; actor lanes and operational flags read correctly; source links open
+   (and local-only sources show as plain text); the page renders with no console errors.
+3. Deliver the HTML **and** repeat the human-review caveat. Keep the dataset JSON (and analysis)
+   alongside it so the tool can be regenerated or audited.
+
+## Reference files (in this package)
+
+- `assets/template.html` — the locked rendering engine.
+- `scripts/build.py` — validate + build.
+- `scripts/test.py` — regression check; validates and fully builds every dataset in `examples/`.
+  Run `python3 scripts/test.py` before packaging or sharing — it exits non-zero if any example
+  breaks, so it's safe to wire into CI.
+- `reference/schema.md` — dataset schema.
+- `reference/extraction-guide.md` — analysis → dataset mapping.
+- `examples/blueprint-starter.json` — dataset skeleton with all conventions preset (copy this).
+- `examples/de-ui-initial-claim.json` — a complete worked example (Delaware UI initial-claim
+  application): 54 requirements across 15 steps, four authority tiers, three actor lanes. Most
+  requirements are statute/regulation (`policy`); a handful are marked `operational` (🛠) because
+  they trace to official DOL agency operating guidance (identity proofing, information requested at
+  filing, job-search registration) — the intended use of the operational flag, **never** legacy-system
+  screening logic. Use it as the reference for house style, structure, actor lanes, and the
+  policy-vs-operational distinction.
+- `examples/nj-ui-weekly-certification.json` — a complete worked example (New Jersey UI weekly
+  claimant certification): 66 requirements across 11 steps, three authority tiers (federal
+  regulation → state statute → state regulation), three actor lanes, and a crosscut for federal
+  safeguards (confidentiality, BAM quality control, pay-when-due). Use it as the reference for:
+  **unique `"<Area> — <Unique name>"` topics** on every requirement; `authority` conflict callouts
+  where an outdated regulation diverges from an amended statute (INT-06) and where a federal floor
+  bounds a state rule (WS-06, AA-03); `gap` entries that flag legacy-system thresholds deliberately
+  excluded because no policy document supports them (EARN-01's undefined "full-time work" vs. the
+  legacy 32-hour proxy) — the model for keeping non-policy artifacts out while still surfacing the
+  hole they papered over; and mixed `citationUrl` sourcing (eCFR + Cornell LII + FindLaw, with
+  `null`-URL internal sources listed as plain text in `meta.sources`).

@@ -1,0 +1,1353 @@
+{
+  "meta": {
+    "title": "Delaware UI — Initial Claim Application — Service Blueprint + Protocol",
+    "subtitle": "",
+    "authorityLabel": "Multiple policies",
+    "authorityBadge": "Multiple policies",
+    "sources": [
+      {
+        "label": "Delaware statute — Del. Code Ann. tit. 19, ch. 33 (§§ 3301, 3302, 3313–3315, 3317, 3318)",
+        "url": "https://delcode.delaware.gov/title19/c033/index.html",
+        "note": "Primary source — fetched verbatim from delcode.delaware.gov"
+      },
+      {
+        "label": "Delaware regulation — 19 Del. Admin. Code 1202 (§§ 4, 5, 6, 7, 9, 10, 11, 12, 16, 17, 20)",
+        "url": "https://regulations.delaware.gov/AdminCode/title19/1202",
+        "note": "Primary source — fetched verbatim from regulations.delaware.gov"
+      },
+      {
+        "label": "Federal conformity — 42 U.S.C. §§ 503, 654, 1320b-7; 7 U.S.C. § 2022; 26 U.S.C. § 3304; 20 C.F.R. pts. 603–604; 12 C.F.R. § 1005.18",
+        "url": "https://www.law.cornell.edu/uscode",
+        "note": "Conformity limits — see the ⚖ authority callouts on individual requirements"
+      },
+      {
+        "label": "Delaware DOL — Claimant Services & online initial claim (ID.me, JobLink, UICS/Form WL1)",
+        "url": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+        "note": "Operational forms & system — moving target under Modernization 2.0"
+      }
+    ]
+  },
+  "tiers": [
+    {
+      "key": "federal_reg",
+      "label": "Federal law (FUTA / SSA / C.F.R.)",
+      "rank": 1,
+      "color": "#1a4480"
+    },
+    {
+      "key": "state_statute",
+      "label": "Delaware statute (19 Del. C. ch. 33)",
+      "rank": 2,
+      "color": "#54278f"
+    },
+    {
+      "key": "state_reg",
+      "label": "Delaware regulation (19 Del. Admin. Code 1202)",
+      "rank": 3,
+      "color": "#0c4e29"
+    },
+    {
+      "key": "agency_ops",
+      "label": "Agency operating procedure",
+      "rank": 4,
+      "color": "#07648d"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "FILE-01",
+      "topic": "File the claim — Weekly claim required for eligibility",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(2)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "To be eligible for any week, the claimant must have filed a claim for benefits for that week as the Department's regulations prescribe.",
+      "quote": "Has made a claim for benefits with respect to such week in accordance with such regulations as the Department prescribes;",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "FILE-02",
+      "topic": "File the claim — Filing methods & effective date",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-6.1.1",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The claim may be filed in person at a Local Office or over the Internet; it takes effect on the Sunday immediately preceding the filing date.",
+      "quote": "File a claim for benefits, either in-person at a Delaware Division of Unemployment Insurance Local Office or via the Internet (such claim shall be effective as of the Sunday immediately preceding the date of filing)",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "EFF-01",
+      "topic": "Effective date of claim",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-10.3",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The system dates the claim series to the first day of the calendar week in which the individual reports, registers, and files the initial or reopened claim.",
+      "quote": "the claim series will begin with the first day of the calendar week in which an unemployed individual reports and registers and files his initial or reopened claim at a local employment office of the Delaware Division of Unemployment Insurance.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CHAN-01",
+      "topic": "Filing channel",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — online initial claim (Form WL1 / UICS)",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "In practice the claimant files the initial claim through the online system (UICS); WebBenefits and TeleBenefits are the weekly-filing channels.",
+      "quote": "You can file online at UICS.DELAWAREWORKS.COM",
+      "authority": null,
+      "forms": null,
+      "gap": "Operational channel, not a statutory requirement — the agency can revise or replace it (Modernization 2.0 is actively changing this flow)."
+    },
+    {
+      "id": "IDME-01",
+      "topic": "Identity verification",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — ID.me (cf. U.S. DOL UIPL No. 11-21)",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "The claimant must complete ID.me identity proofing once at the initial claim; later logins reuse the ID.me credential.",
+      "quote": "For all new and continued unemployment insurance claims, Delaware uses ID.me to create a highly secure identity verification process that ensures you, and only you, will be able to access your benefits.",
+      "authority": {
+        "higher": "U.S. DOL UIPL No. 11-21 & Change 1",
+        "higherUrl": null,
+        "lower": "DOL Claimant Services — ID.me",
+        "lowerUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "DOL guidance directs identity verification with equitable access and a non-biometric alternative; it is persuasive, not binding, but conformity pressure makes states follow it."
+      },
+      "forms": null,
+      "gap": "Operational, but effectively mandatory to access benefits. UIPL 11-21 requires a non-biometric alternative for equitable access — verify one is offered before treating ID.me as the sole path."
+    },
+    {
+      "id": "SSN-01",
+      "topic": "Social Security Number",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — information requested at filing",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "The claimant must supply a Social Security number (via SS card, or a W-2/pay stub plus government photo ID) when filing.",
+      "quote": "Social Security Card (may substitute W2 or pay stub with name and socual security number imprinted on it, accompanied by a government-issued photo identification, such as a driver’s license)",
+      "authority": {
+        "higher": "42 U.S.C. § 1320b-7(a)(1)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/42/1320b-7",
+        "lower": "DOL Claimant Services — SSN at filing",
+        "lowerUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "Federal law conditions program funding on collecting the SSN of each applicant; the operational field implements a federal mandate."
+      },
+      "forms": null,
+      "gap": "Federally mandated (42 U.S.C. § 1320b-7) — cannot be removed despite appearing as an ordinary form field; only the acceptable-document wording is revisable."
+    },
+    {
+      "id": "ALIEN-01",
+      "topic": "Alien status / authorization to work",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(10)a.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Benefits are barred unless the individual was lawfully admitted for permanent residence, lawfully present to perform the work, or residing under color of law when the base-period services were performed.",
+      "quote": "Benefits shall not be paid on the basis of services performed by an alien unless such alien is an individual who was lawfully admitted for permanent residence at the time such services were performed, was lawfully present for purposes of performing such services or was permanently residing in the United States under color of law at the time such services were performed...",
+      "authority": {
+        "higher": "42 U.S.C. § 1320b-7(d)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/42/1320b-7",
+        "lower": "19 Del. C. § 3314(10)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "Federal law requires alien-status verification as a condition of conformity; Delaware's bar implements it."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "ALIEN-02",
+      "topic": "Alien status — uniform inquiry",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(10)b.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Any data collected to test alien status must be required uniformly from every applicant, not only from those who appear foreign-born.",
+      "quote": "Any data or information required of individuals applying for benefits to determine whether benefits are not payable to them because of their alien status shall be uniformly required from all applicants for benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": "Constrains form design: alien-status questions must be asked of ALL applicants uniformly — the agency may not add or route them selectively."
+    },
+    {
+      "id": "ALIEN-03",
+      "topic": "Alien status — standard of proof",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(10)c.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "An otherwise-approvable claim may be denied for alien status only on a preponderance of the evidence.",
+      "quote": "In the case of an individual whose application for benefits would otherwise be approved, no determination that benefits to such individual are not payable because of the individual’s alien status shall be made except upon a preponderance of the evidence.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "INFO-01",
+      "topic": "Information requested at filing",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — information requested at filing",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "At filing the claimant supplies name, address, SSN, an 18-month work history (employer names and addresses; DD-214 Member 4 for recent veterans), and the reason each job ended.",
+      "quote": "When filing, the following information will be requested: Name; Address; Social Security Card...; Work History – names and addresses of all employers over the last 18 months. Veterans for whom military service falls within the last 18 months must present a DD 214 (Member 4) form in order to file for benefits; Reason for loss of job",
+      "authority": null,
+      "forms": null,
+      "gap": "Operational intake list. Each field maps to a policy driver (identity, coverage, monetary, separation). Revisable in wording/order, but the underlying data (SSN, employers, separation reason) is required by statute/reg or federal conformity. Full UCFE/UCX federal-civilian & military benefit computation is out of scope here."
+    },
+    {
+      "id": "ADDR-01",
+      "topic": "Current address",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-7.0",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The claimant must give a current address when filing a new, additional, or reopened claim and must keep it updated while claiming.",
+      "quote": "A claimant must provide a current address to the Delaware Division of Unemployment Insurance when a new, additional, or reopened claim is filed and provide any change in address thereafter to the Division during the entire length of time they are claiming entitlement to and receiving unemployment insurance benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "REG-01",
+      "topic": "Register for work",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(1)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "To be eligible the claimant must register for work and thereafter report at an employment office as the Department's regulations prescribe (subject to waivers).",
+      "quote": "Has registered for work at and thereafter continued to report at an employment office in accordance with such regulations as the Department prescribes, except that the Department may, by regulation, waive or alter either or both of the requirements of this paragraph...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "REG-02",
+      "topic": "Register for work — scope",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-16.2",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "“Has registered for work” includes any registration process, reemployment services, or reemployment assessments required by DET or DUI.",
+      "quote": "“has registered for work” as it appears in §3315(1) of Title 19, Delaware Code shall mean any registration process, including any reemployment services or reemployment assessments as required by the Delaware Division of Employment and Training or the Delaware Division of Unemployment Insurance.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "REG-WAIVE",
+      "topic": "Registration waivers",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-20.2",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "Work-registration is waived for a verified return-to-work layoff, an active union member using a hiring hall, or a claimant attached to a job by a 3-year seasonal rehire pattern.",
+      "quote": "the following unemployed individuals will not be required to register for work with the Delaware Division of Employment and Training to be eligible for the receipt of benefits: [20.2.1 verified return-to-work date; 20.2.2 active union member seeking work through a union hiring hall; 20.2.3 attached to a specific job by a seasonal/periodic layoff-and-rehire pattern over the most recent three (3) year period.]",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "JOBLINK-01",
+      "topic": "JobLink registration",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — Delaware JobLink",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "In practice the claimant registers for jobs and builds a resume in Delaware JobLink with the Division of Employment & Training.",
+      "quote": "Claimants must register for employment opportunities and create a resume with the Division of Employment and Training via Delaware JobLink.",
+      "authority": null,
+      "forms": null,
+      "gap": "Operational implementation of the §3315(1) registration duty. The JobLink tool/steps are revisable; the underlying registration requirement is statutory."
+    },
+    {
+      "id": "AA-01",
+      "topic": "Able, available & actively seeking work",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "For each week the claimant must be able to work, available for work, and actively seeking work (with temporary-layoff, involuntary-retirement, illness, approved-training, and part-time-worker exceptions).",
+      "quote": "Is able to work and is available for work and is actively seeking work; provided, however, that an employee, not otherwise disqualified or ineligible for benefits under the chapter, who is temporarily laid off for a period of not more than 45 calendar days... shall, during said period, be deemed to be available for work...",
+      "authority": {
+        "higher": "20 C.F.R. § 604.3",
+        "higherUrl": "https://www.ecfr.gov/current/title-20/part-604",
+        "lower": "19 Del. C. § 3315(3)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "Federal law limits benefits to those able and available for work and leaves the work-search test to the states; Delaware adds active work search, which federal law permits."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AA-02",
+      "topic": "Able/available exceptions",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-6.3",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "A claimant is not held ineligible for a week if attached to a job with a known, near-term return date, or where requiring able/available/seeking would be oppressive or inconsistent with Chapter 33.",
+      "quote": "A claimant will be ineligible for the receipt of unemployment insurance benefits for any week in which they are not able to work, available for work and actively seeking work, except that they will not be ineligible for such week if the Division of Unemployment Insurance finds that: 6.3.1 the claimant is attached to a job for which the date of return to employment is known and reasonably certain...; or 6.3.2 to require the claimant to be able to work, available for work and actively seeking work would be otherwise oppressive or inconsistent with the purposes of Chapter 33...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AA-FILE",
+      "topic": "Availability at filing",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — Available to Work Requirement",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "The claimant must be able and available for work at the time of filing regardless of the separation reason, and prepared to accept suitable work.",
+      "quote": "Individuals must be able to work and available for work at the time of filing regardless of reason for separation. Individuals must actively seek work and be prepared to accept suitable work as defined by law.",
+      "authority": null,
+      "forms": null,
+      "gap": "Operational restatement of §3315(3); a medical certificate may be required to determine eligibility (§3315(3))."
+    },
+    {
+      "id": "MON-01",
+      "topic": "Monetary eligibility (36×WBA)",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(6)a.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The claimant must have base-period wages of at least 36 times the weekly benefit amount (a limited shortfall of ≤ $180 yields a reduced benefit; hard floor $720).",
+      "quote": "Has, during the individual’s base period, been paid wages for employment equal to not less than 36 times the individual’s weekly benefit amount...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "MON-02",
+      "topic": "Weekly benefit amount",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3313(t)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "For benefit years beginning April 2, 2023, the WBA is 1/46 of wages in the two highest base-period quarters, rounded down, not less than $20 nor more than $450.",
+      "quote": "Notwithstanding any other provisions in this section, for claims establishing a benefit year beginning April 2, 2023, and thereafter, an individual’s weekly benefit amount shall be an amount equal to 1/46 of the individual’s total wages for employment by employers paid during the 2 quarters of the individual’s base period in which such wages were highest... The amount shall not be less than $20 nor more than $450.",
+      "authority": null,
+      "forms": null,
+      "gap": "Maximum WBA is $450 as of Apr 2, 2023 (§3313(t)); the $400 figure in the Apr-2020 Claimant Handbook and older materials is outdated."
+    },
+    {
+      "id": "MON-03",
+      "topic": "Base period",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3302(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The base period is the first 4 of the last 5 completed calendar quarters; if that is insufficient, the alternate base period is the 4 most recent completed quarters.",
+      "quote": "“Base period” means the first 4 of the last 5 completed calendar quarters immediately preceding the first day of an individual’s benefit year. However, if the claimant has earned insufficient wages in the first 4 of the last 5 completed calendar quarters to become eligible for benefits, then such claimant’s “base period” shall be the 4 most recent completed calendar quarters...",
+      "authority": null,
+      "forms": null,
+      "gap": "The alternate base period is folded into §3302(3) itself — it is no longer a separate §3302(2) as older references suggest."
+    },
+    {
+      "id": "MON-04",
+      "topic": "Maximum total benefits",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3313(o)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Total benefits in a benefit year are the lesser of 26 times the WBA or 50% of base-period wages.",
+      "quote": "Any eligible individual who files a claim for benefits for weeks of unemployment beginning July, 1975, and thereafter shall be entitled during any benefit year to a total amount of benefits equal to whichever is the lesser of (i) 26 times the individual’s weekly benefit amount or (ii) 50% of the individual’s wages for employment by employers paid during the individual’s base period.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CS-01",
+      "topic": "Child-support disclosure",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3313(q)(1)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "At the time of filing a new claim the claimant must disclose whether they owe child-support obligations; if so and found eligible, DUI notifies the enforcement agency and withholds.",
+      "quote": "An individual filing a new claim for unemployment compensation shall, at the time of filing such claim, disclose whether or not the individual owes child support obligations as defined under paragraph (q)(7) of this section...",
+      "authority": {
+        "higher": "42 U.S.C. § 654(19)-(20)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/42/654",
+        "lower": "19 Del. C. § 3313(q)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "Federal law (Title IV-D) requires the disclosure and withholding regime; §3313(q) implements it."
+      },
+      "forms": null,
+      "gap": "Disclosure at filing is federally required — retain the question; only its wording/placement is revisable."
+    },
+    {
+      "id": "FS-01",
+      "topic": "Food-stamp overissuance disclosure",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3313(r)(1)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "At the time of filing a new claim the claimant must disclose whether they owe an uncollected food-stamp (SNAP) overissuance; if so and found eligible, DUI notifies the food-stamp agency and withholds.",
+      "quote": "An individual filing a new claim for unemployment compensation shall, at the time of filing such claims, disclose whether or not that individual owes an uncollected overissuance (as defined in § 13(c)(1) of the Food Stamp Act of 1977 [7 U.S.C. § 2022]) of food stamp coupons...",
+      "authority": {
+        "higher": "7 U.S.C. § 2022(c)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/7/2022",
+        "lower": "19 Del. C. § 3313(r)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "The Food Stamp Act authorizes UI-offset recovery; §3313(r) implements it."
+      },
+      "forms": null,
+      "gap": "Disclosure at filing is federally authorized/required — retain the question; only its wording is revisable."
+    },
+    {
+      "id": "PEN-01",
+      "topic": "Pension / retirement offset",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3313(p)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The WBA is reduced (not below zero) by the prorated weekly amount of a governmental/employer pension, SSA/Railroad Retirement (per the applicable %), annuity, or sickness/disability/workers'-comp payment attributable to the work.",
+      "quote": "The weekly benefit amount payable to an individual for any week which begins after March 31, 1980... shall be reduced (but not below 0) by the sum of the prorated weekly amount of such pension, retirement or retired pay, annuity or other payment and the prorated weekly amount of such disability or worker’s compensation benefits payment which is reasonably attributable to such work...",
+      "authority": {
+        "higher": "26 U.S.C. § 3304(a)(15)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/26/3304",
+        "lower": "19 Del. C. § 3313(p)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "FUTA conformity requires a pension offset; §3313(p) implements it (with the individual-contribution and SSA/RR adjustments FUTA allows)."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PAY-01",
+      "topic": "Payment method",
+      "tier": "agency_ops",
+      "actor": "claimant",
+      "nature": "operational",
+      "citation": "DOL Claimant Services — Direct Deposit / Stored Value Card",
+      "citationUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+      "statement": "The claimant elects direct deposit or a stored-value (prepaid debit) card to receive benefits.",
+      "quote": "Direct Deposit of UI Benefits for new and existing claimants. ... Receive your weekly unemployment insurance benefits on a stored value card.",
+      "authority": {
+        "higher": "12 C.F.R. § 1005.18 (Reg E)",
+        "higherUrl": "https://www.ecfr.gov/current/title-12/section-1005.18",
+        "lower": "DOL Claimant Services — Stored Value Card",
+        "lowerUrl": "https://labor.delaware.gov/divisions/unemployment-insurance/claimant-services/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "If a prepaid card is offered, Regulation E requires prescribed fee disclosures — a federally fixed element of the payment-choice step."
+      },
+      "forms": null,
+      "gap": "Operational, but if a prepaid card is offered the Reg E fee disclosure is federally required and cannot be dropped."
+    },
+    {
+      "id": "SEP-01",
+      "topic": "Separation notice to employers",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3317(b)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "On filing, the Division sends a separation notice to the last and each base-period employer, who must return it (reason for separation and last date worked) within 15 days or lose the right to contest.",
+      "quote": "Whenever an individual files a claim for benefits, the Department shall forward to the employer by whom the claimant was most recently employed... a separation notice. The last and base period employer(s)... shall return such notices completed, indicating the reason for the claimant’s separation from work with them and the individual claimant’s last date of work with them, within 15 days of the date contained on the separation notice.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "SEP-02",
+      "topic": "Voluntary quit",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(1)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The claimant reports/attests that they left work voluntarily; a voluntary quit without good cause attributable to the work disqualifies them until re-employed and earning 4×WBA in 4 weeks (with domestic-violence, trailing-spouse, family-care, and illness exceptions).",
+      "quote": "For the week in which the individual left work voluntarily without good cause attributable to such work and for each week thereafter until the individual has been employed in each of 4 subsequent weeks (whether or not consecutive) and has earned wages in covered employment equal to not less than 4 times the weekly benefit amount...",
+      "authority": null,
+      "forms": null,
+      "gap": "Shown in the claimant lane because it maps to the form's separation-reason attestation; the disqualification determination itself is made by the Claims Deputy (see DET-01)."
+    },
+    {
+      "id": "SEP-03",
+      "topic": "Discharge for just cause",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(2)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The claimant reports/attests to being discharged; a discharge for just cause connected to the work disqualifies them until re-employed and earning 4×WBA in 4 weeks.",
+      "quote": "For the week in which the individual was discharged from the individual’s work for just cause in connection with the individual’s work and for each week thereafter until the individual has been employed in each of 4 subsequent weeks (whether or not consecutive) and has earned wages in covered employment equal to not less than 4 times the weekly benefit amount.",
+      "authority": null,
+      "forms": null,
+      "gap": "Shown in the claimant lane because it maps to the form's separation-reason attestation; whether the discharge was for just cause is determined by the Claims Deputy (see DET-01)."
+    },
+    {
+      "id": "RESEA-01",
+      "topic": "Reemployment services (profiling)",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(4)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A claimant profiled as likely to exhaust benefits must participate in reemployment services (e.g., job-search assistance) unless completed or there is justifiable cause.",
+      "quote": "Participates in reemployment services, such as job search assistance services, if the individual has been determined to be likely to exhaust regular benefits and need reemployment services pursuant to a profiling system established by the Department, unless the Department determines that: a. The individual has completed such services; or b. There is justifiable cause for the claimant’s failure to participate in such services.",
+      "authority": {
+        "higher": "42 U.S.C. § 503(a)(10)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/42/503",
+        "lower": "19 Del. C. § 3315(4)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "Federal law requires worker profiling and referral to reemployment services; §3315(4) implements it (RESEA)."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "DET-01",
+      "topic": "Deputy determination",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3318(a)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Where the employer raises a potentially disqualifying separation issue, a Claims Deputy examines the claim and initially determines qualification and nonmonetary eligibility.",
+      "quote": "the claim shall be referred to a representative of the Department, hereinafter referred to as a Claims Deputy, who shall examine the claim and on the basis of the facts found by the Claims Deputy shall initially determine the individual’s qualification and nonmonetary eligibility for benefits, and issue a determination in which it is determined whether or not such claim is valid.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "DET-02",
+      "topic": "Appeal deadline",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3318(b)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "The deputy's determination becomes final unless the claimant or last employer files an appeal within 15 calendar days after it was mailed or delivered.",
+      "quote": "Unless a claimant or a last employer who has submitted a timely and completed separation notice in accordance with § 3317 of this title files an appeal within 15 calendar days after such Claims Deputy’s determination was mailed to the claimant’s and last employer’s last known addresses or otherwise delivered by the Department to the claimant and the last employer, the Claims Deputy’s determination shall be final...",
+      "authority": null,
+      "forms": null,
+      "gap": "⚠ CONFLICT: the DOL Claimant Services page states “Appeals must be filed within 10 days of the decision mailing date,” but §3318(b) sets 15 calendar days. The statute controls; the 10-day figure on the website is a compliance discrepancy to correct."
+    },
+    {
+      "id": "FRAUD-01",
+      "topic": "False statement / fraud",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(6)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A knowing false statement or failure to disclose a material fact to obtain benefits triggers a 1-year disqualification and is treated as fraud.",
+      "quote": "If the Department determines such individual has made a false statement or representation knowing it to be false or knowingly has failed to disclose a material fact to obtain benefits to which the individual was not lawfully entitled, and such disqualification shall be for a period of 1 year beginning with the date on which the first false statement, false representation or failure to disclose a material fact occurred.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "XMATCH-01",
+      "topic": "Wage cross-match",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "operational",
+      "citation": "19 Del. Admin. Code 1202-17.2.1",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "Before adverse action from a wage cross-match, DUI must send a notice giving the individual 7 days to contest the discovered information.",
+      "quote": "When the Delaware Division of Unemployment Insurance cross-matches an individual’s eligibility to receive benefits through a wage or other matching program and determines that wages were not reported... prior to taking any adverse action against the individual, the Delaware Division of Unemployment Insurance shall send the individual a notice providing the individual with an opportunity to submit additional information... The individual will have seven (7) days from the date the notice is mailed to respond...",
+      "authority": null,
+      "forms": null,
+      "gap": "Regulatory, but implemented as an automated integrity practice — the cross-match tooling is operational while the 7-day due-process notice is required."
+    },
+    {
+      "id": "CONF-01",
+      "topic": "Confidentiality of claim information",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-12.1",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "Claim information is confidential and disclosed only for authorized purposes; under 20 CFR Part 603 it may be shared for permitted governmental purposes such as cross-program eligibility verification.",
+      "quote": "To any properly identified claimant for benefits or payments under an unemployment compensation or readjustment allowance law... information which directly concerns the claimant and is reasonably necessary for the proper presentation of his claim. ... In accordance with 20 CFR Part 603, confidential information regarding an individual’s unemployment insurance claim may be requested and utilized for other governmental purposes...",
+      "authority": {
+        "higher": "20 C.F.R. pt. 603",
+        "higherUrl": "https://www.ecfr.gov/current/title-20/part-603",
+        "lower": "19 Del. Admin. Code 1202-12.0",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "Federal confidentiality rules set the disclosure boundary; Reg 1202-12.0 and §3125 implement it for Delaware."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AVAIL-TEMPLAY",
+      "topic": "Special availability — temporary layoff",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A worker temporarily laid off for ≤ 45 calendar days (63 for model-change/retooling) is deemed available and actively seeking work, provided the employer notified the Department the layoff is temporary and work is expected within that period, and the worker can return on 3 days' notice.",
+      "quote": "an employee, not otherwise disqualified or ineligible for benefits under the chapter, who is temporarily laid off for a period of not more than 45 calendar days following the last day the employee worked, except that the period for those employees of employers who close down for annual model changes or retooling shall be 63 calendar days, shall, during said period, be deemed to be available for work, except that said employee shall be available to return to work upon 3 days’ notice of the employee’s employer, and actively seeking work if the employee’s employer notified the Department in writing or the Department otherwise determines that such layoff is temporary...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AVAIL-RETIRE",
+      "topic": "Special availability — involuntary retirement",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "An involuntarily retired individual is entitled to benefits and need only be available for work suitable to their age, physical condition, and other circumstances.",
+      "quote": "Provided further than an individual who has been involuntarily retired shall be entitled to receive benefits, and the individual shall be required to be available only for the kind or type of work which is suitable for the individual in view of individual’s age, physical condition and other circumstances;",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AVAIL-ILL",
+      "topic": "Special availability — illness/disability",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A claimant is not ineligible for a week where the failure to be able/available/seeking is due to an illness or disability that began after registration and no suitable work was offered after onset; a doctor's certificate is required (renewed at least every 4 weeks).",
+      "quote": "no claimant shall be considered ineligible in any week of unemployment for failure to comply with this paragraph (3) if such failure is due to an illness or disability which occurs after the claimant has registered for work and no work which would have been considered suitable at the time of the claimant’s initial registration has been offered after the beginning of such illness or disability. The Department shall require the submission of a doctor’s certificate...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AVAIL-TRAIN",
+      "topic": "Special availability — approved vocational training",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)a.–d.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A claimant is not ineligible solely for attending a Department-approved vocational training course, where local job opportunities are curtailed, the course targets an in-demand skill, it meets the paragraph's purpose, and the claimant is qualified to complete it.",
+      "quote": "Provided that no unemployed individual shall become ineligible for benefits solely because the individual regularly attends a vocational training course which the Department has approved and which it continues from time to time to approve for the individual. The Department may approve such course for an individual only if: a. Reasonable employment opportunities... do not exist... b. The training course relates to an occupation or skill for which there are expected to be in the immediate future reasonable employment opportunities... c. ...reasonably calculated to meet the purposes of this paragraph (3); and d. The individual... has the required qualifications and aptitudes to complete the course successfully.",
+      "authority": null,
+      "forms": null,
+      "gap": "Shown in the claimant lane because the claimant attests they are attending training; approval of the course (criteria a.–d.) is a Department determination."
+    },
+    {
+      "id": "AVAIL-PT",
+      "topic": "Special availability — part-time worker",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(3)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A claimant available for and seeking only part-time work is not ineligible if the majority of weeks worked in the base period were part-time (defined as willing to work ≥ 20 hrs/wk, or hours comparable to base-period or most-recent-separation part-time work).",
+      "quote": "No individual shall be determined ineligible for the receipt of unemployment insurance benefits for any week in which they are available for and seek only part-time work, if the majority of weeks of work in their base period were in part-time employment. For purposes of this paragraph, “seeking only part-time work” is work meeting any 1 of the following conditions: (i) the individual is willing to work at least 20 hours per week; (ii) the individual is available for a number of hours per week that are comparable to the individual’s part-time work in the base period; or (iii) the individual is available for hours that are comparable to the individual’s work at the time of the most recent separation from employment.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "COV-EDU",
+      "topic": "Special coverage — educational between-terms",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3315(7)a.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Benefits based on instructional, research, or principal-administrative service for an educational institution are denied for weeks between successive academic years/terms where there is a contract or reasonable assurance of returning in the second period.",
+      "quote": "benefits shall not be paid based on services in an instructional, research or principal administrative capacity for an educational institution for any week of unemployment commencing during the period between successive academic years or terms... to any individual if such individual performs such services in the first of such academic years (or terms) and if there is a contract or a reasonable assurance that such individual will perform service in any such capacity for any educational institution in the second of such academic years or terms.",
+      "authority": {
+        "higher": "26 U.S.C. § 3304(a)(6)(A)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/26/3304",
+        "lower": "19 Del. C. § 3315(7)",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "FUTA requires the between-terms denial with reasonable assurance; U.S. DOL UIPL No. 5-17 sets the reasonable-assurance test the agency must apply."
+      },
+      "forms": null,
+      "gap": "Shown in the claimant lane because the claimant (an educational employee) attests to their employment and any return assurance; the between-terms denial and reasonable-assurance finding are agency determinations."
+    },
+    {
+      "id": "COV-SEAS",
+      "topic": "Special coverage — seasonal employment",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-21.1 (§ 3316(b))",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "Only the first processing of agricultural and/or seafood products (specified NAICS codes) may be treated as seasonal employment for benefit purposes.",
+      "quote": "Section 3316(b), Title 19, Delaware Code provides that: “No occupation or industry shall be deemed to provide seasonal employment that is not part of the first processing of agricultural products and/or seafood products.”",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "COV-TRADE",
+      "topic": "Special coverage — Trade Act training",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(11)a.",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "A claimant in training approved under the Trade Act of 1974 may not be denied benefits for that week, nor for leaving unsuitable work to enter training, nor under availability/active-search/refusal-of-work rules.",
+      "quote": "Notwithstanding any other provisions of this chapter, no otherwise eligible individual shall be denied benefits for any week because the individual is in training, approved under § 236(a)(1) of the Trade Act of 1974 [19 U.S.C. § 2296(a)(1)], nor shall such individual be denied benefits by reason of leaving work to enter such training, provided the work left is not suitable employment, or because of the application to any such week in training of provisions in this law... relating to availability for work, active search for work or refusal to accept work.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "SEP-EXC",
+      "topic": "Separation — good-cause exceptions to voluntary quit",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. C. § 3314(1)",
+      "citationUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+      "statement": "Leaving work is not a disqualifying voluntary quit where it is due to involuntary illness, domestic violence, accompanying a relocating spouse, caring for an ill/disabled spouse/child/parent, completing seasonal/durational/temporary/casual employment, or an employer-consented layoff election of ≤ 30 days.",
+      "quote": "if an individual has left work involuntarily because of illness, no disqualification shall prevail after the individual becomes able to work and available for work... or if an individual has left work due to circumstances directly resulting from the individual’s experience of domestic violence... no disqualification shall prevail... An individual, who quits work in order to accompany that individual’s spouse to a place from which it is impractical for such individual to commute... will not be considered to have left work voluntarily without good cause... An individual, who quits work to care for that individual’s spouse, child under the age of 18, or parent with a verified illness or disability, will not be considered to have left work voluntarily without good cause... An individual who becomes unemployed solely as the result of completing a period of employment that was of a seasonal, durational, temporary or casual duration will not be considered as a matter of law to have left work voluntarily without good cause attributable to such work solely on the basis of the duration of such employment.",
+      "authority": null,
+      "forms": null,
+      "gap": "Shown in the claimant lane because it maps to what the claimant attests about their separation; whether an exception applies is determined by the Claims Deputy (documentation required for domestic-violence and family-care claims)."
+    },
+    {
+      "id": "ML-01",
+      "topic": "Mass layoff — definition & employer notice",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-9.1–9.2",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "A temporary mass layoff is a lack-of-work layoff of 100+ employees for ≤ 45 (or 63 for model change/retooling) consecutive days; the employer must notify DUI no later than 7 days before the last day of work, and DUI determines whether it qualifies.",
+      "quote": "A temporary mass layoff is defined as a temporary layoff by an employer because of lack of work of 100 or more employees at or about the same time for a period not exceeding 45 consecutive calendar days following the last day of work or 63 consecutive calendar days following the last day of work for 100 or more employees temporarily laid off for a model change or retooling. ... As soon as possible but not later than seven (7) days prior to the last day of work of 100 or more employees, the employer shall notify the Delaware Division of Unemployment Insurance...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "ML-02",
+      "topic": "Mass layoff — file via Notice of Temporary Mass Layoff",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-9.6",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The claimant files using the employer-issued UC-101-T 'Notice of Temporary Mass Layoff'; the original/additional claim is effective the first day of the employer's payroll week containing the last day of work when the form is filed within 7 days.",
+      "quote": "An original or additional claim will be effective on the first day of the employer’s payroll week in which the last day of work occurred if the employer issued a UC-101-T, “Notice of Temporary Mass Layoff” form on the last day of work and the form is filed by the claimant within seven days thereafter...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "ML-03",
+      "topic": "Mass layoff — deferred registration",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-9.5",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "Work registration is deferred for individuals unemployed because of a temporary mass layoff.",
+      "quote": "Registration for work by an individual unemployed because of a temporary mass layoff shall be deferred.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PT-01",
+      "topic": "Partial UI — establish benefit-year claim",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-22.2",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "To file for partial unemployment (still employed but under full-time hours for lack of work), the individual must first establish an original benefit-year claim, in person or via the online system.",
+      "quote": "In order to file a claim for partial unemployment insurance, a partially unemployed individual must establish an original benefit year claim in person at one of the Division’s local offices or by using the Division’s on-line filing system.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PT-02",
+      "topic": "Partial UI — Low Earnings Report (UC-114)",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-22.3",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "After a week of less than full-time work, the employer or the employee delivers a completed Low Earnings Report (Form UC-114) to the local office, signed by both employer and employee.",
+      "quote": "After the end of any week in which an employer has furnished any of its employees with less than regular full-time work (or the earnings equivalent thereto)... the employer or the employee shall deliver a completed Low Earnings Report (Form UC-114) to the nearest Division local office signed by both the employer and the employee.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PT-03",
+      "topic": "Partial UI — processing & earnings allowance",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-22.4 (§ 3313(m))",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "On receiving the UC-114 the Division pays the partial benefit; the weekly benefit is reduced by earnings exceeding the greater of $10 or 50% of the WBA, and no partial benefit is owed for a week where earnings exceed the earnings allowance.",
+      "quote": "Upon receiving a Form UC-114, the Division shall promptly process the information contained in it so that a timely payment of unemployment insurance may be made to the partially unemployed individual... For any given week, if the earnings stated on a Form UC-114 exceed the earnings allowance for the partially unemployed individual based on his or her weekly benefit amount, the Division will mail a notice to the affected employee stating the reason why no partial unemployment insurance is owed...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PT-04",
+      "topic": "Partial UI — 14-day filing limit",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-22.5",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "A partial-unemployment claim may not be made more than 14 days after the week-ending period on the UC-114 being filed.",
+      "quote": "No claim for partial unemployment insurance benefits may be made more than 14 days after the week ending period reflected on the Form UC-114 being filed.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "IS-01",
+      "topic": "Interstate — file through agent state",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-8.5.1",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "An interstate claimant (filing against Delaware from another state) files on uniform interstate claim forms per the Interstate Benefit Payment Plan.",
+      "quote": "Claims for benefits or waiting-period shall be filed by interstate claimants on uniform interstate claim forms and in accordance with uniform procedures developed pursuant to the Interstate Benefit Payment Plan.",
+      "authority": {
+        "higher": "26 U.S.C. § 3304(a)(9)",
+        "higherUrl": "https://www.law.cornell.edu/uscode/text/26/3304",
+        "lower": "19 Del. Admin. Code 1202-8.0",
+        "lowerUrl": "https://delcode.delaware.gov/title19/c033/index.html",
+        "controls": "federal",
+        "note": "FUTA conformity requires participation in interstate/combined-wage arrangements; Reg 1202-8.0 implements the Interstate Benefit Payment Plan."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "IS-02",
+      "topic": "Interstate — register in agent state",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-8.3.1",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The interstate claimant registers for work through a public employment office in the agent state; that registration satisfies Delaware's registration requirement.",
+      "quote": "Each interstate claimant shall be registered for work, through any public employment office in the agent State when and as required by the law, regulations, and procedures of the agent State. Such registration shall be accepted as meeting the registration requirements of the liable State.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "IS-03",
+      "topic": "Interstate — agent-state fact-finding",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "19 Del. Admin. Code 1202-8.6",
+      "citationUrl": "https://regulations.delaware.gov/AdminCode/title19/1202",
+      "statement": "The agent state ascertains and reports availability/eligibility facts to Delaware and may not refuse to take an interstate claim; the eligibility determination remains with Delaware.",
+      "quote": "The agent State shall, in connection with each claim filed by an interstate claimant, ascertain and report to the liable State in question such facts relating to the claimant’s availability for work and eligibility for benefits as are readily determinable in and by the agent State. ... The agent State shall not refuse to take an interstate claim.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    }
+  ],
+  "blueprint": {
+    "intro": "",
+    "claimLane": "Claimant is asked / attests",
+    "outcomeLane": "Outcome",
+    "actors": [
+      {
+        "key": "claimant",
+        "label": "Claimant action / attests"
+      },
+      {
+        "key": "system",
+        "label": "System (automated)"
+      },
+      {
+        "key": "caseworker",
+        "label": "Claims Deputy (manual)"
+      }
+    ],
+    "columns": [
+      {
+        "id": "C1",
+        "group": "Standard initial claim (individual filing)",
+        "title": "File the claim & set the effective date",
+        "q": "Are you filing a new, additional, or reopened claim — online or at a local office?",
+        "inputs": [
+          "Claim type",
+          "Filing channel",
+          "Effective date (Sunday preceding)"
+        ],
+        "reqs": [
+          "FILE-01",
+          "FILE-02",
+          "EFF-01",
+          "CHAN-01"
+        ],
+        "out": [
+          {
+            "t": "Claim started → continue",
+            "kind": "proc"
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Verify identity & authorization to work",
+        "q": "Can you prove your identity and, if not a citizen, your authorization to work?",
+        "inputs": [
+          "ID.me identity proofing",
+          "SSN",
+          "Alien / work-authorization status"
+        ],
+        "reqs": [
+          "IDME-01",
+          "SSN-01",
+          "ALIEN-01",
+          "ALIEN-02",
+          "ALIEN-03"
+        ],
+        "out": [
+          {
+            "t": "Identity & status confirmed → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Not lawfully present → not payable",
+            "kind": "bad"
+          },
+          {
+            "t": "Status unclear → adjudicate (preponderance)",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Provide personal & work-history information",
+        "q": "What is your name, address, SSN, 18-month work history, and reason each job ended?",
+        "inputs": [
+          "Name",
+          "Current address",
+          "18-month employer list",
+          "Separation reason"
+        ],
+        "reqs": [
+          "INFO-01",
+          "ADDR-01"
+        ],
+        "out": [
+          {
+            "t": "Intake complete → continue",
+            "kind": "proc"
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Register for work",
+        "q": "Have you registered for work with the Division of Employment & Training (or qualify for a waiver)?",
+        "inputs": [
+          "JobLink registration",
+          "Reemployment services / assessment",
+          "Waiver eligibility"
+        ],
+        "reqs": [
+          "REG-01",
+          "REG-02",
+          "JOBLINK-01",
+          "REG-WAIVE"
+        ],
+        "out": [
+          {
+            "t": "Registered (or waived) → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Not registered → ineligible for the week",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Able, available & actively seeking work",
+        "q": "At the time of filing, are you able to work, available for work, and actively seeking work?",
+        "inputs": [
+          "Able to work",
+          "Available for work",
+          "Active work search",
+          "Attached-to-job / near-term recall"
+        ],
+        "reqs": [
+          "AA-01",
+          "AA-FILE",
+          "AA-02"
+        ],
+        "out": [
+          {
+            "t": "Able/available → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Not able/available → ineligible (unless exception)",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "C5X",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Special availability situations (exceptions)",
+        "q": "Does an availability exception apply — temporary layoff, involuntary retirement, illness, approved training, or part-time work?",
+        "inputs": [
+          "Temp layoff ≤45/63 days",
+          "Involuntary retirement",
+          "Illness/disability",
+          "Approved training",
+          "Part-time worker"
+        ],
+        "reqs": [
+          "AVAIL-TEMPLAY",
+          "AVAIL-RETIRE",
+          "AVAIL-ILL",
+          "AVAIL-PT",
+          "AVAIL-TRAIN"
+        ],
+        "out": [
+          {
+            "t": "Exception applies → remains eligible",
+            "kind": "good"
+          },
+          {
+            "t": "No exception → standard able/available test",
+            "kind": "proc"
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Monetary eligibility & benefit amount",
+        "q": "Did you earn enough in your base period, and what is your weekly benefit amount?",
+        "inputs": [
+          "Base-period wages",
+          "Two highest quarters",
+          "36×WBA test"
+        ],
+        "reqs": [
+          "MON-03",
+          "MON-01",
+          "MON-02",
+          "MON-04"
+        ],
+        "out": [
+          {
+            "t": "≥ 36×WBA → monetarily eligible",
+            "kind": "good"
+          },
+          {
+            "t": "Shortfall ≤ $180 → reduced WBA",
+            "kind": "partial"
+          },
+          {
+            "t": "Below threshold → not eligible",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "C6X",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Special coverage situations",
+        "q": "Do special coverage rules apply — educational between-terms, seasonal work, or approved Trade Act training?",
+        "inputs": [
+          "Educational between-terms",
+          "Reasonable assurance",
+          "Seasonal (first processing)",
+          "Trade Act training"
+        ],
+        "reqs": [
+          "COV-EDU",
+          "COV-SEAS",
+          "COV-TRADE"
+        ],
+        "out": [
+          {
+            "t": "Trade Act training → protected",
+            "kind": "good"
+          },
+          {
+            "t": "Between-terms w/ assurance → benefits denied",
+            "kind": "bad"
+          },
+          {
+            "t": "Non-seasonal industry → seasonal rule n/a",
+            "kind": "na"
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Deductions, offsets & disclosures at filing",
+        "q": "Do you owe child support or a food-stamp overpayment, receive a pension, and how do you want to be paid?",
+        "inputs": [
+          "Child-support obligation",
+          "Food-stamp overissuance",
+          "Pension / retirement",
+          "Payment method"
+        ],
+        "reqs": [
+          "CS-01",
+          "FS-01",
+          "PEN-01",
+          "PAY-01"
+        ],
+        "out": [
+          {
+            "t": "Disclosures captured → apply offsets/withholding",
+            "kind": "proc"
+          }
+        ]
+      },
+      {
+        "id": "C8",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Separation reason & employer notice",
+        "q": "Why did your most recent job end — and what does the employer say?",
+        "inputs": [
+          "Separation reason",
+          "Employer separation notice (15-day)",
+          "Quit vs. discharge",
+          "Good-cause exceptions"
+        ],
+        "reqs": [
+          "SEP-01",
+          "SEP-02",
+          "SEP-03",
+          "SEP-EXC"
+        ],
+        "out": [
+          {
+            "t": "No disqualifying issue → pay",
+            "kind": "good"
+          },
+          {
+            "t": "Potentially disqualifying → refer to deputy",
+            "kind": "nd"
+          },
+          {
+            "t": "Disqualified (quit / just cause) → deny",
+            "kind": "bad"
+          },
+          {
+            "t": "Good-cause exception → no disqualification",
+            "kind": "good"
+          }
+        ]
+      },
+      {
+        "id": "C9",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Reemployment services (profiling)",
+        "q": "Were you profiled as likely to exhaust benefits and referred to reemployment services?",
+        "inputs": [
+          "Profiling result",
+          "RESEA participation",
+          "Justifiable cause"
+        ],
+        "reqs": [
+          "RESEA-01"
+        ],
+        "out": [
+          {
+            "t": "Participates (or n/a) → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Fails to participate w/o cause → ineligible",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "C10",
+        "group": "Standard initial claim (individual filing)",
+        "title": "Determination, payment & appeal",
+        "q": "What did the Claims Deputy decide, and how do you appeal?",
+        "inputs": [
+          "Deputy determination",
+          "Fraud / cross-match",
+          "Appeal within 15 days"
+        ],
+        "reqs": [
+          "DET-01",
+          "FRAUD-01",
+          "XMATCH-01",
+          "DET-02"
+        ],
+        "out": [
+          {
+            "t": "Valid → benefits paid",
+            "kind": "good"
+          },
+          {
+            "t": "Invalid → denied",
+            "kind": "bad"
+          },
+          {
+            "t": "Appeal filed (15 days) → tribunal",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "ML1",
+        "group": "Alternative path — Temporary mass layoff (100+ employees)",
+        "title": "File under a temporary mass layoff",
+        "q": "Were you laid off with 100+ coworkers on a temporary basis, and did you get a UC-101-T notice?",
+        "inputs": [
+          "100+ employees",
+          "≤45/63 days",
+          "Employer 7-day notice",
+          "UC-101-T form",
+          "Deferred registration"
+        ],
+        "reqs": [
+          "ML-01",
+          "ML-02",
+          "ML-03",
+          "AVAIL-TEMPLAY"
+        ],
+        "out": [
+          {
+            "t": "Qualifies → file via UC-101-T, registration deferred",
+            "kind": "good"
+          },
+          {
+            "t": "Not a qualifying mass layoff → file standard claim",
+            "kind": "proc"
+          }
+        ]
+      },
+      {
+        "id": "PT1",
+        "group": "Alternative path — Partial unemployment (reduced hours)",
+        "title": "File for partial unemployment",
+        "q": "Are you still employed but working less than full-time for lack of work?",
+        "inputs": [
+          "Original benefit-year claim",
+          "Low Earnings Report (UC-114)",
+          "Earnings allowance",
+          "14-day filing limit"
+        ],
+        "reqs": [
+          "PT-01",
+          "PT-02",
+          "PT-03",
+          "PT-04"
+        ],
+        "out": [
+          {
+            "t": "Earnings ≤ allowance → partial benefit paid",
+            "kind": "partial"
+          },
+          {
+            "t": "Earnings > allowance → no benefit that week",
+            "kind": "bad"
+          },
+          {
+            "t": "Filed > 14 days late → claim not accepted",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "IS1",
+        "group": "Alternative path — Interstate claim (filed from another state)",
+        "title": "File an interstate claim against Delaware",
+        "q": "Are you filing against Delaware wages while living in / present in another state?",
+        "inputs": [
+          "Agent vs. liable state",
+          "Uniform interstate claim form",
+          "Agent-state work registration",
+          "Agent-state fact-finding"
+        ],
+        "reqs": [
+          "IS-01",
+          "IS-02",
+          "IS-03"
+        ],
+        "out": [
+          {
+            "t": "Filed via agent state → Delaware determines eligibility",
+            "kind": "proc"
+          }
+        ]
+      }
+    ],
+    "crosscut": {
+      "label": "Applies across every step: confidentiality & permitted disclosure of claim data",
+      "reqs": [
+        "CONF-01"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1459 @@
+{
+  "meta": {
+    "title": "NJ Unemployment Insurance — Weekly Claimant Certification — Service Blueprint",
+    "subtitle": "",
+    "authorityLabel": "Multiple policies",
+    "authorityBadge": "Multiple policies",
+    "sources": [
+      {
+        "label": "Policy specialist guidance — List of NJ Xlator Source docs",
+        "url": null,
+        "note": "User-provided · Local file \"List of NJ Xlator Source docs .md\" and Google Drive xlator source docs folder"
+      },
+      {
+        "label": "New Jersey Unemployment Compensation Law — N.J.S.A. 43:21",
+        "url": "https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf",
+        "note": "Official NJDOL PDF · text extracted from Drive sheet \"NJ Unemployment Law (N.J.S.A. 43:21)\" · per-section links via FindLaw"
+      },
+      {
+        "label": "New Jersey Administrative Code — N.J.A.C. 12:17 (Unemployment Compensation)",
+        "url": "https://www.law.cornell.edu/regulations/new-jersey/title-12/chapter-17",
+        "note": "Cornell LII · Drive extract \"NJ Admin Code (N.J.A.C. 12_17).md\" was missing subchapters 1, 3, 4, 6, 13, 16, 18–21 — subchapter 4, 11.1, 12.6, 14.1, 17.3, 17.5 pulled from Cornell LII"
+      },
+      {
+        "label": "20 CFR Parts 601–604 (eCFR, current)",
+        "url": "https://www.ecfr.gov/current/title-20/chapter-V",
+        "note": "Official eCFR · Part 601 administration · Part 602 quality control (BAM) · Part 603 confidentiality · Part 604 able & available"
+      },
+      {
+        "label": "ET Handbook No. 301 — UI PERFORMS: Nonmonetary Determinations Quality Review",
+        "url": "https://oui.doleta.gov/dmstree/handbooks/301/toc301.htm",
+        "note": "Stable DOLETA mirror (dol.gov landing page blocks automated access) · NOTE: HB 301 is the nonmonetary-determinations quality review handbook, NOT the BAM/BQC handbook — that is ET Handbook No. 395"
+      },
+      {
+        "label": "ERI codes / dirty cert codes · Dirty Cert Reasons · Over-Under LDW-RTW Matrix",
+        "url": null,
+        "note": "Internal legacy-system artifacts (Drive) · scoping context only — generate no requirements in this blueprint"
+      },
+      {
+        "label": "NJ case law extract (CaseLaw.csv) & Board of Review decisions",
+        "url": null,
+        "note": "Internal Drive extract · all 7 cases construe separation-side issues (43:21-5(a)/(b)), none weekly certification · Board of Review decisions have no stable public link (Appeal Research Tool is interactive-only)"
+      }
+    ]
+  },
+  "tiers": [
+    {
+      "key": "federal_reg",
+      "label": "Federal regulation (20 CFR)",
+      "rank": 1,
+      "color": "#1a4480"
+    },
+    {
+      "key": "state_statute",
+      "label": "State statute (N.J.S.A. 43:21)",
+      "rank": 2,
+      "color": "#54278f"
+    },
+    {
+      "key": "state_reg",
+      "label": "State regulation (N.J.A.C. 12:17)",
+      "rank": 3,
+      "color": "#0c4e29"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "CERT-01",
+      "topic": "Certification filing — Continue reporting as directed",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-4(a)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+      "statement": "A claimant is eligible for a week only if they filed a claim and continue to report as directed by the Division; the Division may waive or alter reporting by regulation (e.g., for job-attached claimants).",
+      "quote": "The individual has filed a claim at an unemployment insurance claims office and thereafter continues to report at an employment service office or unemployment insurance claims office, as directed by the division in accordance with such regulations as the division may prescribe, except that the division may, by regulation, waive or alter either or both of the requirements of this subsection as to individuals attached to regular jobs...",
+      "authority": null,
+      "forms": null,
+      "gap": "The statute delegates the entire cadence and format of certification to Division regulation; \"attached to regular jobs\" (the waiver group) is undefined."
+    },
+    {
+      "id": "CERT-02",
+      "topic": "Certification filing — 24/7 online certification, 7 PM cutoff",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-6(a)(2)",
+      "citationUrl": "https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf",
+      "statement": "The system must let a claimant certify, cancel, or close a claim online at any time, 24/7; certifications after 7:00 P.M. are processed on the next scheduled posting date.",
+      "quote": "Any claimant may choose to certify, cancel or close his claim for unemployment insurance benefits at any time, 24 hours a day and seven days a week, via the Internet on a website developed by the division; however, any claim that is certified, cancelled or closed after 7:00 PM will not be processed by the division until the next scheduled posting date.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Next scheduled posting date\" is not defined in statute — the posting calendar is agency practice."
+    },
+    {
+      "id": "CERT-03",
+      "topic": "Certification filing — Biweekly period & 21-day window",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.3(c)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+      "statement": "The claimant must complete the certification (phone or Internet) during the assigned week, or within 21 calendar days after the designated benefit period ends. A designated benefit period is two consecutive calendar weeks ending on the Saturday of the second week.",
+      "quote": "An individual shall be ineligible for benefits unless the claimant completes a certification telephone call or an Internet application during the assigned week as directed by the Division, or within 21 calendar days of the last day of the designated benefit period. For the purposes of this section, a \"designated benefit period\" is the two consecutive calendar weeks that can be claimed for payment and which ends on the Saturday of the second week.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-4(a)",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+        "lower": "N.J.A.C. 12:17-4.3(c)",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "Statute requires continued reporting \"as directed\"; the regulation supplies the biweekly cadence and the 21-day late window."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CERT-04",
+      "topic": "Certification filing — Assigned method & written instructions",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.3(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+      "statement": "The Division must assign each claimant a reporting method and issue written instructions stating when and how to claim continued benefits.",
+      "quote": "A claimant shall be assigned a reporting method, in person, by mail, telephone, via an Internet application or as the Division may otherwise prescribe, and shall be required to report as directed to claim completed weeks of unemployment benefits. ... A claimant shall be issued written instructions, which shall indicate when and how the individual is to claim benefits, including when and how the individual is to claim continued benefits.",
+      "authority": null,
+      "forms": [
+        "Written reporting instructions"
+      ],
+      "gap": null
+    },
+    {
+      "id": "CERT-05",
+      "topic": "Certification filing — Continuous reporting & 14-day reassertion",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.3(e)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+      "statement": "A claimant must stay in continuous reporting status. After missing a designated benefit period, they can reassert the claim for later weeks only by contacting the Division within 14 days of the next two-week period; after that, ineligibility continues until the week they contact the Division.",
+      "quote": "An individual must be in continuous reporting status to be eligible for unemployment benefits. Once an individual is ineligible for benefits because of his or her failure to comply with reporting requirements for a designated benefit period, he or she may reassert his or her claim for later weeks of unemployment only if the individual contacts the Division within 14 days of the subsequent two-week designated benefit period.",
+      "authority": null,
+      "forms": null,
+      "gap": "How the 21-day late window in (c) and the 14-day reassertion window in (e) interact is not spelled out — certification logic must reconcile the two clocks."
+    },
+    {
+      "id": "CERT-06",
+      "topic": "Certification filing — Good cause for failure to report",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.1(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-1",
+      "statement": "Failure to report as directed makes the week ineligible unless a fact-finding hearing finds good cause — any substantial situation that prevented the claimant from reporting.",
+      "quote": "An individual who fails to report as directed will be ineligible for benefits unless, pursuant to a fact-finding hearing, it is determined that there is \"good cause\" for failing to comply. For the purposes of this subchapter, \"good cause\" means any situation which was substantial and prevented the claimant from reporting as required by the Division.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Substantial\" is undefined — good-cause calls are case-by-case caseworker judgment."
+    },
+    {
+      "id": "CERT-07",
+      "topic": "Certification filing — Week begins only after claim filed",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-19(m)(3)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-19/",
+      "statement": "A week of unemployment cannot begin before the claim is filed — the statutory hook for timeliness and any backdating rules the Division adopts.",
+      "quote": "An individual's week of unemployment shall be deemed to commence only after the individual has filed a claim at an unemployment insurance claims office, except as the division may by regulation otherwise prescribe.",
+      "authority": null,
+      "forms": null,
+      "gap": "Backdating standards live entirely in regulation (\"except as the division may by regulation otherwise prescribe\")."
+    },
+    {
+      "id": "AA-01",
+      "topic": "Able & available — Required for each week paid",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 604.3(a)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.3",
+      "statement": "The system may pay a week of UC only to a claimant who was able to work and available for work for that week — the federal floor behind the weekly able-and-available questions.",
+      "quote": "A State may pay UC only to an individual who is able to work and available for work for the week for which UC is claimed.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "AA-02",
+      "topic": "Able & available — Labor-market test & geographic scope",
+      "tier": "federal_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "20 CFR 604.3(b)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.3",
+      "statement": "Able-and-available is tested by whether the claimant is offering services for which a labor market exists (job vacancies not required); the state defines the geographic labor market.",
+      "quote": "Whether an individual is able to work and available for work under paragraph (a) of this section must be tested by determining whether the individual is offering services for which a labor market exists... The State must determine the geographical scope of the labor market for an individual under its UC law.",
+      "authority": null,
+      "forms": null,
+      "gap": "New Jersey has not defined the geographic labor market by rule in N.J.A.C. 12:17 — left to adjudication practice."
+    },
+    {
+      "id": "AA-03",
+      "topic": "Able & available — Weekly able, available & seeking attestation",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-4(c)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+      "statement": "For each week claimed, the claimant must be able to work, available for work, and demonstrate active work search, subject to statutory exceptions (e.g., approved training).",
+      "quote": "The individual is able to work, and is available for work, and has demonstrated to be actively seeking work, except as hereinafter provided in this subsection or in subsection (f) of this section.",
+      "authority": {
+        "higher": "20 CFR 604.3(a)",
+        "higherUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.3",
+        "lower": "N.J.S.A. 43:21-4(c)(1)",
+        "lowerUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "The federal rule sets the able-and-available floor and expressly allows additional state requirements (20 CFR 604.3(c)); New Jersey adds the actively-seeking-work test."
+      },
+      "forms": null,
+      "gap": "\"Able,\" \"available,\" and \"actively seeking\" are undefined in statute, and N.J.A.C. 12:17 supplies no general definitions either."
+    },
+    {
+      "id": "AA-04",
+      "topic": "Able & available — Partial-week ability to work",
+      "tier": "federal_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "20 CFR 604.4(a)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.4",
+      "statement": "A claimant able to work for only part of the week may still be treated as able to work, unless the limitation amounts to a withdrawal from the labor market.",
+      "quote": "A State may consider an individual to be able to work during the week of unemployment claimed if the individual is able to work for all or a portion of the week claimed, provided any limitation on his or her ability to work does not constitute a withdrawal from the labor market.",
+      "authority": null,
+      "forms": null,
+      "gap": "Permissive federal flexibility (\"may\") — New Jersey has not codified how partial-week ability is handled."
+    },
+    {
+      "id": "AA-05",
+      "topic": "Able & available — Illness or injury after demonstrated A&A",
+      "tier": "federal_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "20 CFR 604.4(b)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.4",
+      "statement": "Illness or injury during a claimed week need not defeat \"able to work\" if the claimant demonstrated ability and availability after the most recent separation and refused no suitable work because of the illness; availability may follow under 604.5(g).",
+      "quote": "If an individual has previously demonstrated his or her ability to work and availability for work following the most recent separation from employment, the State may consider the individual able to work during the week of unemployment claimed despite the individual's illness or injury, unless the individual has refused an offer of suitable work due to such illness or injury.",
+      "authority": null,
+      "forms": null,
+      "gap": "Permissive federal flexibility; New Jersey's operative illness pathway is the Disability During Unemployment program (N.J.A.C. 12:17-17)."
+    },
+    {
+      "id": "AA-06",
+      "topic": "Able & available — Jury duty counts toward availability",
+      "tier": "federal_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "20 CFR 604.5(b)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.5",
+      "statement": "Jury duty during a claimed week may count as continued availability if the claimant demonstrated availability after the most recent separation.",
+      "quote": "If an individual has previously demonstrated his or her availability for work following the most recent separation from employment and is appearing for duty before any court under a lawfully issued summons during the week of unemployment claimed, a State may consider the individual to be available for work.",
+      "authority": null,
+      "forms": null,
+      "gap": "Permissive; no New Jersey rule in 43:21 or 12:17 addresses jury duty at certification."
+    },
+    {
+      "id": "WS-01",
+      "topic": "Actively seeking work — Work search is a state option",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 604.5(h)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.5",
+      "statement": "Federal law does not itself require an active work search; states may add one — New Jersey's actively-seeking test is a state policy choice layered on the federal floor.",
+      "quote": "The requirement that an individual be available for work does not require an active work search on the part of the individual. States may, however, require an individual to be actively seeking work to be considered available for work, or States may impose a separate requirement that the individual must actively seek work.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "WS-02",
+      "topic": "Actively seeking work — Must demonstrate active work search",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-4(c)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+      "statement": "The claimant must have \"demonstrated\" active work search for the week — an evidentiary showing whose form (number of contacts, documentation) is set nowhere in statute or N.J.A.C. 12:17.",
+      "quote": "...and has demonstrated to be actively seeking work, except as hereinafter provided in this subsection or in subsection (f) of this section.",
+      "authority": {
+        "higher": "20 CFR 604.5(h)",
+        "higherUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.5",
+        "lower": "N.J.S.A. 43:21-4(c)(1)",
+        "lowerUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "Federal regulation permits states to impose a work-search requirement; New Jersey exercises the option in statute."
+      },
+      "forms": null,
+      "gap": "MAJOR GAP: no rule in N.J.A.C. 12:17 quantifies work-search contacts or documentation. The operative standard appears only in agency practice (certification questions and legacy exemption codes) — confirm the current standard with a policy SME."
+    },
+    {
+      "id": "WS-03",
+      "topic": "Actively seeking work — One-Stop registration & appointments",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.3(f)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+      "statement": "The claimant may be required to report in person to a One-Stop Career Center for work registration and work-search activities; missing the appointment without good cause makes that week ineligible.",
+      "quote": "...an individual may be required to report in person to the One-Stop Career Center to register for work and for other work search related activities. A claimant who fails to report to an in-person appointment at a One-Stop Career Center shall be ineligible for the week in which he or she failed to report, unless good cause is shown.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "WS-04",
+      "topic": "Actively seeking work — Refusal to participate at One-Stop",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.3(f)1",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-3",
+      "statement": "Refusing to participate in or complete a scheduled One-Stop activity without good cause makes the claimant unavailable and ineligible for that week, continuing indefinitely until they agree to be rescheduled.",
+      "quote": "A claimant who, without \"good cause,\" as defined in N.J.A.C. 12:17-4.1, refuses to report for the purpose of participating in, or to complete a scheduled activity (for example, claims interview, work search activity, etc.) at the One-Stop Career Center shall be held unavailable for work and ineligible for benefits for the week in which the refusal occurred. Additionally, he or she will continue to be ineligible indefinitely until the week he or she contacts the Division and agrees to be rescheduled to participate.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "WS-05",
+      "topic": "Actively seeking work — No denial while in approved training",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 604.5(c)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.5",
+      "statement": "The system must not deny a week for unavailability while the claimant is in state-approved training — a mandatory federal floor.",
+      "quote": "A State must not deny UC to an individual for failure to be available for work during a week if, during such week, the individual is in training with the approval of the State agency.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "WS-06",
+      "topic": "Actively seeking work — Approved training exception (state)",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-4(c)(4)(A)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+      "statement": "A claimant in Division-approved training cannot be held unavailable or ineligible — including for refusing work while in the program.",
+      "quote": "Subject to such limitations and conditions as the division may prescribe, an individual, who is otherwise eligible, shall not be deemed unavailable for work or ineligible because the individual is attending a training program approved for the individual by the division to enhance the individual's employment opportunities or because the individual failed or refused to accept work while attending such program.",
+      "authority": {
+        "higher": "20 CFR 604.5(c)",
+        "higherUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-604/section-604.5",
+        "lower": "N.J.S.A. 43:21-4(c)(4)(A)",
+        "lowerUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-4/",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "federal",
+        "note": "The federal rule mandates the approved-training protection; the state statute implements it and adds approval conditions."
+      },
+      "forms": null,
+      "gap": "Training-approval criteria are Division discretion."
+    },
+    {
+      "id": "RSW-01",
+      "topic": "Refusal of suitable work — Disqualification: week + 3 weeks",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5(c)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+      "statement": "Failing without good cause to apply for or accept suitable work (or to return to customary self-employment when directed) disqualifies the claimant for that week plus the three following weeks.",
+      "quote": "If it is found that the individual has failed, without good cause, either to apply for available, suitable work when so directed by the employment office or the director or to accept suitable work when it is offered, or to return to the individual's customary self-employment (if any) when so directed by the director. The disqualification shall continue for the week in which the failure occurred and for the three weeks which immediately follow that week...",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Good cause\" for refusal is not defined in statute; N.J.A.C. 12:17-11.4 (Good cause for refusal of suitable work) exists but was not in the source extract — pull and verify with an SME."
+    },
+    {
+      "id": "RSW-02",
+      "topic": "Refusal of suitable work — Disqualification timing & start date",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-11.1",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-1",
+      "statement": "The regulation restates the week-plus-three disqualification and adds timing: for a refused offer with a definite start date, the disqualification is imposed in the week the work was to begin.",
+      "quote": "The disqualification shall continue for the week in which the failure to apply occurred and for the three weeks which immediately follow that week. This disqualification for failure to accept suitable work shall be imposed during the week in which the individual refused the work or, if there is a definite starting date, the week in which the work is to begin.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-5(c)",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+        "lower": "N.J.A.C. 12:17-11.1",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-1",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "Regulation implements the statutory disqualification and supplies the start-date timing rule."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "RSW-06",
+      "topic": "Refusal of suitable work — Bona fide offer required",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-11.3(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-3",
+      "statement": "No disqualification without a bona fide offer: a specific job with details (duties, pay, hours) actually conveyed to the claimant; cutting off the conversation does not defeat the offer.",
+      "quote": "An individual shall not be disqualified for benefits pursuant to this subchapter unless it has been established that there was a bona fide offer of work or referral to work which he or she refused. ... If an individual prevents the details of the job from being relayed by refusing the job or the referral at the beginning of the interview, the offer is still considered bona fide.",
+      "authority": null,
+      "forms": null,
+      "gap": "Employer documentation duties are hortatory (\"should document\") — evidentiary weight unresolved."
+    },
+    {
+      "id": "RSW-07",
+      "topic": "Refusal of suitable work — What counts as new work",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-11.5(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-5",
+      "statement": "Refusal review covers \"new work\": offers from a never-before employer, recall offers after an indefinite layoff, or an offer of substantially different duties or terms from the present employer.",
+      "quote": "An individual shall be subject to disqualification for benefits if he or she fails to accept or apply for suitable new work. For purposes of this subchapter, \"new work\" means: 1. An offer of work made to an unemployed individual by an employer with whom he or she has never worked; 2. An offer of reemployment ... by any former employer, following an indefinite layoff with no recall date; or 3. An offer of work made by an individual's present employer of substantially different duties, terms or conditions of employment...",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Substantially different duties, terms or conditions\" — the factor list is expressly non-exhaustive."
+    },
+    {
+      "id": "RSW-03",
+      "topic": "Refusal of suitable work — Statutory suitability factors",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5(c)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+      "statement": "Suitability weighs health/safety/morals risk, physical fitness, prior training/experience/earnings, length of unemployment, local prospects in the customary occupation, and distance from residence.",
+      "quote": "In determining whether or not any work is suitable for an individual, consideration shall be given to the degree of risk involved to health, safety, and morals, the individual's physical fitness and prior training, experience and prior earnings, the individual's length of unemployment and prospects for securing local work in the individual's customary occupation, and the distance of the available work from the individual's residence.",
+      "authority": null,
+      "forms": null,
+      "gap": "No weighting among factors; suitability tightens with length of unemployment only implicitly."
+    },
+    {
+      "id": "RSW-08",
+      "topic": "Refusal of suitable work — Regulatory suitability factors",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-11.2(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-2",
+      "statement": "The regulation mirrors the statutory suitability factors, adding \"employee benefits\" to prior earnings and framing the distance test as commuting distance.",
+      "quote": "In determining whether or not the work is suitable, consideration shall be given to the degree of risk involved to health, safety and morals, the individual's physical fitness and prior training, experience and prior earnings and employee benefits, the individual's length of unemployment, prospects for securing work in the individual's customary occupation and commuting distance.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-5(c)(1)",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+        "lower": "N.J.A.C. 12:17-11.2(a)",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-2",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "Regulation implements the statutory suitability factors with added detail."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "RSW-04",
+      "topic": "Refusal of suitable work — 80% wage floor",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-11.2(a)2",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-11-2",
+      "statement": "Wage suitability floor: within the benefit year, work is suitable in wage terms only at 80% or more of the claimant's base-year average weekly wage (including the value of employee benefits); sub-minimum-wage offers are never suitable.",
+      "quote": "For purposes of this subchapter, and restricted to those offers of work made during an individual's benefit year, suitability in terms of wages means eighty percent of the claimant's average weekly wage (including the value of employee benefits) during the base year.",
+      "authority": null,
+      "forms": null,
+      "gap": "Valuation method for employee benefits unspecified."
+    },
+    {
+      "id": "RSW-05",
+      "topic": "Refusal of suitable work — Work never deemed suitable",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5(c)(2)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+      "statement": "Never suitable: positions vacant due to a strike/lockout, work with substantially substandard pay/hours/conditions for the locality, or jobs conditioned on joining a company union or leaving a bona fide union.",
+      "quote": "Notwithstanding any other provisions of this chapter, no work shall be deemed suitable and benefits shall not be denied under this chapter to any otherwise eligible individual for refusing to accept new work under any of the following conditions: the position offered is vacant due directly to a strike, lockout, or other labor dispute; the remuneration, hours, or other conditions of the work offered are substantially less favorable to the individual than those prevailing for similar work in the locality; or, the individual, as a condition of being employed, would be required to join a company union or to resign from or refrain from joining any bona fide labor organization.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Substantially less favorable\" and \"prevailing\" comparisons require labor-market data; the method is undefined. (This mirrors the FUTA §3304(a)(5) federal labor-standards floor.)"
+    },
+    {
+      "id": "EARN-01",
+      "topic": "Earnings & partial unemployment — Definition of unemployed",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-19(m)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-19/",
+      "statement": "A claimant is \"unemployed\" for a week only if not in full-time work and earning less than the weekly benefit rate; involuntary unpaid vacation counts; corporate officers and >5% owners of the employing corporation are excluded.",
+      "quote": "An individual shall be deemed \"unemployed\" for any week during which: (A) The individual is not engaged in full-time work and with respect to which his remuneration is less than his weekly benefit rate, including any week during which he is on vacation without pay; provided such vacation is not the result of the individual's voluntary action...",
+      "authority": null,
+      "forms": null,
+      "gap": "MAJOR GAP: \"full-time work\" is undefined in statute and in N.J.A.C. 12:17. The legacy system's 32-hour test is an operational proxy, not policy — do not import it as a requirement without SME confirmation of its source."
+    },
+    {
+      "id": "EARN-02",
+      "topic": "Earnings & partial unemployment — Week of partial unemployment",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-2.1 (\"Week of partial unemployment\")",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-2-1",
+      "statement": "A partial-unemployment week requires no more than 80% of the hours normally worked in the occupation, due to lack of work, with earnings not exceeding the weekly benefit rate plus 20%.",
+      "quote": "\"Week of partial unemployment\" means a calendar week ending at midnight Saturday in which an individual is employed not more than 80 percent of the hours normally worked in that individual's occupation, profession, trade, or industry; due to lack of work; and earns remuneration which does not exceed the weekly benefit rate plus 20 percent of such rate.",
+      "authority": null,
+      "forms": null,
+      "gap": "Baseline for \"hours normally worked\" (the claimant's own schedule vs. an industry norm) is undefined; note the tension with 43:21-19(m)(1)'s below-WBR ceiling."
+    },
+    {
+      "id": "EARN-03",
+      "topic": "Earnings & partial unemployment — Week of total unemployment",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-2.1 (\"Week of total unemployment\")",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-2-1",
+      "statement": "A total-unemployment week means no services performed and no remuneration received; the certification week runs Sunday through Saturday midnight.",
+      "quote": "\"Week of total unemployment\" means a calendar week ending at midnight Saturday in which an individual performs no services and with respect to which the individual receives no remuneration.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Performs no services\" has no de minimis threshold."
+    },
+    {
+      "id": "EARN-04",
+      "topic": "Earnings & partial unemployment — Remuneration defined",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-19(p)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-19/",
+      "statement": "Reportable remuneration is all compensation for personal services — commissions, bonuses, and the cash value of in-kind compensation.",
+      "quote": "\"Remuneration\" means all compensation for personal services, including commission and bonuses and the cash value of all compensation in any medium other than cash.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "EARN-05",
+      "topic": "Earnings & partial unemployment — Partial benefit formula",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-3(b)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-3/",
+      "statement": "Partial benefit = weekly benefit rate minus remuneration above the disregard (the greater of 20% of the weekly benefit rate or $5), computed down to the next lower whole dollar.",
+      "quote": "...shall be paid an amount (except as to final payment) equal to his weekly benefit rate less any remuneration... paid or payable to him for such week in excess of 20% of his weekly benefit rate (fractional part of a dollar omitted) or $5.00, whichever is the greater; provided that such amount shall be computed to the next lower multiple of $1.00 if not already a multiple thereof.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Paid or payable for such week\" — allocation of earnings to the week earned vs. the week paid is not specified."
+    },
+    {
+      "id": "EARN-06",
+      "topic": "Earnings & partial unemployment — 20% earnings disregard rule",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.5(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-5",
+      "statement": "Weekly benefits are reduced by wages (including casual work) received above 20% of the weekly benefit rate.",
+      "quote": "An individual's eligibility for weekly benefits shall be reduced by an amount equal to any wages or remuneration, including remuneration from casual work, received in excess of 20 percent of the individual's weekly benefit rate.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-3(b)",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-3/",
+        "lower": "N.J.A.C. 12:17-8.5(a)",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-5",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "The statute's disregard is the greater of 20% of the weekly benefit rate or $5.00; the regulation states only the 20% term — the statute controls."
+      },
+      "forms": null,
+      "gap": "Regulation omits the statutory $5 alternative floor and says \"received\" where the statute says \"paid or payable.\""
+    },
+    {
+      "id": "EARN-07",
+      "topic": "Earnings & partial unemployment — Tips & imputed wages",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.5(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-5",
+      "statement": "Tips are reportable wages; if gratuities go unreported, wages are imputed at the applicable minimum wage or actual remuneration, whichever is higher.",
+      "quote": "If gratuities are not reported, the individual's \"wages\" shall be determined in accordance with the minimum wage rates prescribed under any labor law or regulation of this State or of the United States, or the amount of remuneration actually received by the employee from the employer, whichever is higher.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "EARN-08",
+      "topic": "Earnings & partial unemployment — Election-day work carve-out",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.12",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-12",
+      "statement": "Election-day board work does not make a claimant unavailable and must not reduce the weekly benefit — a special case the earnings logic must carve out (the statute likewise excludes this pay from remuneration, 43:21-19(m)(2)).",
+      "quote": "...an unemployed individual, who is otherwise eligible for benefits, shall not be deemed unavailable for work or ineligible solely by reason of the individual's work as a board worker for a county board of election on an election day.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PAY-01",
+      "topic": "Deductible payments — Pay in lieu of notice",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.6(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-6",
+      "statement": "Weeks covered by remuneration in lieu of notice are not compensable (the claimant is not unemployed); coverage for less than a full week may allow partial benefits.",
+      "quote": "An individual receiving remuneration in lieu of notice is disqualified for benefits and the claim for benefits is invalid because the claimant is considered not unemployed. Notwithstanding any provision of this subsection, an individual who receives remuneration in lieu of notice for a period less than a calendar week may be eligible for partial benefits for such week.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PAY-02",
+      "topic": "Deductible payments — Severance is not a bar",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.7(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-7",
+      "statement": "Severance or separation pay — periodic or lump sum — does not bar weekly benefits.",
+      "quote": "The receipt of severance or separation pay in periodic payments or in a lump sum shall not be a bar to eligibility for unemployment benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": "Distinguishing severance (no bar) from salary continuation (a bar, 12:17-8.8) is a fact call on the underlying agreement."
+    },
+    {
+      "id": "PAY-03",
+      "topic": "Deductible payments — Salary continuation",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.8(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-8",
+      "statement": "Weeks in which an employer continues wages or salary without requiring services (salary continuation) are ineligible through the contract's termination date.",
+      "quote": "An employer may elect to continue wage or salary payments and forego the services normally performed by the employee through the date of termination provided for by contract or other agreement. A claim filed by an individual receiving such payments shall be invalid and he or she shall be ineligible for benefits through the date of termination of contract or other agreement.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PAY-04",
+      "topic": "Deductible payments — Vacation & holiday pay",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.10(a)–(c)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-10",
+      "statement": "Voluntary vacation weeks are ineligible (claimant unavailable); paid contractual shutdown weeks are ineligible, but unpaid ones may qualify; a terminal lump-sum payout of unused vacation is not a bar.",
+      "quote": "An individual who voluntarily takes a vacation is ineligible for benefits as the individual is unavailable for work. ... Where a union or employment contract calls for a vacation or holiday period with pay and permits the employer to close its operations for a specified period, the employees shall be ineligible for benefits. However, any employee who does not receive pay for the contractual vacation period or any part thereof may receive unemployment benefits if otherwise eligible. ... The receipt of a lump sum payment at termination representing unused accrued vacation leave is not a bar to the receipt of unemployment benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": "How \"voluntarily takes a vacation\" is established from certification answers is undefined."
+    },
+    {
+      "id": "PAY-05",
+      "topic": "Deductible payments — Sick leave pay",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.11(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-11",
+      "statement": "Weeks with periodic employer sick-leave payments are ineligible (the claimant is still employed); a terminal lump-sum payout of unused sick leave is not a bar.",
+      "quote": "An individual who receives periodic sick leave payments from an employer is considered employed and is ineligible for unemployment benefits because the claim is invalid. ... When an individual's employment is terminated, any lump sum payment of unused accrued sick leave is not a bar to the receipt of unemployment benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PEN-01",
+      "topic": "Pension offset — Weekly reduction, not below zero",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5a",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5a/",
+      "statement": "Weekly benefits are reduced — not below zero — by pension, retirement, or annuity amounts based on previous work that are reasonably attributable to the week.",
+      "quote": "The amount of benefits payable to an individual for any week which begins in a period with respect to which such individual is receiving a governmental or other pension, retirement or retired pay, annuity, or other similar periodic payment which is based on the previous work of such individual shall be reduced, but not below zero, by an amount equal to the amount of such pension... which is reasonably attributable to such week...",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Reasonably attributable to such week\" — the proration method is left to regulation."
+    },
+    {
+      "id": "PEN-02",
+      "topic": "Pension offset — Base-period employer plans only",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.1(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-1",
+      "statement": "Only pensions under a plan maintained or contributed to by a base-period or chargeable employer trigger the offset; no reduction if base-year work did not affect pension eligibility or amount.",
+      "quote": "When a pension is received from a base period or chargeable employer, benefits shall be reduced if the pension, retirement or retired pay, annuity, or other similar payment is under a plan maintained or contributed to by such employer. ... If the remuneration for services performed for the employer during the base year by the individual does not affect eligibility for, or increase the amount of, the pension ... then the individual's unemployment benefits shall not be reduced by the amount of the pension.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-5a",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5a/",
+        "lower": "N.J.A.C. 12:17-8.1",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-1",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "The statute permits the Division to limit the offset to base-period/chargeable-employer plans; the regulation exercises that permission."
+      },
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "PEN-03",
+      "topic": "Pension offset — Offset percent by plan contribution",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.2(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-2",
+      "statement": "Offset schedule by funding source: 100% reduction for employer-funded plans, 50% for jointly funded, none for fully claimant-funded plans, and none for Social Security where the claimant contributed.",
+      "quote": "1. If such payment is made under a plan to which the individual did not contribute, the weekly and maximum amount of benefits payable ... shall be reduced by an amount equal to the amount of the pension ... reasonably attributable to such week ...; 2. If ... the employer and individual contributed, the amount of benefits payable ... will be reduced by an amount equal to 50 percent of the amount of the pension ... 3. If ... the individual contributed 100 percent, the amount of benefits payable ... shall not be reduced; 4. No reduction ... if the pension ... is from the Social Security pension to which the individual has made any contribution.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Reasonably attributable to such week\" proration method not specified."
+    },
+    {
+      "id": "PEN-04",
+      "topic": "Pension offset — Constructive receipt & retroactive awards",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.4(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-4",
+      "statement": "The offset starts the first calendar week after constructive receipt of the pension award; retroactive awards reduce already-paid weeks and create a refundable overpayment.",
+      "quote": "A reduction in benefits shall be made as of the first calendar week commencing after the claimant is given constructive receipt of a retirement pension award. ... an individual who receives a retroactive pension payment shall be subject to benefit reduction as of the first calendar week commencing after the effective date of pension entitlement ... and shall be liable to refund any resulting overpayment of benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": "The claimant must report at certification a pension they may not yet be receiving in cash — constructive receipt is a notification test."
+    },
+    {
+      "id": "PEN-05",
+      "topic": "Pension offset — 60-day rollover exemption",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-8.4(c)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-8-4",
+      "statement": "Qualified rollovers completed within 60 days do not reduce benefits.",
+      "quote": "There will be no reduction of benefits where there is a transfer of an eligible rollover distribution from a qualified trust to an eligible retirement plan ... if all the requirements of section 402 of the Internal Revenue Code are met within 60 days of receipt by the individual.",
+      "authority": null,
+      "forms": null,
+      "gap": "The 60-day rollover window can post-date the certification, forcing provisional treatment of the week."
+    },
+    {
+      "id": "PEN-06",
+      "topic": "Pension offset — Lump sums at involuntary separation",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5a(2)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5a/",
+      "statement": "For claimants involuntarily and permanently separated before full pension rights, a lump sum in lieu of periodic pension reduces benefits only in the week of receipt.",
+      "quote": "The amount of benefits payable to an individual who is involuntarily and permanently separated from employment prior to the date at which the individual may retire with full pension rights shall not be reduced pursuant to this section because the individual receives a lump sum payment in lieu of periodic pension, retirement or annuity payments, except that the benefits payable to the individual may be reduced during the week in which the individual receives the lump sum payment.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CHG-01",
+      "topic": "Status changes — Corporate officers & 5% owners",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-12.1(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-12-1",
+      "statement": "Corporate officers and >5% owners claiming on the corporation's wages are not unemployed in any week during their term of office or ownership — the claim is invalid.",
+      "quote": "An officer of a corporation and/or a person who has more than five percent equitable or debt interest in the corporation, whose claim for benefits is based on wages with that corporation, shall not be considered unemployed in any week during the individual's term of office or ownership in the corporation and the claim shall be determined invalid.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CHG-02",
+      "topic": "Status changes — Leave of absence",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-12.3(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-12-3",
+      "statement": "Weeks on a voluntary, mutually agreed leave of absence are not weeks of unemployment; claims filed during the leave are invalid.",
+      "quote": "A voluntary and mutually agreed upon leave of absence between an employer and employee connotes a continuity of employment. An individual on an approved leave of absence is not considered unemployed under the Unemployment Compensation Law and any claim for benefits filed during this period shall be invalid...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CHG-03",
+      "topic": "Status changes — Temporary side business",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-12.5(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-12-5",
+      "statement": "A claimant running a temporary side business stays eligible only if still available and actively seeking work, weighed by four criteria: business income vs. prior/sought salary, hours in the business vs. work-search effort, breadth of continued availability, and indicia of a permanent business.",
+      "quote": "A claimant who seeks to augment his or her income through a temporary business may be eligible to receive unemployment benefits only if he or she is available for work, actively seeking employment and otherwise meets the eligibility requirements...",
+      "authority": null,
+      "forms": null,
+      "gap": "Four-factor balancing with no thresholds. Also note 12:17-12.5(d): unincorporated temporary-business income is not \"wages\" — so it may escape the 8.5(a) earnings reduction. Confirm treatment with an SME."
+    },
+    {
+      "id": "CHG-04",
+      "topic": "Status changes — Part-time-only availability",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-12.7(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-12-7",
+      "statement": "A claimant limiting availability to part-time work is ineligible unless they worked part-time in a substantial portion of the base year, sufficient part-time work exists in their labor market, and they are available for enough hours to earn at least the weekly benefit amount.",
+      "quote": "An individual who limits his or her availability to parttime work shall be ineligible for benefits unless the following conditions are met: 1. The individual has worked in part-time work during a substantial portion of the individual's base year...; 2. There is sufficient part-time work in the claimant's general labor market...; and 3. The individual is available for enough weekly hours to be able to earn remuneration equal to at least the individual's weekly benefit amount.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Substantial portion\" and \"sufficient part-time work\" undefined."
+    },
+    {
+      "id": "CHG-05",
+      "topic": "Status changes — Full-time students",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-12.6(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-12-6",
+      "statement": "Full-time students (20+ class hours/week non-higher-ed; 12+ credits undergraduate; 9+ credits post-graduate) are disqualified unless in Division-approved training or their base-year wages were earned while attending school outside customary vacation periods.",
+      "quote": "An individual, who is a student in full-time attendance at, or on vacation from, an educational institution, is disqualified for benefits, unless: 1. The individual is attending a training program approved by the Division to enhance the individual's earning power and/or employability; or 2. During the claimant's base year, the individual, who during periods other than established and customary vacation periods or holiday recesses at the educational institution, has earned in employment sufficient wages while in full or part-time attendance at an educational institution to establish a claim for benefits.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CHG-06",
+      "topic": "Status changes — Temp-firm contact (written agreement)",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-15.2(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-15-2",
+      "statement": "A temp-firm claimant with a written agreement must contact the firm for reassignment by the end of the next business day after an assignment ends (or the agreement's longer window), or the claim is reviewed as a voluntary quit.",
+      "quote": "An individual's claim which is based on employment with a temporary help service firm shall be reviewed as a voluntary leaving of work issue if the individual fails to contact the temporary help service firm for reassignment by the end of the next business day after completion of the last assignment unless a greater time period is specified in the written agreement.",
+      "authority": null,
+      "forms": [
+        "Temporary help service firm written agreement"
+      ],
+      "gap": null
+    },
+    {
+      "id": "CHG-07",
+      "topic": "Status changes — Temp-firm contact (no agreement)",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-15.3(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-15-3",
+      "statement": "Without a written agreement, the same missed reassignment contact is reviewed as an availability issue instead of a quit.",
+      "quote": "An individual's claim which is based on employment with a temporary help service firm shall be reviewed as an available for work issue if the individual fails to contact the firm for reassignment by the end of the next business day after completion of the last assignment and there is no written agreement between the temporary help service firm and the individual.",
+      "authority": null,
+      "forms": null,
+      "gap": "Identical conduct is a quit issue or an availability issue depending on paperwork — the system needs the agreement on file."
+    },
+    {
+      "id": "CHG-08",
+      "topic": "Status changes — Disability claim suspends reporting",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-17.3",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-17-3",
+      "statement": "Filing notice and proof of a Disability During Unemployment claim suspends the subchapter-4 work-registration and reporting (certification) requirements for the covered period.",
+      "quote": "The giving of notice of disability and the filing of proof of a claim for disability benefits during unemployment shall dispense with the requirements of N.J.A.C. 12:17-4 concerning registering for work and reporting to the Division for the period covered by the claim.",
+      "authority": null,
+      "forms": [
+        "Proof and Claim for Disability Benefits (with medical certification)"
+      ],
+      "gap": null
+    },
+    {
+      "id": "CHG-09",
+      "topic": "Status changes — Reasserting ability after recovery",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-17.5(a)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-17-5",
+      "statement": "Coming off a disability period, the claimant must reassert ability to work by reporting to the Division during the week of recovery or the week immediately following.",
+      "quote": "If the simultaneous benefit period occurs at the end of the disability, the claimant must assert his or her ability to work by reporting to the Division during the calendar week of his or her recovery or in the calendar week immediately following...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "INT-01",
+      "topic": "Integrity — 25% fine for false statements",
+      "tier": "state_statute",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-16(a)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-16/",
+      "statement": "A knowing false statement — or knowing failure to disclose a material fact — to obtain or increase benefits carries a fine of 25% of the amount fraudulently obtained; each false weekly certification is a separate offense.",
+      "quote": "Whoever makes a false statement or representation, knowing it to be false, or knowingly fails to disclose a material fact, to obtain or increase or attempts to obtain or increase any benefit or other payment under this chapter..., either for himself or for any other person, shall be liable to a fine of 25% of the amount fraudulently obtained... and each such false statement or representation or failure to disclose a material fact shall constitute a separate offense.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Material fact\" undefined."
+    },
+    {
+      "id": "INT-02",
+      "topic": "Integrity — One-year fraud disqualification",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-5(g)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-5/",
+      "statement": "Illegal receipt (or attempted receipt) of benefits via false or fraudulent representation disqualifies the claimant for one year from the Division's discovery; a court conviction is conclusive on the appeal bodies.",
+      "quote": "For a period of one year from the date of the discovery by the division of the illegal receipt or attempted receipt of benefits contrary to the provisions of this chapter, as the result of any false or fraudulent representation...",
+      "authority": null,
+      "forms": null,
+      "gap": "No express intent standard in this subsection (contrast 16(a)(1)'s \"knowing\") — whether negligent misstatements are swept in is unresolved; the discovery date is undefined."
+    },
+    {
+      "id": "INT-03",
+      "topic": "Integrity — Full repayment of overpaid benefits",
+      "tier": "state_statute",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-16(d)(1)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-16/",
+      "statement": "Benefits received while any condition was unfulfilled or while disqualified must be repaid in full unless waived; absent fraud, recovery requires notice within four years of payment.",
+      "quote": "When it is determined... that any person has received any sum as benefits under this chapter... while any conditions for the receipt of benefits imposed by this chapter... were not fulfilled in his case, or while he was disqualified from receiving benefits... such person... shall be liable to repay those benefits in full... except in the event of fraud, no person shall be liable for any such refunds or deductions against future benefits unless so notified before four years have elapsed from the time the benefits in question were paid.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "INT-04",
+      "topic": "Integrity — Demand for refund within 4 years",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-14.1",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-14-1",
+      "statement": "Every overpayment determination triggers a mailed demand for refund (within four years except fraud); fraud cases may be referred to the Attorney General for prosecution.",
+      "quote": "The Division shall issue a demand for refund of unemployment benefits in each case when a determination of overpayment is made. Except in the case of fraud, an individual shall be notified of the demand for refund within four years after benefits were received. ... In case of fraud, the matter may be forwarded to the Attorney General for investigation and criminal prosecution.",
+      "authority": null,
+      "forms": [
+        "Demand for refund notice"
+      ],
+      "gap": null
+    },
+    {
+      "id": "INT-05",
+      "topic": "Integrity — Mandatory waiver circumstances (statute)",
+      "tier": "state_statute",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.S.A. 43:21-16(d)(4)",
+      "citationUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-16/",
+      "statement": "On the claimant's request, the director must grant a full waiver of overpayment recovery — if the claimant made no misrepresentation — where the claimant is deceased, disabled and unable to work, the overpayment came from Division or employer error, or recovery would be contrary to equity and good conscience.",
+      "quote": "...only under the following circumstances: (A) Where the claimant is deceased; (B) Where the claimant is disabled and no longer able to work; (C) Where the claimant received the overpayment of benefits due to an error by the division, or due to an error of the employer...; or (D) Where the director determines that recovery of the overpayment would be contrary to equity and good conscience.",
+      "authority": null,
+      "forms": null,
+      "gap": "\"Equity and good conscience\" undefined — director discretion. Quote trimmed to the four circumstances; the source sheet's text of the lead-in clause contained transcription errors — verify the full amended text at the linked source."
+    },
+    {
+      "id": "INT-06",
+      "topic": "Integrity — Discretionary waiver rule (regulation)",
+      "tier": "state_reg",
+      "actor": "caseworker",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-14.2(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-14-2",
+      "statement": "The regulation makes the waiver discretionary (\"may\"), lists only three circumstances, and bars waiver where the claimant willfully or even negligently misrepresented or withheld a material fact.",
+      "quote": "Upon request of the claimant or the claimant's representative, the Director may grant the claimant a full waiver of recovery of an overpayment of benefits only after the Director has determined that the claimant has not misrepresented or withheld any material fact in obtaining benefits and only under the following circumstances: 1. Where the claimant is deceased; 2. Where the claimant is disabled and no longer able to work; or 3. Where the recovery of the overpayment, as determined by the Director with the Controller's concurrence, would be patently contrary to the principles of equity.",
+      "authority": {
+        "higher": "N.J.S.A. 43:21-16(d)(4)",
+        "higherUrl": "https://codes.findlaw.com/nj/title-43-pensions-and-retirement-and-unemployment-compensation/nj-st-sect-43-21-16/",
+        "lower": "N.J.A.C. 12:17-14.2",
+        "lowerUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-14-2",
+        "higherRef": null,
+        "lowerRef": null,
+        "controls": "state statute",
+        "note": "The amended statute mandates the waiver (\"shall\") and adds a fourth circumstance (Division/employer error); the older regulation is narrower and discretionary — the statute controls."
+      },
+      "forms": null,
+      "gap": "12:17-14.2(b) makes even negligent misstatement a waiver bar with no honest-mistake safe harbor — check this against the amended statute with an SME."
+    },
+    {
+      "id": "INT-07",
+      "topic": "Integrity — Two determinations bar recoupment",
+      "tier": "state_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-14.4",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-14-4",
+      "statement": "Weeks paid after two determinations of entitlement are not recoupable (through the week before an appeal hearing) even if the decision is later reversed.",
+      "quote": "If there are two determinations of entitlement, benefits for such period of entitlement shall be paid regardless of the outcome of any appeal which may be taken. ... no claimant shall be required to repay such benefits ... through the completed calendar week prior to the date of the appeal hearing, if the decision is finally reversed.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "CONF-01",
+      "topic": "Federal safeguards — Confidentiality of UC information",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 603.4(b)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-603/section-603.4",
+      "statement": "Certification answers are confidential UC information: the state must maintain the confidentiality of identifying claimant and employer information and bar disclosure except as Part 603 allows.",
+      "quote": "...'methods of administration' that are reasonably calculated to insure the full payment of UC when due must include provision for maintaining the confidentiality of any UC information which reveals the name or any identifying particular about any individual or any past or present employer or employing unit... and must include provision for barring the disclosure of any such information, except as provided in this part.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "QC-01",
+      "topic": "Federal safeguards — Cooperate with quality control review",
+      "tier": "state_reg",
+      "actor": "claimant",
+      "nature": "policy",
+      "citation": "N.J.A.C. 12:17-4.8(a)–(b)",
+      "citationUrl": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-12-17-4-8",
+      "statement": "A claimant selected for a quality-control review must report and cooperate; refusal without good cause makes them ineligible from that week until they agree to cooperate.",
+      "quote": "A claimant shall be determined ineligible for unemployment benefits if he or she, without \"good cause,\" as defined in N.J.A.C. 12:17-4.1, fails to report as directed for a quality control review interview, or fails to cooperate in a quality control review of the claim.",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "QC-02",
+      "topic": "Federal safeguards — Benefit Accuracy Measurement audits",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 602.21(b)–(c)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-602/section-602.21",
+      "statement": "The state must run Benefit Accuracy Measurement: sample at least 400 paid-week cases per year and investigate payment accuracy in depth — the reason individual weekly certifications get audited.",
+      "quote": "Each State shall: ... (b) Select representative samples for QC study of at least a minimum size specified by the Department to ensure statistical validity (for benefit payments, a minimum of 400 cases of weeks paid per State per year); (c) Complete prompt and in-depth case investigations to determine the degree of accuracy and timeliness in the administration of the State UC law...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    },
+    {
+      "id": "WD-01",
+      "topic": "Federal safeguards — Pay when due or lose certification",
+      "tier": "federal_reg",
+      "actor": "system",
+      "nature": "policy",
+      "citation": "20 CFR 601.5(a)",
+      "citationUrl": "https://www.ecfr.gov/current/title-20/chapter-V/part-601/section-601.5",
+      "statement": "Federal grants and certification are withheld if state law drops required SSA §303(a) provisions or the state denies benefits due in a substantial number of cases — certification logic must both pay when due and apply the required conditions.",
+      "quote": "Payment of funds to States or yearend certification of State laws, or both, are withheld when the Secretary finds, after reasonable notice and opportunity for hearing: (1) That any provision required by section 303(a) of the Social Security Act is no longer included in the State unemployment compensation law; or ... (5) That in the administration of the State unemployment compensation law there has been a denial, in a substantial number of cases, of benefits due under such law...",
+      "authority": null,
+      "forms": null,
+      "gap": null
+    }
+  ],
+  "blueprint": {
+    "intro": "",
+    "claimLane": "Claimant is asked / attests",
+    "outcomeLane": "Outcome",
+    "actors": [
+      {
+        "key": "claimant",
+        "label": "Claimant action"
+      },
+      {
+        "key": "system",
+        "label": "System (automated)"
+      },
+      {
+        "key": "caseworker",
+        "label": "Caseworker (manual)"
+      }
+    ],
+    "columns": [
+      {
+        "id": "S1",
+        "title": "File the certification for the designated benefit period",
+        "q": "Did you certify for your benefit weeks on time, as directed?",
+        "inputs": [
+          "Assigned reporting method",
+          "Designated benefit period (2 weeks, ends Saturday)",
+          "Date certification completed",
+          "Good cause for late filing"
+        ],
+        "reqs": [
+          "CERT-01",
+          "CERT-03",
+          "CERT-05",
+          "CERT-02",
+          "CERT-04",
+          "CERT-07",
+          "CERT-06"
+        ],
+        "out": [
+          {
+            "t": "Certified on time → weeks processed",
+            "kind": "good"
+          },
+          {
+            "t": "Late beyond 21 days, no good cause → ineligible for period",
+            "kind": "bad"
+          },
+          {
+            "t": "Good cause claimed → fact-finding",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "S2",
+        "title": "Able to work & available for work",
+        "q": "Were you able to work and available for work each day claimed?",
+        "inputs": [
+          "Physical ability to work",
+          "Availability limitations",
+          "Labor market for services offered",
+          "Illness or jury duty during the week"
+        ],
+        "reqs": [
+          "AA-03",
+          "AA-01",
+          "AA-02",
+          "AA-04",
+          "AA-05",
+          "AA-06"
+        ],
+        "out": [
+          {
+            "t": "Able & available → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Availability issue → adjudication",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "S3",
+        "title": "Actively seeking work & registration",
+        "q": "Did you actively look for work this week (or qualify for an exception)?",
+        "inputs": [
+          "Work search activity",
+          "One-Stop appointment attendance",
+          "Division-approved training enrollment"
+        ],
+        "reqs": [
+          "WS-02",
+          "WS-03",
+          "WS-01",
+          "WS-05",
+          "WS-06",
+          "WS-04"
+        ],
+        "out": [
+          {
+            "t": "Work search met or exception applies → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Missed One-Stop appointment, no good cause → week denied",
+            "kind": "bad"
+          },
+          {
+            "t": "Work-search issue → fact-finding",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "S4",
+        "title": "Job offers & referrals during the week",
+        "q": "Were you offered work or referred to a job — and did you accept?",
+        "inputs": [
+          "Bona fide offer or referral",
+          "Offer details (duties, pay, hours)",
+          "Claimant response"
+        ],
+        "reqs": [
+          "RSW-01",
+          "RSW-02",
+          "RSW-06",
+          "RSW-07"
+        ],
+        "out": [
+          {
+            "t": "No bona fide offer refused → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Refusal reported → suitability review",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "S5",
+        "title": "Suitability of refused work & good cause",
+        "q": "Was the refused work suitable — and did you have good cause to refuse it?",
+        "inputs": [
+          "Suitability factors",
+          "80% wage floor",
+          "Labor-standards conditions",
+          "Good cause for refusal"
+        ],
+        "reqs": [
+          "RSW-03",
+          "RSW-08",
+          "RSW-04",
+          "RSW-05"
+        ],
+        "out": [
+          {
+            "t": "Work unsuitable or good cause → no disqualification",
+            "kind": "good"
+          },
+          {
+            "t": "Refused suitable work → disqualified week + 3 weeks",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "S6",
+        "title": "Work & earnings during the week",
+        "q": "Did you work or earn any wages during the week claimed?",
+        "inputs": [
+          "Hours worked vs normal hours",
+          "Gross earnings (incl. tips, in-kind)",
+          "Full-time vs part-time status",
+          "Cause of reduced hours"
+        ],
+        "reqs": [
+          "EARN-01",
+          "EARN-04",
+          "EARN-02",
+          "EARN-03"
+        ],
+        "out": [
+          {
+            "t": "No work, no earnings → total unemployment",
+            "kind": "good"
+          },
+          {
+            "t": "Part-total work reported → compute partial benefit",
+            "kind": "proc"
+          },
+          {
+            "t": "Full-time work → not unemployed, week denied",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "S7",
+        "title": "Partial benefit calculation",
+        "q": "How much of your weekly benefit is payable after earnings?",
+        "inputs": [
+          "Weekly benefit rate",
+          "Earnings disregard (greater of 20% of WBR or $5)",
+          "Election-day board work"
+        ],
+        "reqs": [
+          "EARN-05",
+          "EARN-06",
+          "EARN-08",
+          "EARN-07"
+        ],
+        "out": [
+          {
+            "t": "Earnings within disregard → full benefit",
+            "kind": "good"
+          },
+          {
+            "t": "Partial benefit paid (rounded down)",
+            "kind": "partial"
+          },
+          {
+            "t": "Earnings too high → no payment for week",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "S8",
+        "title": "Other employer payments received",
+        "q": "Did you receive any other pay from an employer for this week?",
+        "inputs": [
+          "Pay in lieu of notice",
+          "Severance or separation pay",
+          "Salary continuation",
+          "Vacation / holiday pay",
+          "Sick leave pay"
+        ],
+        "reqs": [
+          "PAY-01",
+          "PAY-02",
+          "PAY-03",
+          "PAY-04",
+          "PAY-05"
+        ],
+        "out": [
+          {
+            "t": "Payment type not disqualifying → continue",
+            "kind": "good"
+          },
+          {
+            "t": "In-lieu / salary continuation / paid shutdown / sick pay week → ineligible",
+            "kind": "bad"
+          },
+          {
+            "t": "Payment needs classification → adjudication",
+            "kind": "nd"
+          }
+        ]
+      },
+      {
+        "id": "S9",
+        "title": "Pension & retirement income",
+        "q": "Are you receiving (or newly awarded) a pension or retirement payment?",
+        "inputs": [
+          "Pension / annuity / retired pay",
+          "Base-period or chargeable employer plan",
+          "Who contributed to the plan",
+          "Constructive receipt date",
+          "Rollover within 60 days"
+        ],
+        "reqs": [
+          "PEN-01",
+          "PEN-02",
+          "PEN-03",
+          "PEN-04",
+          "PEN-05",
+          "PEN-06"
+        ],
+        "out": [
+          {
+            "t": "No offsetable pension → full benefit",
+            "kind": "good"
+          },
+          {
+            "t": "Offset applied → reduced, not below zero",
+            "kind": "partial"
+          },
+          {
+            "t": "Retroactive award → overpayment established",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "S10",
+        "title": "Changes in circumstances since filing",
+        "q": "Has anything changed — school, self-employment, leave, disability, temp work?",
+        "inputs": [
+          "Corporate office / ownership",
+          "Leave of absence",
+          "Self-employment activity",
+          "Part-time-only availability",
+          "School attendance",
+          "Temp-firm reassignment contact",
+          "Recovery from disability"
+        ],
+        "reqs": [
+          "CHG-06",
+          "CHG-07",
+          "CHG-09",
+          "CHG-08",
+          "CHG-01",
+          "CHG-02",
+          "CHG-03",
+          "CHG-04",
+          "CHG-05"
+        ],
+        "out": [
+          {
+            "t": "No status change → continue",
+            "kind": "good"
+          },
+          {
+            "t": "Status issue raised → adjudication",
+            "kind": "nd"
+          },
+          {
+            "t": "Invalid claim status (officer / leave / student) → weeks denied",
+            "kind": "bad"
+          }
+        ]
+      },
+      {
+        "id": "S11",
+        "title": "Truthful certification, overpayment & recovery",
+        "q": "Were your answers true, complete, and accurate?",
+        "inputs": [
+          "Accuracy of certification answers",
+          "Material facts disclosed",
+          "Cause of any overpayment",
+          "Waiver circumstances"
+        ],
+        "reqs": [
+          "INT-01",
+          "INT-02",
+          "INT-05",
+          "INT-06",
+          "INT-03",
+          "INT-04",
+          "INT-07"
+        ],
+        "out": [
+          {
+            "t": "Accurate certification → payment stands",
+            "kind": "good"
+          },
+          {
+            "t": "Overpayment → repay, offset, or waiver review",
+            "kind": "nd"
+          },
+          {
+            "t": "Fraud → 25% fine + 1-year disqualification + prosecution",
+            "kind": "bad"
+          }
+        ]
+      }
+    ],
+    "crosscut": {
+      "label": "Applies across every certified week",
+      "reqs": [
+        "CONF-01",
+        "QC-01",
+        "QC-02",
+        "WD-01"
+      ]
+    }
+  }
+}
