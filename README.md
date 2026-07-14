@@ -2,7 +2,7 @@
 
 Turns **policy documents** — statutes, regulations, official agency guidance — into a visual service
 blueprint: a government program's rules retold from the claimant's side, across who does what
-(claimant / system / caseworker).
+(claimant / system / caseworker). Requires Claude.
 
 Requirements come from **policy only**. This skill does not map legacy system rules or requirements from other sources.
 
