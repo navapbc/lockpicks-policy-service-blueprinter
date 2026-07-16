@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy Service Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     USWDS v3.13 tokens (subset) inlined so this file stays a single
+     portable HTML with no build step. Only the tokens used here are
+     included. Swap the #data JSON to retarget this engine to any policy.
+     ============================================================ */
+  :root{
+    --usa-blue-5:#eff6fb; --usa-blue-10:#d9e8f6; --usa-blue-20:#aacdec;
+    --usa-blue-60v:#005ea2; --usa-blue-70v:#1a4480;
+    --usa-blue-warm-70v:#1a4480; --usa-blue-warm-80v:#162e51; --usa-blue-cool-60v:#07648d;
+    --usa-violet-70v:#54278f; --usa-green-cool-60v:#216e1f;
+    --usa-orange-5:#f6efe9; --usa-orange-10:#f2e4d4; --usa-orange-50v:#c05600; --usa-orange-60:#775540;
+    --usa-gold-20v:#ffbe2e; --usa-gold-50v:#936f38; --usa-red-60v:#b50909;
+    --gray-cool-1:#fbfcfd; --gray-cool-2:#f7f9fa; --gray-cool-3:#f5f6f7; --gray-cool-5:#edeff0;
+    --gray-cool-10:#dfe1e2; --gray-cool-20:#c6cace; --gray-cool-30:#a9aeb1;
+    --gray-cool-50:#71767a; --gray-cool-60:#565c65; --gray-cool-70:#3d4551; --gray-cool-80:#2d2e2f;
+    --gray-5:#f0f0f0; --gray-90:#1b1b1b;
+    --bg:#ffffff; --panel:#ffffff; --ink:var(--gray-90);
+    --muted:var(--gray-cool-60); --subtle:var(--gray-cool-50);
+    --line:var(--gray-cool-10); --line-strong:var(--gray-cool-20);
+    --primary:var(--usa-blue-60v); --primary-dark:var(--usa-blue-warm-70v); --primary-darker:var(--usa-blue-warm-80v);
+    --link:var(--usa-blue-60v); --link-hover:var(--usa-blue-warm-70v);
+    --focus:var(--usa-gold-20v);
+    --flag-op:var(--usa-orange-50v); --flag-warn:var(--usa-gold-50v); --flag-auth:var(--usa-blue-60v);
+    --font-serif:"Source Serif 4","Source Serif Pro",Georgia,Cambria,"Times New Roman",serif;
+    --font-sans:"Inter","Public Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --radius-sm:2px; --radius-md:.25rem; --radius-lg:.5rem; --radius-pill:99rem;
+    --shadow-1:0 1px 4px 0 rgba(0,0,0,.08); --shadow-2:0 4px 8px 0 rgba(0,0,0,.1); --shadow-4:0 12px 24px 0 rgba(0,0,0,.14);
+    --ease:.15s ease-in-out;
+  }
+  *{box-sizing:border-box}
+  html{font-size:100%}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+    font-size:.9375rem;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  a{color:var(--link);text-decoration:underline;text-underline-offset:.15em}
+  a:hover{color:var(--link-hover)}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,.chip:focus-visible,tr:focus-visible,th:focus-visible{
+    outline:.25rem solid var(--focus);outline-offset:2px}
+  .ic{width:1em;height:1em;fill:var(--ink);flex:none;vertical-align:-.14em}
+  .ic path{fill:var(--ink)}
+  .chip .chip-mk .ic,.chip .chip-mk .ic path{fill:#fff}
+  /* header */
+  header{background:var(--panel);border-top:4px solid var(--primary);border-bottom:1px solid var(--line);
+    padding:.85rem 1.5rem;position:sticky;top:0;z-index:30}
+  .htop{display:flex;align-items:center;gap:1rem 1.25rem;flex-wrap:wrap}
+  h1{font-family:var(--font-serif);font-size:1.125rem;line-height:1.25;margin:0;font-weight:700;letter-spacing:-.005em;color:var(--ink)}
+  .sub{color:var(--muted);font-size:.8125rem;margin-top:.25rem;line-height:1.45}
+  .spacer{flex:1}
+  select,button,input[type=text]{font:inherit;font-size:.875rem;border:1px solid var(--line-strong);border-radius:var(--radius-md);
+    padding:.4rem .7rem;background:#fff;color:var(--ink)}
+  button{cursor:pointer;font-weight:600}
+  button:hover{border-color:var(--muted)}
+  #sourcesBtn{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;color:var(--primary);border:1px solid var(--primary);background:#fff}
+  #sourcesBtn:hover{background:var(--usa-blue-5);border-color:var(--primary-dark);color:var(--primary-dark)}
+  #sourcesBtn .ic{font-size:1rem}
+  /* tabs */
+  .tabs{display:flex;gap:.25rem;margin-left:auto;align-self:stretch;align-items:flex-end;margin-bottom:-.85rem}
+  .tab{padding:.35rem .8rem 1.05rem;border:none;border-bottom:3px solid transparent;background:transparent;white-space:nowrap;
+    color:var(--muted);font-weight:600;font-size:.9375rem;cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+  .tab:hover{color:var(--ink);border-bottom-color:var(--line-strong)}
+  .tab.active{color:var(--primary-dark);border-bottom-color:var(--primary)}
+  main{padding:1.5rem;max-width:1600px;margin:0 auto}
+  #bpIntro{max-width:70ch;font-size:.9375rem;color:var(--muted);line-height:1.55;margin:0 0 .25rem}
+  /* filters */
+  .tfilters{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;font-size:.875rem}
+  .tfilters .tflabel{font-weight:700;color:var(--muted);text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+  .tfilters label{display:flex;align-items:center;gap:.4rem;cursor:pointer}
+  .tfilters label .ic{font-size:1.05rem}
+  .tfilters input[type=checkbox]{width:1rem;height:1rem;accent-color:var(--primary);margin:0}
+  /* requirements table */
+  .rtwrap{background:transparent;overflow-x:auto}
+  .rtable{width:100%;border-collapse:collapse;font-size:.875rem}
+  .rtable th{text-align:left;font-size:.875rem;font-weight:700;color:var(--ink);background:transparent;
+    border-bottom:2px solid var(--ink);padding:.7rem .9rem;white-space:nowrap}
+  .rtable th.sortable{cursor:pointer;user-select:none}
+  .rtable th.sortable:hover{background:var(--gray-cool-3)}
+  .rtable .sortind{display:inline-flex;vertical-align:middle;margin-left:.15rem;opacity:.9}
+  .rtable .sortind .ic{font-size:1rem}
+  .rtable td{padding:.7rem .9rem;border-top:1px solid var(--line);vertical-align:top}
+  .rtable tbody tr{cursor:pointer}
+  .rtable tbody tr:hover{background:var(--usa-blue-5)}
+  .rtable .tname{font-weight:600;max-width:380px;color:var(--ink)}
+  .rtable .tflags{white-space:nowrap}
+  .rtable .tflags .flag{display:inline-flex;font-size:1.05rem;margin-right:.35rem}
+  .rtable td.empty{text-align:center;color:var(--muted);padding:2rem;cursor:default}
+  .authlink{color:var(--link);font-weight:600;text-decoration:underline;text-underline-offset:.15em;cursor:pointer}
+  .authlink:hover{color:var(--link-hover)}
+  .authlink .ext{font-size:.9em;margin-left:.1rem;text-decoration:none;vertical-align:-.1em}
+  /* legend */
+  .legend{display:flex;gap:.75rem 1.25rem;flex-wrap:wrap;background:var(--gray-cool-3);border:1px solid var(--line);
+    border-radius:var(--radius-lg);padding:.7rem 1rem;margin-bottom:2rem;font-size:.8125rem;align-items:center;color:var(--muted)}
+  .legend .lg{display:flex;align-items:center;gap:.35rem}
+  .legend .lg .flag{display:inline-flex;font-size:1.05rem}
+  .typepill{display:inline-block;font-size:.6875rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-sm);
+    color:#fff;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em;line-height:1.3}
+  /* drawer detail */
+  .rdetail{display:flex;flex-direction:column;gap:.65rem}
+  .badges{display:flex;gap:.4rem;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.6875rem;font-weight:700;padding:.15rem .5rem;
+    border-radius:var(--radius-sm);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+  .badge .ic{font-size:.95rem}
+  .b-op{background:var(--usa-orange-50v);color:#fff;border:none}
+  .b-op .ic,.b-op .ic path{fill:#fff}
+  .stmt{margin:0;font-size:1rem;line-height:1.55;color:var(--ink)}
+  .rdsub{display:flex;align-items:center;gap:.4rem;font-family:var(--font-serif);font-size:1rem;font-weight:700;color:var(--ink);
+    border-top:1px solid var(--line);padding-top:.65rem;margin-top:.15rem}
+  .rdsub .rdi{font-size:1.05rem;color:var(--primary)}
+  .rdmeta{display:flex;align-items:center;gap:.35rem;font-size:.8125rem;color:var(--usa-blue-cool-60v);font-weight:600;margin-top:-.2rem}
+  .rdmeta .rdi{font-size:1rem}
+  .rdline{font-size:.8125rem;color:var(--ink);line-height:1.5}
+  .rdnote{font-size:.8125rem;color:var(--muted);line-height:1.55}
+  blockquote{margin:0;padding:.6rem .85rem;background:var(--gray-cool-2);border-left:4px solid var(--line-strong);
+    font-size:.8125rem;color:var(--gray-cool-70);font-style:italic;line-height:1.55;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+  /* blueprint */
+  .bpwrap{overflow-x:auto}
+  #bp{display:flex;flex-direction:column;gap:0;margin-bottom:3rem}
+  .bptable{padding:0;background:transparent;border:none;box-shadow:none}
+  .bptable + .bptable{margin-top:3.5rem;padding-top:3.5rem;border-top:1px solid var(--line)}
+  .bptitle{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;font-family:var(--font-serif);font-size:1.5rem;font-weight:700;text-transform:capitalize;
+    padding:0;margin:.1rem 0 1.1rem;line-height:1.2}
+  .bptitle .altpath{font-family:var(--font-sans);font-size:.625rem;font-weight:600;color:var(--muted);text-transform:uppercase;white-space:nowrap;
+    letter-spacing:.05em;background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius-pill);padding:.1rem .5rem;align-self:center}
+  .bpgrid{display:grid;gap:.5rem;align-items:stretch;width:100%}
+  .colhead{padding:.5rem .1rem;border-radius:0;background:transparent;color:var(--ink);border-bottom:2px solid var(--ink);font-size:.875rem;font-weight:700;line-height:1.3}
+  .colhead .step{font-size:.75rem;opacity:.85;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.1rem;font-weight:400}
+  .lanelbl{display:flex;flex-direction:column;justify-content:center;font-size:.75rem;font-weight:400;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--ink);background:transparent;border-radius:0;border-right:2px solid var(--ink);padding:.5rem .7rem .5rem .1rem;text-align:right;line-height:1.25}
+  .lane-claim,.lane-input,.lane-actor,.lane-out{background:transparent}
+  .cell{background:var(--gray-cool-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:.55rem;font-size:.875rem;line-height:1.45}
+  .cell.q{background:var(--gray-cool-2);border-color:var(--line);color:var(--ink)}
+  .cell.inputs{background:var(--gray-cool-2);border-color:var(--line);display:flex;flex-wrap:wrap;gap:.3rem;align-items:flex-start}
+  .cell.inputs.empty{background:transparent;border:1px dashed var(--line-strong)}
+  .qi{background:#fff;border:1px solid var(--line-strong);color:var(--gray-cool-70);border-radius:var(--radius-pill);
+    font-size:.8125rem;font-weight:600;padding:.15rem .5rem;height:fit-content}
+  .cell.actor{display:flex;flex-direction:column;gap:.35rem;background:var(--gray-cool-2);border-color:var(--line);padding:.5rem}
+  .cell.actor.empty{background:transparent;border:1px dashed var(--line)}
+  .cell.out{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;background:var(--gray-cool-2);border-color:var(--line);padding:.5rem}
+  .chip{display:inline-flex;align-items:center;gap:.4rem;border:none;border-radius:var(--radius-md);color:#fff;
+    font-family:var(--font-sans);font-size:.875rem;font-weight:600;padding:.4rem .55rem;cursor:pointer;text-align:left;width:100%;line-height:1.3}
+  .chip:hover{filter:brightness(1.08)}
+  .chip .chip-t{flex:1}
+  .chip .chip-mk{display:inline-flex;align-items:center;gap:.15rem;opacity:.9}
+  .chip .chip-mk .ic{width:.9em;height:.9em}
+  .opill{font-size:.8125rem;font-weight:700;border:1px solid transparent;border-radius:var(--radius-pill);padding:.4rem .75rem;display:inline-block;text-align:left;line-height:1.4}
+  .crosscut{margin-top:1rem;background:#d9e8f6;color:var(--ink);border-radius:var(--radius-md);padding:.8rem 1rem;
+    display:flex;gap:.6rem .7rem;flex-wrap:wrap;flex-direction:row;align-items:center}
+  .crosscut b{display:flex;align-items:center;gap:.4rem;font-family:var(--font-serif);font-size:1.05rem;font-weight:700;text-transform:none;letter-spacing:0;color:var(--ink)}
+  .crosscut b .cc{font-size:1.05rem}
+  .crosscut .cc-chips{display:flex;gap:.4rem;flex-wrap:wrap}
+  .crosscut .chip{width:auto}
+  /* drawer shell */
+  #scrim{position:fixed;inset:0;background:rgba(27,27,27,.35);opacity:0;pointer-events:none;transition:opacity var(--ease);z-index:40}
+  #scrim.open{opacity:1;pointer-events:auto}
+  #drawer{position:fixed;top:0;right:-560px;width:540px;max-width:92vw;height:100%;background:var(--bg);
+    box-shadow:var(--shadow-4);transition:right .25s ease-in-out;z-index:50;display:flex;flex-direction:column}
+  #drawer.open{right:0}
+  .dhead{background:var(--panel);border-bottom:1px solid var(--line);padding:1rem 1.15rem;display:flex;align-items:flex-start;gap:.6rem}
+  .dhead h2{font-family:var(--font-serif);margin:0;font-size:1.25rem;line-height:1.25;color:var(--ink)}
+  #dType{margin-top:.5rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .dbody{overflow:auto;padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.9rem}
+  .x{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;padding:.15rem;display:inline-flex;border-radius:var(--radius-sm)}
+  .x .ic{font-size:1.4rem}
+  .x:hover{color:var(--ink);background:var(--gray-cool-3)}
+  .empty{color:var(--muted);text-align:center;padding:2.5rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="htop">
+    <div>
+      <h1 id="hTitle">Policy Service Blueprint</h1>
+      <div class="sub" id="hSub"></div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-view="blueprint">Service blueprint</button>
+      <button class="tab" data-view="table">All requirements</button>
+    </div>
+    <button id="sourcesBtn" title="Policy sources used to build this tool">View sources</button>
+  </div>
+</header>
+
+<main>
+  <section id="view-blueprint">
+    <p class="sub" id="bpIntro" style="max-width:940px;font-size:13px;margin-top:0"></p>
+    <div class="legend" id="legend"></div>
+    <div class="bpwrap">
+      <div id="bp"></div>
+      <div class="crosscut" id="crosscut" style="display:none"></div>
+    </div>
+  </section>
+
+  <section id="view-table" style="display:none">
+    <div class="tfilters">
+      <span class="tflabel">Filter:</span>
+      <label><input type="checkbox" id="fOp"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-op)"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"></path></svg> Operational (agency practice, not strict policy)</label>
+      <label><input type="checkbox" id="fGap"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-warn)"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg> Potential issue (AI-suggested)</label>
+      <label><input type="checkbox" id="fAuth"> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--flag-auth)"><path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"></path></svg> Multiple policies</label>
+    </div>
+    <div class="rtwrap">
+      <table class="rtable">
+        <thead><tr><th>Name</th><th>Citation</th><th class="sortable" id="thType" title="Sort by type">Type <span class="sortind" id="typeSortInd"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path></svg></span></th><th>Flags</th></tr></thead>
+        <tbody id="rtbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="scrim"></div>
+<div id="drawer">
+  <div class="dhead">
+    <div><h2 id="dTitle">Requirement</h2><div id="dType"></div></div>
+    <button class="x" id="dClose" title="Close" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+  </div>
+  <div class="dbody" id="dBody"></div>
+</div>
+
+<script id="data" type="application/json">{"meta": {"title": "Colorado Universal Application — SNAP + MAGI Medicaid — Federal Requirements — Service Blueprint", "subtitle": "", "authorityLabel": "Multiple policies", "authorityBadge": "Multiple policies", "sources": [{"label": "SNAP Application Federal Requirements (Nava policy protocol, K. English, 2026)", "url": null, "note": "Authoritative source protocol — provided by user · SNAP Application Federal Requirements.md"}, {"label": "Medicaid Application — Key Federal Policy Requirements (Nava policy protocol, M. Ammula, Jun 4 2026)", "url": null, "note": "Authoritative source protocol — provided by user · Medicaid Application - Key Federal Policy Requirements .md"}, {"label": "7 CFR Part 273 — SNAP certification of eligible households", "url": "https://www.ecfr.gov/current/title-7/section-273.2", "note": "Federal regulation (USDA/FNS) — §§273.1, 273.2, 273.6, 273.10, 273.11, 273.15"}, {"label": "7 CFR Part 272 — SNAP State agency requirements (bilingual, duplicate participation)", "url": "https://www.ecfr.gov/current/title-7/section-272.4", "note": "Federal regulation — §272.4 (bilingual, duplicate participation), §272.6 (race/ethnicity data)"}, {"label": "7 U.S.C. §2020 & §2026 — Food and Nutrition Act (administration, filing, waivers)", "url": "https://www.law.cornell.edu/uscode/text/7/2020", "note": "Federal statute — §2020(e) filing & bilingual; §2026(b) demonstration/ESAP waivers"}, {"label": "FNS SNAP guidance — Online Application Policy Clarification, Q&As, Tri-Agency, Telephonic", "url": "https://www.fns.usda.gov/snap/online-application-policy-clarification", "note": "Federal guidance (FNS) — Right to File, email/identity, non-applicant opt-out, copies"}, {"label": "42 CFR Part 435, Subpart J — Medicaid eligibility application & intake", "url": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-435/subpart-J", "note": "Federal regulation (CMS) — §§435.905, 435.906, 435.907, 435.908, 435.910, 435.923, 435.603, 435.406"}, {"label": "Social Security Act §1902 / §1137 · ACA §1413 / §4302 · Title VI · Section 504 / ADA", "url": "https://www.ssa.gov/OP_Home/ssact/title19/1902.htm", "note": "Federal statutes underpinning Medicaid intake, SSN, single streamlined app, civil rights"}, {"label": "H.R.1 (P.L. 119-21, 2025) — Medicaid community engagement & SNAP ABAWD changes", "url": "https://www.congress.gov/bill/119th-congress/house-bill/1", "note": "Federal statute — §71119 added SSA §1902(xx); also raised SNAP ABAWD age ceiling to 64 (upcoming)"}, {"label": "FNS — Elderly Simplified Application Project (ESAP) & ABAWD Implementation", "url": "https://www.fns.usda.gov/snap/elderly-simplified-application-project", "note": "Federal guidance — ESAP demonstration waiver; ABAWD age-64 implementation memo"}]}, "tiers": [{"key": "shared", "label": "Both programs (shared requirement)", "rank": 1, "color": "#1a4480"}, {"key": "medicaid", "label": "Medicaid (Title XIX / 42 CFR)", "rank": 2, "color": "#54278f"}, {"key": "snap", "label": "SNAP (Food & Nutrition Act / 7 CFR)", "rank": 3, "color": "#0c4e29"}], "requirements": [{"id": "OPP-01", "topic": "Medicaid — Opportunity to apply", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.906", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.906", "statement": "Medicaid: the agency must let anyone who wishes to apply do so without delay.", "quote": "The agency must afford an individual wishing to do so the opportunity to apply for Medicaid without delay.", "authority": {"higher": "Sec. 1902(a)(8), Social Security Act", "higherUrl": "https://www.ssa.gov/OP_Home/ssact/title19/1902.htm", "lower": "42 CFR §435.906", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.906", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "The regulation implements the statutory 'opportunity to apply' guarantee."}, "forms": null, "gap": null}, {"id": "RTF-01", "topic": "SNAP — Right to File (minimum to submit)", "tier": "snap", "actor": "system", "nature": "policy", "citation": "7 CFR §273.2(c)(1)(iii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: a household may file with only name, address, and signature, through any channel, and must be able to submit at any point. On a combined SNAP/Medicaid application this is the controlling minimum-to-file — the universal form cannot require more than name, address, and signature to submit.", "quote": "Regardless of the type of application system used, the State agency must provide a means for all applicants applying through any mechanism to immediately begin the application process by filing an application with only the name, address and signature.", "authority": {"higher": "7 U.S.C. §2020(e)(2)(B)(iv)", "higherUrl": "https://www.law.cornell.edu/uscode/text/7/2020", "lower": "7 CFR §273.2(c)(1)(iii)", "lowerUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "The statute fixes the filing date on a name/address/signature submission; the regulation requires the same-day filing mechanism in every channel."}, "forms": null, "gap": "SNAP's Right to File is stricter than Medicaid's intake floor, so it governs the combined application's minimum-to-submit."}, {"id": "EMAIL-01", "topic": "SNAP — No mandatory email", "tier": "snap", "actor": "system", "nature": "operational", "citation": "FNS SNAP Online Application Q&As (Q1); Best Practices", "citationUrl": "https://www.fns.usda.gov/snap/qas-online-applications", "statement": "SNAP: an online application (and any required account) cannot require an email address; a mandatory email imposes an extra condition of eligibility. Only a username and password may be required.", "quote": "No, States cannot require a client to provide an e-mail address when applying online.", "authority": null, "forms": null, "gap": "FNS sub-regulatory guidance interpreting the Right-to-File statute/regulation — treat as agency practice."}, {"id": "IDVER-01", "topic": "SNAP — Identity verification optional", "tier": "snap", "actor": "system", "nature": "operational", "citation": "FNS SNAP Online Application Policy Clarification", "citationUrl": "https://www.fns.usda.gov/snap/online-application-policy-clarification", "statement": "SNAP: digital identity verification may be offered but must be optional; the applicant must be able to file before verifying identity and must be offered a non-digital alternative (documents or collateral contact).", "quote": "Applicants must be permitted to file an application prior to verifying their identity and must be given the option to verify their identity through traditional means such as documentary evidence or collateral contact.", "authority": null, "forms": null, "gap": "FNS guidance; requiring identity verification before submission would violate Right to File."}, {"id": "FDATE-01", "topic": "SNAP — Filing date & timestamp", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(c)(1)(iv)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: the filing date is the date the application is received and must be documented on the application. Online = the submission date; telephonic = the date of verbal assent; after-hours submissions roll to the next business day. The filing date drives benefit start, expedited timelines, and the 30-day clock.", "quote": "The date of application is the date the application is received by the State agency. State agencies must document the application date on the application. If the application is received outside normal business hours the State agency will consider the date of application the next business day. For online applications, the date of application is the date the application is submitted, or the next business day if it is submitted after business hours. For telephonic applications, the date of application is the date on which the household member provides verbal assent.", "authority": null, "forms": null, "gap": null}, {"id": "SNAPCLOCK-01", "topic": "SNAP — Own processing clock", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(c)(3)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "On a joint application, the SNAP portion is processed on SNAP's own procedural, timeliness, notice, and fair-hearing rules. SNAP cannot be denied solely because Medicaid was denied — a separate SNAP determination is required — and SNAP timeliness runs from the date the joint application was first accepted.", "quote": "No household shall have its SNAP benefits denied solely on the basis that its application to participate in another program has been denied or its benefits under another program have been terminated without a separate determination by the State agency that the household failed to satisfy a SNAP eligibility requirement.", "authority": null, "forms": null, "gap": "Core combined-application rule: shared intake, but independent SNAP adjudication and timeline."}, {"id": "MOD-MED", "topic": "Medicaid — Submission modalities", "tier": "medicaid", "actor": "system", "nature": "policy", "citation": "42 CFR §435.907(a)(1)–(5)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "statement": "Medicaid: the agency must accept applications through all five channels — online, phone, mail, in person, and other commonly available electronic means — with no preferred channel ('no wrong door').", "quote": "Via the internet Web site described in § 435.1200(f) of this part; By telephone; Via mail; In person; and Through other commonly available electronic means", "authority": {"higher": "Sec. 1413(b)(1), Affordable Care Act", "higherUrl": "https://www.congress.gov/111/plaws/publ148/PLAW-111publ148.pdf", "lower": "42 CFR §435.907(a)", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "ACA sets multi-channel filing; the regulation enumerates the channels."}, "forms": null, "gap": null}, {"id": "MODE-SNAP", "topic": "SNAP — Same rules across all modes", "tier": "snap", "actor": "system", "nature": "operational", "citation": "FNS SNAP Online Application Policy Clarification", "citationUrl": "https://www.fns.usda.gov/snap/online-application-policy-clarification", "statement": "SNAP: the Right-to-File and minimum-field rules apply identically to paper, online, mobile, phone, and multiprogram applications. A state cannot require more on the online form on the theory that minimalist applicants could use paper.", "quote": "These requirements apply to all types of SNAP applications, including multiprogram applications, paper applications, or mobile applications and apply regardless of other means of applying (such as the availability of paper applications).", "authority": null, "forms": null, "gap": null}, {"id": "ASSIST-01", "topic": "Medicaid — Application assistance", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.908(a)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.908", "statement": "Medicaid: the agency must provide free help completing/submitting the application in person, by phone, and online, accessible to people with disabilities and LEP.", "quote": "The agency must provide assistance to any individual seeking help with the application or renewal process in person, over the telephone, and online, and in a manner that is accessible to individuals with disabilities and those who are limited English proficient, consistent with § 435.905(b) of this subpart.", "authority": null, "forms": null, "gap": null}, {"id": "CAC-01", "topic": "Medicaid — Certified Application Counselors", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.908(c)(1)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.908", "statement": "Medicaid: at state option, the agency may certify staff/volunteers of designated organizations as Certified Application Counselors — a helper role distinct from a legal authorized representative.", "quote": "At State option, the agency may certify staff and volunteers of State-designated organizations to act as application assisters, authorized to provide assistance to applicants and beneficiaries with the application process and during renewal of eligibility.", "authority": null, "forms": null, "gap": "State option, not a federal mandate."}, {"id": "AR-MED", "topic": "Medicaid — Authorized rep (act on all matters)", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.923(a)(1), (b)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.923", "statement": "Medicaid: the agency must let applicants designate an authorized representative (with the applicant's signature) who may sign the application and act for the applicant in all matters. Designation has no fixed expiration.", "quote": "the agency must permit applicants and beneficiaries to designate an individual or organization to act responsibly on their behalf in assisting with the individual's application and renewal of eligibility and other ongoing communications with the agency.", "authority": null, "forms": null, "gap": null}, {"id": "AR-SNAP", "topic": "SNAP — Authorized rep (sign & file)", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(c)(1)(iii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: an application may be signed and filed by a responsible household member or the household's authorized representative — the AR can set the filing date on the household's behalf.", "quote": "may file an incomplete application form as long as the form contains the applicant's name and address, and is signed by a responsible member of the household or the household's authorized representative.", "authority": null, "forms": null, "gap": null}, {"id": "SIG-MED", "topic": "Medicaid — Signature under penalty of perjury", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §435.907(f)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "statement": "Medicaid: the application must be signed under penalty of perjury; electronic, telephonic, and faxed/electronic handwritten signatures must all be accepted, with no notarization.", "quote": "The agency must require that all initial applications are signed under penalty of perjury. Electronic, including telephonically recorded, signatures and handwritten signatures transmitted via any other electronic transmission must be accepted.", "authority": {"higher": "Sec. 1413(b), Affordable Care Act", "higherUrl": "https://www.congress.gov/111/plaws/publ148/PLAW-111publ148.pdf", "lower": "42 CFR §435.907(f)", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "ACA requires the signed single streamlined application; the regulation sets penalty of perjury and accepted signature modalities."}, "forms": null, "gap": null}, {"id": "SIG-SNAP", "topic": "SNAP — Perjury attestation (incl. citizenship)", "tier": "snap", "actor": "applicant", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(iii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: one adult household member must sign, under penalty of perjury, certifying the truth of the information including citizenship and alien status of members applying. States may require two signatures (one to set the filing date, one to attest) or move the signature block to the last page by approved waiver.", "quote": "A statement to be signed by one adult household member which certifies, under penalty of perjury, the truth of the information contained in the application, including the information concerning citizenship and alien status of the members applying for benefits;", "authority": null, "forms": null, "gap": "Two-signature and last-page-signature-block designs are permitted (FNS Q&A; waiver)."}, {"id": "HH-MED", "topic": "Medicaid — Household & income (MAGI / tax)", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §435.603(f)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.603", "statement": "Medicaid: household composition is tax-based (filing status, dependents, relationships, marital status) to determine MAGI eligibility. Note the divergence from SNAP, whose household is based on who purchases and prepares food together.", "quote": "General rule. Except as provided in paragraphs (d)(2) through (d)(4) of this section, household income is the sum of the MAGI-based income, as defined in paragraph (e) of this section, of every individual included in the individual's household.", "authority": null, "forms": null, "gap": "MAGI household (tax unit) and SNAP household (food unit) are defined differently; a universal app must capture both framings."}, {"id": "OPTOUT-01", "topic": "SNAP — Who is applying (opt-out)", "tier": "snap", "actor": "system", "nature": "operational", "citation": "FNS Tri-Agency Guidance (online applications)", "citationUrl": "https://www.fns.usda.gov/snap/admin/conforming-tri-agency-guidance-through-online-applications", "statement": "SNAP (and aligned with Medicaid targeting): let the household identify, per person, who is and is not seeking benefits, and explain this opt-out before any citizenship/immigration or SSN question. Drive all downstream status/SSN questions off that flag.", "quote": "The most straightforward method for implementing the Tri-agency Guidance is to allow the applicant to identify which household members are seeking SNAP benefits and which members are not (known as 'opting-out').", "authority": null, "forms": null, "gap": "Sequencing matters: the opt-out policy must appear before, not after, the relevant questions."}, {"id": "MULTIPROG-01", "topic": "SNAP — Answer only relevant program questions", "tier": "snap", "actor": "system", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(ix)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "A multi-program application (e.g., combined SNAP/Medicaid) must clearly let applicants answer only the questions relevant to the program(s) they are applying for. This is the governing rule that makes Colorado's universal application permissible.", "quote": "For multi-program applications, contain language which clearly affords applicants the option of answering only those questions relevant to the program or programs for which they are applying.", "authority": null, "forms": null, "gap": null}, {"id": "INC-MED", "topic": "Medicaid — Income (MAGI, no asset test)", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §435.603(e)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.603", "statement": "Medicaid: MAGI-based income (sources, amounts, deductions) is collected; MAGI Medicaid has no asset/resource test. SNAP, by contrast, collects resources for many households — a key divergence on a shared income/assets step.", "quote": "General rule. Except as provided in paragraphs (d)(2) through (d)(4) of this section, household income is the sum of the MAGI-based income, as defined in paragraph (e) of this section, of every individual included in the individual's household.", "authority": null, "forms": null, "gap": "MAGI Medicaid: no asset test. SNAP: income plus resources (with categorical exceptions). The universal app must collect resources for the SNAP path only."}, {"id": "NONAPP-FIN", "topic": "SNAP — Non-applicant income counts", "tier": "snap", "actor": "applicant", "nature": "policy", "citation": "7 CFR §273.11(c)(3)(iii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.11", "statement": "SNAP: household members who are not applying (e.g., because they decline to give immigration status or SSN) are still counted for the applicants' benefit level — so the application must still collect their income and resources.", "quote": "the State agency must count all or, at the discretion of the State agency, all but a pro rata share of the ineligible alien's income and deductible expenses and all of the ineligible alien's resources", "authority": null, "forms": null, "gap": null}, {"id": "SSN-MED", "topic": "Medicaid — SSN (condition of eligibility)", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §435.910", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.910", "statement": "Medicaid: each applicant must furnish their SSN as a condition of eligibility, with limited exceptions. Not required for non-applicant household members.", "quote": "Except as provided in paragraph (h) of this section, the agency must require, as a condition of eligibility, that each individual (including children) seeking Medicaid furnish each of his or her Social Security numbers (SSN).", "authority": {"higher": "Sec. 1137, Social Security Act", "higherUrl": "https://www.ssa.gov/OP_Home/ssact/title11/1137.htm", "lower": "42 CFR §435.910", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.910", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "Statute makes SSN a condition of eligibility; the regulation implements it with exceptions."}, "forms": null, "gap": "Framing conflict with SNAP: Medicaid calls SSN a 'condition of eligibility'; SNAP requires it be presented as voluntary (see SSN-SNAP / SSN-PRIVACY). A shared field must reconcile both."}, {"id": "SSN-SNAP", "topic": "SNAP — SSN (voluntary; disqualifies individual)", "tier": "snap", "actor": "applicant", "nature": "policy", "citation": "7 CFR §273.6", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.6", "statement": "SNAP: each household member must provide an SSN or apply for one before certification; refusal or failure without good cause disqualifies that individual only (not the household), and that person's income and resources still count.", "quote": "The State agency shall require that a household participating or applying for participation in SNAP provide the State agency with the social security number (SSN) of each household member or apply for one before certification.", "authority": null, "forms": null, "gap": "Per the Privacy Act statement the field must be presented as voluntary; do not hard-require it in form validation."}, {"id": "SSN-PRIVACY", "topic": "SNAP — Privacy Act statement", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(4)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: because the application collects SSNs, it must carry a Privacy Act statement covering authority for collection and use, disclosure to agencies/law enforcement, referral of SSNs to claims collection, and that SSN is voluntary but failure to provide it denies benefits to that individual.", "quote": "Providing the requested information, including the SSN of each household member, is voluntary. However, failure to provide an SSN will result in the denial of SNAP benefits to each individual failing to provide an SSN.", "authority": null, "forms": null, "gap": "This 'voluntary' framing is the reason a shared SSN field cannot be marked strictly 'required' even though Medicaid treats SSN as a condition of eligibility."}, {"id": "CIT-MED", "topic": "Medicaid — Citizenship (applicants only)", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §435.406; §435.907(e)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.406", "statement": "Medicaid: applicants must have and verify U.S. citizenship/nationality or satisfactory immigration status; questions must be targeted only to people seeking coverage and must not display for non-applicants.", "quote": "The agency must provide Medicaid to otherwise eligible individuals who are— (1) Citizens and nationals of the United States", "authority": {"higher": "Sec. 1902(a)(46)(B), Social Security Act", "higherUrl": "https://www.ssa.gov/OP_Home/ssact/title19/1902.htm", "lower": "42 CFR §435.406", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.406", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "Statute requires citizenship/immigration verification through a §1137-compliant system."}, "forms": null, "gap": "Aligns closely with SNAP: both require status for applicants only and protect non-applicants (see CIT-SNAP, TITLEVI)."}, {"id": "CIT-SNAP", "topic": "SNAP — Immigration (applicants; opt-out)", "tier": "snap", "actor": "applicant", "nature": "policy", "citation": "7 CFR §273.2(f)(1)(ii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: immigration status is verified for applicants only; a household may apply for a subset of members. If an applicant does not want USCIS contacted, the household may withdraw or participate without that member.", "quote": "If an alien does not wish the State agency to contact USCIS to verify his or her immigration status, the State agency must give the household the option of withdrawing its application or participating without that member.", "authority": null, "forms": null, "gap": "Non-applicants must not be required to give citizenship/immigration status or SSN (Tri-Agency)."}, {"id": "TITLEVI", "topic": "Both — Non-applicant protection (Title VI)", "tier": "shared", "actor": "system", "nature": "policy", "citation": "Title VI, Civil Rights Act of 1964 (Tri-Agency guidance)", "citationUrl": "https://www.justice.gov/crt/fcs/TitleVI", "statement": "Both programs: even asking non-applicants about citizenship/immigration status — without clearly stating it is not required — raises Title VI national-origin concerns if it deters eligible applicants (e.g., citizen children of non-citizen parents). The combined form must make optionality explicit.", "quote": "Even asking non-applicants to disclose information about their citizenship or immigration status, without stating clearly that this information is not required, raises Title VI concerns", "authority": null, "forms": null, "gap": "Shared civil-rights constraint that shapes the opt-out design for both SNAP and Medicaid."}, {"id": "FP-PLACE", "topic": "SNAP — Front page: name/address/signature", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(iv)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: the application must provide a place on the front page for the applicant's name, address, and signature (for online, on one of the initial screens; a signature-block waiver can move it to the last page).", "quote": "A place on the front page of the application where the applicant can write his/her name, address, and signature.", "authority": null, "forms": null, "gap": null}, {"id": "FP-RTF", "topic": "SNAP — Front page: right-to-file notice", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(v)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: in plain and prominent language on or near the front page, notify the household of its right to immediately file with name, address, and a responsible member's or AR's signature.", "quote": "In plain and prominent language on or near the front page of the application, notification of the household's right to immediately file the application as long as it contains the applicant's name and address and the signature of a responsible household member or the household's authorized representative.", "authority": null, "forms": null, "gap": null}, {"id": "FP-EXP", "topic": "SNAP — Front page: expedited service", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(vi)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: on or near the front page, describe the expedited service provisions (fast-tracked benefits for the lowest-income households).", "quote": "In plain and prominent language on or near the front page of the application, a description of the expedited service provisions described in paragraph (i) of this section;", "authority": null, "forms": null, "gap": "Expedited screening is a SNAP concept with no Medicaid equivalent — a program-specific step within the shared flow."}, {"id": "FP-BEN", "topic": "SNAP — Front page: benefits from filing date", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(vii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: on or near the front page, notify the applicant that benefits are provided from the date of application.", "quote": "In plain and prominent language on or near the front page of the application, notification that benefits are provided from the date of application; and", "authority": null, "forms": null, "gap": null}, {"id": "DISC-VER", "topic": "SNAP — Verification statement (bold)", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(i)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: in prominent boldface, state that information will be verified by Federal, State, and local officials, that incorrect information may deny benefits, and that knowingly giving false information may lead to criminal prosecution.", "quote": "In prominent and boldface lettering and understandable terms a statement that the information provided by the applicant in connection with the application for SNAP benefits will be subject to verification by Federal, State and local officials to determine if such information is factual", "authority": null, "forms": null, "gap": "The boldface standard applies specifically to the verification statement and the civil/criminal penalties description."}, {"id": "DISC-PEN", "topic": "SNAP — Civil & criminal penalties (bold)", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(ii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: in prominent boldface, describe the civil and criminal provisions and penalties for violations of the Food and Nutrition Act of 2008.", "quote": "In prominent and boldface lettering and understandable terms a description of the civil and criminal provisions and penalties for violations of the Food and Nutrition Act of 2008;", "authority": null, "forms": null, "gap": null}, {"id": "DISC-ND", "topic": "SNAP — USDA nondiscrimination (joint forms too)", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(1)(viii)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: the USDA nondiscrimination statement must appear on the application itself — explicitly required even when the state uses a joint (combined) application form, as Colorado does.", "quote": "The following nondiscrimination statement on the application itself even if the State agency uses a joint application form:", "authority": null, "forms": null, "gap": "Directly relevant to a combined SNAP/Medicaid form: the USDA statement cannot be dropped just because the form is shared."}, {"id": "DISC-IEVS", "topic": "SNAP — IEVS & USCIS notice", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(b)(2)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: notify applicants that IEVS data will be requested/used and may be verified through collateral contact, and — on the application form itself — that applicant members' alien status may be verified through USCIS. Both may affect eligibility and benefit level.", "quote": "The State agency must also notify all applicants on the application form that the alien status of applicant household members may be subject to verification by USCIS", "authority": null, "forms": null, "gap": "The IEVS notice may accompany the application, but the USCIS alien-status notice must be on the form itself."}, {"id": "RGT-HEAR", "topic": "SNAP — Hearing rights (in writing)", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.15(f)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.15", "statement": "SNAP: at application, inform the household in writing of its right to a hearing, how to request one, and the right to be represented; if free legal representation is available, say so.", "quote": "At the time of application, each household shall be informed in writing of its right to a hearing, of the method by which a hearing may be requested, and that its case may be presented by a household member or a representative, such as a legal counsel, a relative, a friend or other spokesperson.", "authority": null, "forms": null, "gap": null}, {"id": "ATT-FELONY", "topic": "SNAP — Felony conviction attestation", "tier": "snap", "actor": "applicant", "nature": "policy", "citation": "7 CFR §273.2(o)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: the applicant must attest whether they or any household member has a disqualifying adult conviction and whether that member is complying with the sentence. Attestation may be written, verbal, or both, and cannot require an in-person office visit solely for this.", "quote": "Each State agency shall require the individual applying for SNAP benefits to attest to whether the individual or any other member of the household has been convicted of a crime as an adult as described in § 273.11(s) and whether the convicted member is complying with the terms of the sentence.", "authority": null, "forms": null, "gap": null}, {"id": "RACE-MED", "topic": "Medicaid — Race & ethnicity (optional)", "tier": "medicaid", "actor": "system", "nature": "policy", "citation": "42 CFR §435.907(e); Section 4302, ACA", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "statement": "Medicaid: race and ethnicity are collected as two separate questions to HHS data standards, but the response must be optional and cannot affect a determination.", "quote": "The agency may only require an applicant to provide the information necessary to make an eligibility determination or for a purpose directly connected to the administration of the State plan.", "authority": null, "forms": null, "gap": "OMB expanded race/ethnicity categories in 2024, awaiting HHS/CMS adoption; ACA 2011 standards still govern form design."}, {"id": "RACE-SNAP", "topic": "SNAP — Race & ethnicity (voluntary)", "tier": "snap", "actor": "system", "nature": "policy", "citation": "7 CFR §272.6(g)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-272.6", "statement": "SNAP: collect racial/ethnic data, clearly marked voluntary and not affecting eligibility or benefits. If the applicant declines, use alternative collection methods — visual observation is prohibited.", "quote": "The application form must clearly indicate that the information is voluntary, that it will not affect the eligibility or the level of benefits, and that the reason for the information is to assure that program benefits are distributed without regard to race, color, or national origin.", "authority": null, "forms": null, "gap": "SNAP additionally bars visual observation and requires an alternative collection method if the applicant declines."}, {"id": "OTHERCOV-MED", "topic": "Medicaid — Other health coverage", "tier": "medicaid", "actor": "applicant", "nature": "policy", "citation": "42 CFR §433.138", "citationUrl": "https://www.ecfr.gov/current/title-42/section-433.138", "statement": "Medicaid: the application collects other health-insurance coverage for third-party liability / coordination of benefits. Having other coverage does not disqualify a Medicaid applicant. (No SNAP analog.)", "quote": "If the Medicaid agency determines eligibility for Medicaid, it must, during the initial application and each redetermination process, obtain from the applicant or beneficiary such health insurance information as would be useful in identifying legally liable third party", "authority": null, "forms": null, "gap": null}, {"id": "POP-MED", "topic": "Medicaid — Population-specific fields", "tier": "medicaid", "actor": "system", "nature": "policy", "citation": "42 CFR §435.907(e)(1)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "statement": "Medicaid: population-triggered fields (pregnancy status/due date, American Indian/Alaska Native status, former-foster-care status) are collected only when the applicant indicates the category applies. AI/AN must be a separate question from race/ethnicity.", "quote": "The agency may only require an applicant to provide the information necessary to make an eligibility determination or for a purpose directly connected to the administration of the State plan.", "authority": null, "forms": null, "gap": "AI/AN separate-question display comes from the 2021 CMS MAC Learning Collaborative (sub-regulatory guidance)."}, {"id": "HR1-MED", "topic": "Medicaid — Community engagement (HR1)", "tier": "medicaid", "actor": "applicant", "nature": "operational", "citation": "SSA §1902(xx) (H.R.1 §71119; P.L. 119-21, 2025)", "citationUrl": "https://www.congress.gov/bill/119th-congress/house-bill/1", "statement": "Medicaid (upcoming): for adults 19–64 in the ACA expansion group, the application must capture community-engagement compliance (80 hrs/month of work, work program, education, or community service, or income ≥ minimum wage × 80 hrs) or an exemption, as a condition of eligibility.", "quote": "Requirement for States to Establish Medicaid Community Engagement Requirements for Certain Individuals", "authority": null, "forms": ["Community-engagement / exemption attestation (no standardized field yet)"], "gap": "Effective for states no later than Jan. 1, 2027 (extensions to Dec. 31, 2028). CMS Interim Final Rule CMS-2454-IFC (Jun. 2026); no standardized combined-app field yet. Intersects SNAP ABAWD for 19–64 adults (see HR1-SNAP). Confirm statutory text with an SME."}, {"id": "HR1-SNAP", "topic": "SNAP — ABAWD work requirement (HR1)", "tier": "snap", "actor": "applicant", "nature": "operational", "citation": "7 U.S.C. §2015(o), as amended by H.R.1 (P.L. 119-21, 2025); FNS ABAWD memo", "citationUrl": "https://www.fns.usda.gov/snap/abawd", "statement": "SNAP (upcoming): H.R.1 raised the able-bodied-adults-without-dependents (ABAWD) work-requirement age ceiling to 64, so the application must screen more adults for ABAWD status and exemptions. A person 19–64 may now face both this and the Medicaid community-engagement requirement.", "quote": "raised the ABAWD work-requirement age ceiling to 64", "authority": null, "forms": null, "gap": "Quote is the FNS/source-protocol summary of the H.R.1 amendment, not verbatim statute — confirm exact statutory text with an SME. The 60–64 band is simultaneously 'elderly' for SNAP deductions/ESAP and ABAWD-subject, an error-prone intersection (states may scope ESAP to 65+)."}, {"id": "COPY-01", "topic": "SNAP — Copy of completed application", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(c)(1)(v)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: when a household completes an application, the agency must offer a copy of the completed application (the client-provided information used for the determination), electronic at the household's option. Telephonic/gestured signatures require a prompt written copy with correction instructions.", "quote": "When a household member completes an application, the State agency must offer to provide a copy of the completed application.", "authority": null, "forms": null, "gap": null}, {"id": "WITHDRAW-01", "topic": "SNAP — Application withdrawal", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §273.2(c)(6)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-273.2", "statement": "SNAP: a household may voluntarily withdraw its application any time before eligibility is determined. The agency documents the reason (if given), confirms the withdrawal, and advises the right to reapply. After a determination, the case is denied rather than withdrawn.", "quote": "The household may voluntarily withdraw its application at any time prior to the determination of eligibility. The State agency shall document in the case file the reason for withdrawal, if any was stated by the household, and that contact was made with the household to confirm the withdrawal.", "authority": null, "forms": null, "gap": null}, {"id": "MULTI-01", "topic": "SNAP — Multiple / duplicate applications", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §272.4(e); §273.2", "citationUrl": "https://www.ecfr.gov/current/title-7/section-272.4", "statement": "SNAP: the agency must review each application a household submits and retain duplicates. Before a decision, append the new application to the earliest one to preserve the original filing date; after the household is eligible and active, deny the duplicate (but review it for changes).", "quote": "Each State agency shall establish a system to assure that no individual participates more than once in a month, in more than one jurisdiction, or in more than one household within the State in SNAP.", "authority": null, "forms": null, "gap": "Common with online systems; preserving the earliest filing date protects the applicant's benefit start date."}, {"id": "ESAP-01", "topic": "SNAP — Elderly Simplified Application", "tier": "snap", "actor": "system", "nature": "operational", "citation": "7 CFR §273.10(f)(1); §273.1(b)(2); 7 U.S.C. §2026(b)", "citationUrl": "https://www.fns.usda.gov/snap/elderly-simplified-application-project", "statement": "SNAP (state option): under an FNS-approved ESAP waiver, households where all members are elderly (60+) and/or disabled with no earned income can be routed to a low-touch track (simplified/shorter application, waived recertification interview, up to 36-month certification). The logic must route qualifying households in and transition them out when circumstances change.", "quote": "The State agency may certify for up to 24 months households in which all adult members are elderly or disabled. The State agency must have at least one contact with each household every 12 months.", "authority": null, "forms": null, "gap": "ESAP is an optional five-year demonstration waiver, not a baseline requirement; a state with a distinct ESAP application must account for it in the universal-app design. No Medicaid analog."}, {"id": "LANG-MED", "topic": "Medicaid — Language access (LEP)", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.905(b)(1)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.905", "statement": "Medicaid: the application and vital materials must be in plain language with free oral interpretation and written translation for LEP individuals, with taglines advertising language services.", "quote": "Such information must be provided to applicants and beneficiaries in plain language and in a manner that is accessible and timely to— (1) Individuals who are limited English proficient through the provision of language services at no cost to the individual including, oral interpretation and written translations", "authority": {"higher": "Title VI, Civil Rights Act of 1964", "higherUrl": "https://www.justice.gov/crt/fcs/TitleVI", "lower": "42 CFR §435.905(b)", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.905", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "Title VI establishes the LEP obligation; §435.905(b) applies it to Medicaid application materials."}, "forms": null, "gap": null}, {"id": "LANG-SNAP", "topic": "SNAP — Bilingual requirements", "tier": "snap", "actor": "agency", "nature": "policy", "citation": "7 CFR §272.4(b)(3)", "citationUrl": "https://www.ecfr.gov/current/title-7/section-272.4", "statement": "SNAP: certification materials — expressly including the application form — plus bilingual staff or interpreters must be provided where a project area/office meets the single-language-minority thresholds. Because an online app serves the whole state, it should offer every language that crosses a threshold anywhere in the state.", "quote": "The State agency shall provide both certification materials in the appropriate language(s) and bilingual staff or interpreters", "authority": {"higher": "7 U.S.C. §2020(e)(1)(B)", "higherUrl": "https://www.law.cornell.edu/uscode/text/7/2020", "lower": "7 CFR §272.4(b)", "lowerUrl": "https://www.ecfr.gov/current/title-7/section-272.4", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "The Food and Nutrition Act requires bilingual materials/staff; the regulation sets the single-language-minority thresholds."}, "forms": null, "gap": "SNAP uses per-project-area single-language-minority thresholds; Medicaid uses the HHS LEP safe harbor (5% or 1,000). A universal app should satisfy the broader of the two."}, {"id": "ACCESS-MED", "topic": "Medicaid — Disability accessibility", "tier": "medicaid", "actor": "agency", "nature": "policy", "citation": "42 CFR §435.905(b)(2)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.905", "statement": "Medicaid: the application must be available in alternative formats (Braille, large print, audio, electronic) and meet digital accessibility standards, with auxiliary aids provided free of charge under the ADA and Section 504 — obligations that apply to the combined form as a whole.", "quote": "(2) Individuals living with disabilities through the provision of auxiliary aids and services at no cost to the individual in accordance with the Americans with Disabilities Act and section 504 of the Rehabilitation Act", "authority": {"higher": "Section 504, Rehabilitation Act · Americans with Disabilities Act", "higherUrl": "https://www.ada.gov/", "lower": "42 CFR §435.905(b)(2)", "lowerUrl": "https://www.ecfr.gov/current/title-42/section-435.905", "higherRef": null, "lowerRef": null, "controls": "federal", "note": "Section 504 and the ADA are cross-cutting civil-rights obligations covering both programs' materials."}, "forms": null, "gap": null}, {"id": "FORM-ACCESS", "topic": "Medicaid — Accessible form", "tier": "medicaid", "actor": "system", "nature": "policy", "citation": "42 CFR §435.907(g)", "citationUrl": "https://www.ecfr.gov/current/title-42/section-435.907", "statement": "Medicaid: the application form and any supplemental forms must themselves be accessible to LEP individuals and people with disabilities.", "quote": "Any application or supplemental form must be accessible to persons who are limited English proficient and persons who have disabilities", "authority": null, "forms": null, "gap": null}], "blueprint": {"intro": "", "claimLane": "Applicant / household sees / is asked", "outcomeLane": "Outcome", "actors": [{"key": "applicant", "label": "Applicant / household"}, {"key": "system", "label": "System (automated)"}, {"key": "agency", "label": "State agency (staff)"}], "columns": [{"id": "C1", "title": "Start the application — Right to File", "q": "Ready to apply? You can file with just name, address, and signature.", "inputs": ["Full name", "Address", "Signature", "Account username/password (optional; no email required)"], "reqs": ["RTF-01", "OPP-01", "EMAIL-01", "IDVER-01"], "out": [{"t": "Filed → protected filing date set", "kind": "good"}, {"t": "Submit available at any point after name/address/signature", "kind": "proc"}]}, {"id": "C2", "title": "Filing date & SNAP timeliness", "q": "When is your application considered received?", "inputs": ["Channel (online / phone / mail / in person)", "Time of submission", "Business hours"], "reqs": ["FDATE-01", "SNAPCLOCK-01"], "out": [{"t": "Filing date recorded; SNAP clock starts", "kind": "proc"}, {"t": "SNAP adjudicated separately from Medicaid", "kind": "nd"}]}, {"id": "C3", "title": "How you can apply", "q": "Which way do you want to apply?", "inputs": ["Online", "Phone", "Mail", "In person", "Mobile", "Other electronic"], "reqs": ["MOD-MED", "MODE-SNAP"], "out": [{"t": "Any channel accepted — you choose", "kind": "good"}]}, {"id": "C4", "title": "Get help & authorized representative", "q": "Do you need help, or someone to act for you?", "inputs": ["In-person / phone / online help", "Certified Application Counselor (Medicaid)", "Authorized representative", "Interpretation / TTY"], "reqs": ["ASSIST-01", "CAC-01", "AR-MED", "AR-SNAP"], "out": [{"t": "Free help provided; AR may apply and sign", "kind": "good"}]}, {"id": "C5", "title": "Sign under penalty of perjury", "q": "Have you signed the application?", "inputs": ["Signature under penalty of perjury", "Electronic / telephonic / faxed", "Citizenship & alien-status attestation (SNAP)"], "reqs": ["SIG-MED", "SIG-SNAP"], "out": [{"t": "Signed → valid for both programs", "kind": "good"}, {"t": "Notarization required → not allowed", "kind": "na"}]}, {"id": "C6", "title": "Household & who is applying", "q": "Who is in your household, and who is applying?", "inputs": ["Household members", "Who is seeking benefits (per person)", "Tax filing unit (Medicaid)", "Who buys & prepares food together (SNAP)"], "reqs": ["HH-MED", "OPTOUT-01", "MULTIPROG-01"], "out": [{"t": "Per-person applying flag drives downstream questions", "kind": "proc"}, {"t": "Answer only the questions for your program(s)", "kind": "na"}]}, {"id": "C7", "title": "Income & resources", "q": "What income and resources does the household have?", "inputs": ["Income sources & amounts", "Deductions", "Resources / assets (SNAP)", "Non-applicant income & resources"], "reqs": ["INC-MED", "NONAPP-FIN"], "out": [{"t": "MAGI Medicaid: income only, no asset test", "kind": "nd"}, {"t": "SNAP: income + resources, non-applicants still counted", "kind": "nd"}]}, {"id": "C8", "title": "Social Security number", "q": "Can you give a Social Security number for each applicant?", "inputs": ["SSN per applicant", "Privacy Act statement", "Not required for non-applicants"], "reqs": ["SSN-MED", "SSN-SNAP", "SSN-PRIVACY"], "out": [{"t": "Provided → used for both programs", "kind": "good"}, {"t": "Not provided → that individual only is affected", "kind": "partial"}]}, {"id": "C9", "title": "Citizenship & immigration", "q": "What is the citizenship or immigration status of each applicant?", "inputs": ["Status for applicants only", "Non-applicant opt-out", "USCIS verification (applicants)"], "reqs": ["CIT-MED", "CIT-SNAP", "TITLEVI"], "out": [{"t": "Asked for applicants only; non-applicants protected", "kind": "good"}, {"t": "Decline USCIS check → withdraw or apply without that member (SNAP)", "kind": "na"}]}, {"id": "C10", "title": "SNAP first-page notices", "q": "Required notices on or near the first page (SNAP)", "inputs": ["Name/address/signature placement", "Right-to-file notice", "Expedited service description", "Benefits from date of application"], "reqs": ["FP-PLACE", "FP-RTF", "FP-EXP", "FP-BEN"], "out": [{"t": "Plain, prominent front-page notices present", "kind": "good"}]}, {"id": "C11", "title": "SNAP required disclosures", "q": "Required disclosures on the application (SNAP)", "inputs": ["Verification statement (bold)", "Civil/criminal penalties (bold)", "USDA nondiscrimination", "IEVS & USCIS notice"], "reqs": ["DISC-VER", "DISC-PEN", "DISC-ND", "DISC-IEVS"], "out": [{"t": "Disclosures on the form itself (even if joint)", "kind": "good"}]}, {"id": "C12", "title": "SNAP rights & attestations", "q": "Rights notice and required attestations (SNAP)", "inputs": ["Hearing rights (in writing)", "Felony conviction attestation"], "reqs": ["RGT-HEAR", "ATT-FELONY"], "out": [{"t": "Hearing rights given; attestation captured", "kind": "good"}]}, {"id": "C13", "title": "Optional & voluntary fields", "q": "Optional questions you can choose to answer", "inputs": ["Race & ethnicity (both programs, voluntary)", "Other health coverage (Medicaid)", "Pregnancy / AI-AN / foster care (Medicaid)"], "reqs": ["RACE-MED", "RACE-SNAP", "OTHERCOV-MED", "POP-MED"], "out": [{"t": "Answer or skip — no impact on eligibility", "kind": "na"}]}, {"id": "C14", "title": "Work requirements (HR1 — upcoming)", "q": "Are you an adult (19–64) subject to a work / community-engagement requirement?", "inputs": ["Medicaid community engagement (19–64 expansion)", "SNAP ABAWD (age ceiling now 64)", "80 hrs/month activity or income", "Exemption category"], "reqs": ["HR1-MED", "HR1-SNAP"], "out": [{"t": "Meets requirement or exempt → eligibility continues", "kind": "good"}, {"t": "Same adult may face both requirements at once", "kind": "nd"}, {"t": "Upcoming — confirm current implementation", "kind": "nd"}]}, {"id": "C15", "title": "Finish — copy, withdrawal, duplicates", "q": "After you submit", "inputs": ["Offer of a completed-application copy", "Voluntary withdrawal before determination", "Duplicate-application handling"], "reqs": ["COPY-01", "WITHDRAW-01", "MULTI-01"], "out": [{"t": "Copy offered; withdrawal/duplicates handled, earliest filing date preserved", "kind": "good"}]}, {"id": "C16", "title": "ESAP simplified track (SNAP option)", "q": "Is this an all-elderly/disabled, no-earned-income household? (SNAP)", "inputs": ["All members 60+ and/or disabled", "No earned income", "State has an ESAP waiver"], "reqs": ["ESAP-01"], "out": [{"t": "Qualifying household routed to simplified track", "kind": "good"}, {"t": "State option — only where an ESAP waiver exists", "kind": "na"}]}], "crosscut": {"label": "Accessible and language-appropriate across the whole application", "reqs": ["LANG-MED", "LANG-SNAP", "ACCESS-MED", "FORM-ACCESS"]}}}</script>
+
+<script>
+// ============================================================================
+//  Policy Service Blueprint — generic engine. All domain content lives in the
+//  #data JSON block above; this script renders it and never hardcodes a domain.
+//  The blueprint is the single source of truth (there is no flowchart): each
+//  column carries its own header, questions, input factors, requirement ids,
+//  and outcomes. Requirements are distributed into actor swimlanes.
+// ============================================================================
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const META = DATA.meta||{};
+const RAW = DATA.requirements||[];
+const REQ = {}; RAW.forEach(r=>REQ[r.id]=r);
+const TIERS = DATA.tiers||[];
+const TIER = {}; TIERS.forEach(t=>TIER[t.key]=t);
+const BP = DATA.blueprint||{columns:[]};
+const COLS = BP.columns||[];
+// actor swimlanes — configurable per domain; fall back to a single policy lane
+const ACTORS = (Array.isArray(BP.actors)&&BP.actors.length)?BP.actors:[{key:'policy',label:(BP.policyLane||'Policy requires')}];
+const ACTOR = {}; ACTORS.forEach(a=>ACTOR[a.key]=a);
+const LAST_ACTOR = ACTORS[ACTORS.length-1].key;
+const OUTCOME_KINDS = Object.assign(
+  {good:'#216e1f',bad:'#b50909',partial:'#c05600',nd:'#775540',na:'#565c65',proc:'#3d4551'},
+  DATA.outcomeKinds||{});
+const AUTH_LABEL = (META.authorityLabel||'Multiple policies');
+
+// ---- dynamic theming from tiers + outcome kinds ----
+function safe(k){return String(k).replace(/[^a-zA-Z0-9_]/g,'_');}
+(function injectTheme(){
+  let css='';
+  TIERS.forEach(t=>{const k=safe(t.key);
+    css+=`.t-${k}{border-left-color:${t.color}} .b-${k}{background:${t.color}} .c-${k}{background:${t.color}}\n`;});
+  Object.entries(OUTCOME_KINDS).forEach(([k,c])=>{css+=`.o-${safe(k)}{background:${c}1f;color:${c};border-color:${c}66}\n`;});
+  const s=document.createElement('style'); s.textContent=css; document.head.appendChild(s);
+})();
+
+// ---- helpers ----
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+// --- inline USWDS SVG icons (self-contained; fill=currentColor) ---
+const ICONS={
+  warning:'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z',
+  launch:'M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z',
+  build:'M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z',
+  balance:'M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z',
+  description:'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z',
+  layers:'M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27-7.38 5.74zM12 16l7.36-5.73L21 9l-9-7-9 7 1.63 1.27L12 16z',
+  expand_less:'M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z',
+  expand_more:'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z'
+};
+function ic(name,cls){return '<svg class="ic'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="'+ICONS[name]+'"></path></svg>';}
+function isOp(r){ return r && r.nature==='operational'; }
+function laneOf(r){ return (r&&ACTOR[r.actor])?r.actor:LAST_ACTOR; } // requirements w/o a known actor fall to the last lane
+
+// ---- requirement card ----
+// render a citation in an authority callout. Link ONLY when the dataset gives an
+// explicit ref to another requirement that actually exists and isn't the current one.
+function authCite(cite, url, ref, currentId){
+  if(url) return `<a class="authlink" href="${esc(url)}" target="_blank" rel="noopener">${esc(cite)}${ic('launch','ext')}</a>`;
+  const id = (ref && ref!==currentId && REQ[ref]) ? ref : null;
+  return id ? `<a class="authlink" data-open="${esc(id)}">${esc(cite)}</a>` : `<b>${esc(cite)}</b>`;
+}
+// One clean requirement block for the side panel — no card chrome.
+function reqDetail(id){
+  const r=REQ[id]; if(!r)return '';
+  const a=r.authority;
+  return `<div class="rdetail" data-id="${id}">
+    <p class="stmt">${esc(r.statement)}</p>
+    <div class="rdsub">${r.citationUrl?`<a class="authlink" href="${esc(r.citationUrl)}" target="_blank" rel="noopener">${esc(r.citation)}${ic('launch','ext')}</a>`:esc(r.citation)}</div>
+    ${r.forms&&r.forms.length?`<div class="rdmeta">${ic('description','rdi')} ${r.forms.map(esc).join(' · ')}</div>`:''}
+    <blockquote>${esc(r.quote)}</blockquote>
+    ${a?`<div class="rdsub">${ic('balance','rdi')} ${esc(AUTH_LABEL)}</div>
+    <div class="rdline">Higher: ${authCite(a.higher,a.higherUrl,a.higherRef,id)} · Lower: ${authCite(a.lower,a.lowerUrl,a.lowerRef,id)} · Controls: <b>${esc(a.controls)}</b></div>
+    <div class="rdnote">${esc(a.note)}</div>`:''}
+    ${r.gap?`<div class="rdsub">${ic('warning','rdi')} Potential issue (AI-suggested)</div>
+    <div class="rdnote">${esc(r.gap)}</div>`:''}
+  </div>`;
+}
+
+// ---- drawer ----
+function openReq(id){
+  const r=REQ[id]; if(!r)return;
+  const tcolor=(TIER[r.tier]||{}).color||'#565c65';
+  document.getElementById('dTitle').textContent=r.topic;
+  const dt=document.getElementById('dType');
+  dt.innerHTML=`<span class="typepill" style="background:${tcolor}">${esc(typeLabel(r.tier))}</span>`
+    + (isOp(r)?`<span class="badge b-op">${ic('build')} operational</span>`:'');
+  dt.style.display='';
+  document.getElementById('dBody').innerHTML=reqDetail(id);
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('scrim').classList.add('open');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('open');}
+document.getElementById('dClose').onclick=closeDrawer;
+document.getElementById('scrim').onclick=closeDrawer;
+
+// ---- blueprint ----
+function chip(id){
+  const r=REQ[id]; if(!r)return '';
+  let mk=''; if(r.authority)mk+=ic('balance','mk'); if(isOp(r))mk+=ic('build','mk');
+  return `<button class="chip c-${safe(r.tier)} ${isOp(r)?'op':''}" data-id="${id}" title="${esc(r.citation)}"><span class="chip-t">${esc(nameOf(r))}</span>${mk?`<span class="chip-mk">${mk}</span>`:''}</button>`;
+}
+function outPill(o){
+  return `<span class="opill o-${safe(o.kind||'proc')}">${esc(o.t)}</span>`;
+}
+// group columns into contiguous runs sharing a `group` label. Each run renders as
+// its own stacked table, so alternative paths read as separate journeys.
+function columnGroups(){
+  const groups=[]; let cur=null;
+  COLS.forEach(c=>{
+    const g=c.group||null;
+    if(cur && cur.key===g){ cur.cols.push(c); }
+    else { cur={key:g,label:g,cols:[c]}; groups.push(cur); }
+  });
+  return groups;
+}
+const GROUP_PALETTE=['#1a4480','#c05600','#216e1f','#54278f','#07648d'];
+// render one blueprint grid for a set of columns
+function gridFor(cols){
+  const n=cols.length;
+  let g=`<div class="bpgrid" style="grid-template-columns:140px repeat(${n},minmax(250px,1fr));min-width:${140+n*250}px">`;
+  // headers
+  g+='<div style="background:transparent"></div>';
+  cols.forEach((c,i)=>{g+=`<div class="colhead"><span class="step">Step ${i+1}</span>${esc((c.title||'').replace(/\s*\?\s*$/,''))}</div>`;});
+  // claimant lane: the question asked
+  g+=`<div class="lanelbl lane-claim">${esc(BP.claimLane||'Claimant sees / is asked')}</div>`;
+  cols.forEach(c=>{g+=`<div class="cell q">${esc(c.q||'')}</div>`;});
+  // inputs lane: the factors that drive each step
+  g+=`<div class="lanelbl lane-input">${esc(BP.inputLane||'Inputs')}</div>`;
+  cols.forEach(c=>{
+    const inputs=(c.inputs||[]).map(x=>`<span class="qi">${esc(x)}</span>`).join('');
+    g+=`<div class="cell inputs ${inputs?'':'empty'}">${inputs}</div>`;
+  });
+  // one lane per actor
+  ACTORS.forEach(a=>{
+    g+=`<div class="lanelbl lane-actor">${esc(a.label)}</div>`;
+    cols.forEach(c=>{
+      const ids=(c.reqs||[]).filter(id=>REQ[id]&&laneOf(REQ[id])===a.key);
+      g+=`<div class="cell actor ${ids.length?'':'empty'}">${ids.map(chip).join('')}</div>`;
+    });
+  });
+  // outcome lane
+  g+=`<div class="lanelbl lane-out">${esc(BP.outcomeLane||'Outcome')}</div>`;
+  cols.forEach(c=>{g+=`<div class="cell out">${(c.out||[]).map(outPill).join('')}</div>`;});
+  g+='</div>';
+  return g;
+}
+function buildBlueprint(){
+  const bp=document.getElementById('bp');
+  const groups=columnGroups();
+  const showTitles = groups.length>1 || groups.some(g=>g.key);
+  let h='';
+  groups.forEach((grp,gi)=>{
+    const color=grp.key?GROUP_PALETTE[gi%GROUP_PALETTE.length]:'#3d4551';
+    h+=`<div class="bptable">`;
+    if(showTitles && grp.label){
+      h+=`<div class="bptitle">${esc(grp.label)}</div>`;
+    }
+    h+=gridFor(grp.cols);
+    h+=`</div>`;
+  });
+  bp.innerHTML=h;
+  // crosscut
+  const cc=document.getElementById('crosscut');
+  if(BP.crosscut&&BP.crosscut.reqs&&BP.crosscut.reqs.length){
+    cc.style.display='';
+    cc.innerHTML=`<b>${esc(BP.crosscut.label||'Applies across every step')}</b><div class="cc-chips">${BP.crosscut.reqs.map(chip).join('')}</div>`;
+  } else cc.style.display='none';
+}
+document.getElementById('bp').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(b){openReq(b.dataset.id);return;}
+});
+document.getElementById('crosscut').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)openReq(b.dataset.id);});
+
+// ---- all-requirements table ----
+function typeLabel(k){ return ((TIER[k]||{}).label||k).replace(/\s*\([^)]*\)\s*$/,''); } // tier label without the parenthetical
+function nameOf(r){ const i=r.topic.indexOf(' — '); return i>=0 ? r.topic.slice(i+3) : r.topic; } // drop a leading "Program — " prefix
+function reqFlags(r){
+  let s='';
+  if(isOp(r)) s+=`<span class="flag" style="color:var(--flag-op)" title="Operational (agency practice, not strict policy)">${ic('build')}</span>`;
+  if(r.gap) s+=`<span class="flag" style="color:var(--flag-warn)" title="Potential issue (AI-suggested)">${ic('warning')}</span>`;
+  if(r.authority) s+=`<span class="flag" style="color:var(--flag-auth)" title="${esc(AUTH_LABEL)}">${ic('balance')}</span>`;
+  return s||'<span style="color:var(--subtle)">—</span>';
+}
+// sort by type: federal tiers first, then state, then other; within a jurisdiction by authority rank
+let typeSortDir = 1; // 1 = federal-first (default), -1 = reversed
+function jurRank(k){
+  const key=(k||'').toLowerCase(), lbl=((TIER[k]||{}).label||'').toLowerCase();
+  if(key.includes('federal')||lbl.includes('federal')) return 0;
+  if(key.includes('state')||lbl.includes('state')) return 1;
+  return 2;
+}
+function typeKey(r){ return [jurRank(r.tier), (TIER[r.tier]||{}).rank||99]; }
+function typeCmp(a,b){ const ka=typeKey(a), kb=typeKey(b); return (ka[0]-kb[0])||(ka[1]-kb[1]); }
+function buildTable(){
+  const op=document.getElementById('fOp').checked,
+        gap=document.getElementById('fGap').checked,
+        auth=document.getElementById('fAuth').checked;
+  const rows=RAW.filter(r=>(!op||isOp(r)) && (!gap||r.gap) && (!auth||r.authority));
+  rows.sort((a,b)=> typeSortDir*typeCmp(a,b) || nameOf(a).localeCompare(nameOf(b)));
+  document.getElementById('rtbody').innerHTML = rows.length ? rows.map(r=>{
+    const color=(TIER[r.tier]||{}).color||'#565c65';
+    const cite = r.citationUrl
+      ? `<a class="authlink" href="${esc(r.citationUrl)}" target="_blank" rel="noopener">${esc(r.citation)}${ic('launch','ext')}</a>`
+      : esc(r.citation);
+    return `<tr data-id="${esc(r.id)}">
+      <td class="tname">${esc(nameOf(r))}</td>
+      <td>${cite}</td>
+      <td><span class="typepill" style="background:${color}">${esc(typeLabel(r.tier))}</span></td>
+      <td class="tflags">${reqFlags(r)}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty">No requirements match these filters.</td></tr>';
+}
+document.getElementById('rtbody').addEventListener('click',e=>{
+  if(e.target.closest('a')) return; // let citation links open normally
+  const tr=e.target.closest('tr'); if(tr&&tr.dataset.id) openReq(tr.dataset.id);
+});
+['fOp','fGap','fAuth'].forEach(id=>document.getElementById(id).addEventListener('change',buildTable));
+document.getElementById('thType').addEventListener('click',()=>{
+  typeSortDir*=-1;
+  document.getElementById('typeSortInd').innerHTML = ic(typeSortDir===1?'expand_less':'expand_more');
+  buildTable();
+});
+
+// ---- tab switching ----
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  const v=tab.dataset.view;
+  document.getElementById('view-blueprint').style.display=v==='blueprint'?'':'none';
+  document.getElementById('view-table').style.display=v==='table'?'':'none';
+  if(v==='table')buildTable();
+});
+
+// ---- link handler (authority cross-links) ----
+document.addEventListener('click',e=>{
+  const link=e.target.closest('.authlink');
+  if(link && link.dataset.open){ e.preventDefault(); openReq(link.dataset.open); return; }
+});
+
+// ---- view sources ----
+const SOURCES = META.sources||[];
+function openSources(){
+  document.getElementById('dTitle').textContent='Sources';
+  const dt=document.getElementById('dType'); dt.innerHTML=''; dt.style.display='none';
+  const body = SOURCES.length
+    ? `<ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">`+
+      SOURCES.map(s=>`<li style="background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px">`+
+        (s.url
+          ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:600;text-decoration:underline;word-break:break-word">${esc(s.label||s.url)}</a>`
+          : `<span style="color:var(--ink);font-weight:600;word-break:break-word">${esc(s.label)}</span>`)+
+        (s.note?`<div style="color:var(--muted);font-size:11.5px;margin-top:5px">${esc(s.note)}</div>`:'')+
+      `</li>`).join('')+`</ul>`
+    : '<p class="empty">No sources were recorded for this tool.</p>';
+  document.getElementById('dBody').innerHTML=body;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('scrim').classList.add('open');
+}
+document.getElementById('sourcesBtn').onclick=openSources;
+
+// ---- init ----
+(function init(){
+  document.title = META.title||'Policy Service Blueprint';
+  document.getElementById('hTitle').textContent = META.title||'Policy Service Blueprint';
+  const hSub=document.getElementById('hSub');
+  if(META.subtitle){ hSub.textContent=META.subtitle; } else { hSub.style.display='none'; }
+  const introEl=document.getElementById('bpIntro');
+  if(BP.intro){ introEl.textContent=BP.intro; } else { introEl.style.display='none'; }
+  // legend: only tiers actually used, labeled exactly as the All-requirements table's Type column
+  const usedTiers=new Set(RAW.map(r=>r.tier));
+  let lg='';
+  TIERS.filter(t=>usedTiers.has(t.key)).forEach(t=>{lg+=`<span class="typepill" style="background:${t.color}">${esc(typeLabel(t.key))}</span>`;});
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-op)">${ic('build')}</span> Operational (agency practice, not strict policy)</span>`;
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-warn)">${ic('warning')}</span> Potential issue (AI-suggested)</span>`;
+  lg+=`<span class="lg"><span class="flag" style="color:var(--flag-auth)">${ic('balance')}</span> ${esc(AUTH_LABEL)}</span>`;
+  document.getElementById('legend').innerHTML=lg;
+  buildBlueprint();
+})();
+</script>
+</body>
+</html>
