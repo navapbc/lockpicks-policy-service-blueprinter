@@ -16,24 +16,26 @@ Download and view demo service blueprints in [/demos](/demos/). Standalone `.htm
 
 **Claude Cowork**
 
-1. Click on the green `<> Code` button above to download this repository as a .zip file. 
-2. Open .zip and click SKILL.md file to add to Cowork.
+1. Begin by clicking the green `<> Code` button above to download this repository as a .zip file.
+2. In your downloads, open the .zip file.
+3. Look for the SKILL.md file inside.
+4. Load it into Cowork by clicking the file.
+5. Your skill is now ready to use.
 
 **Claude Code**
 
-Copy this folder into your Claude skills directory:
-
-- Personal: `~/.claude/skills/policy-service-blueprinter`
-- Project: drop in that project's `.claude/skills/policy-service-blueprinter`
-
-Restart Claude to load.
+- Copy this folder into your Claude skills directory:
+- Home (personal): `~/.claude/skills/policy-service-blueprinter`
+- Repo (project): drop in that project's `.claude/skills/policy-service-blueprinter`
+- If Claude is already running, restart it to load the skill.
+- See [Use](#use) below to get started.
 
 ## Use
 
 1. Gather links to online policy sources or prepare markdown files of all policy documents.
-2. In Claude Code or CoWork, paste your policy links or attach markdown files. Ask Claude "build a service blueprint."
+2. Next, in Claude Code or CoWork, paste your policy links or attach markdown files. Ask Claude "build a service blueprint."
 3. Answer one scope question — the whole program, or one slice (e.g. just weekly certification, appeals, etc).
-4. Open the HTML file thet Claude produces. Works on any browser, no setup.
+4. Then open the HTML file that Claude produces. Works on any browser, no setup.
 5. Review and refine. Chat with Claude to make changes and refine your service blueprint.
 
 ### This blueprint is a draft
