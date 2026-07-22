@@ -120,6 +120,8 @@
   .rdnote{font-size:.8125rem;color:var(--muted);line-height:1.55}
   blockquote{margin:0;padding:.6rem .85rem;background:var(--gray-cool-2);border-left:4px solid var(--line-strong);
     font-size:.8125rem;color:var(--gray-cool-70);font-style:italic;line-height:1.55;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+  blockquote+blockquote{margin-top:.45rem}
+  blockquote .qcite{margin-top:.35rem;font-size:.75rem;font-style:normal;font-weight:600;color:var(--muted)}
   /* blueprint */
   .bpwrap{overflow-x:auto}
   #bp{display:flex;flex-direction:column;gap:0;margin-bottom:3rem}
@@ -275,6 +277,16 @@ const ICONS={
 };
 function ic(name,cls){return '<svg class="ic'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="'+ICONS[name]+'"></path></svg>';}
 function isOp(r){ return r && r.nature==='operational'; }
+// quote may be a single string (default) or, for a chip that merges rules from more than one
+// program, an array of strings / {quote, citation} objects — each renders as its own blockquote.
+function renderQuotes(q){
+  const items=Array.isArray(q)?q:[q];
+  return items.map(it=>{
+    if(it&&typeof it==='object')
+      return `<blockquote>${esc(it.quote)}${it.citation?`<div class="qcite">${esc(it.citation)}</div>`:''}</blockquote>`;
+    return `<blockquote>${esc(it)}</blockquote>`;
+  }).join('');
+}
 function laneOf(r){ return (r&&ACTOR[r.actor])?r.actor:LAST_ACTOR; } // requirements w/o a known actor fall to the last lane
 
 // ---- requirement card ----
@@ -293,7 +305,7 @@ function reqDetail(id){
     <p class="stmt">${esc(r.statement)}</p>
     <div class="rdsub">${r.citationUrl?`<a class="authlink" href="${esc(r.citationUrl)}" target="_blank" rel="noopener">${esc(r.citation)}${ic('launch','ext')}</a>`:esc(r.citation)}</div>
     ${r.forms&&r.forms.length?`<div class="rdmeta">${ic('description','rdi')} ${r.forms.map(esc).join(' · ')}</div>`:''}
-    <blockquote>${esc(r.quote)}</blockquote>
+    ${renderQuotes(r.quote)}
     ${a?`<div class="rdsub">${ic('balance','rdi')} ${esc(AUTH_LABEL)}</div>
     <div class="rdline">Higher: ${authCite(a.higher,a.higherUrl,a.higherRef,id)} · Lower: ${authCite(a.lower,a.lowerUrl,a.lowerRef,id)} · Controls: <b>${esc(a.controls)}</b></div>
     <div class="rdnote">${esc(a.note)}</div>`:''}

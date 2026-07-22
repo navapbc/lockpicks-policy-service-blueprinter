@@ -70,7 +70,7 @@ Explorer: `actor` and `nature`.
   "citation": "COMAR 07.03.17.20G",          // the single controlling citation
   "citationUrl": "https://regs.maryland.gov/us/md/exec/comar/07.03.17", // OR null — makes the citation a clickable link in the side panel; use the same source-doc URL from meta.sources
   "statement": "The system must flag a factor as 'questionable' only when …", // plain-language, implementation-facing
-  "quote": "A factor of eligibility is questionable when …",  // VERBATIM source text
+  "quote": "A factor of eligibility is questionable when …",  // VERBATIM source text — a string; see quote rules below for the rare multi-quote array form
   "authority": {                             // OR null — present only when a higher authority controls this rule
     "higher": "7 CFR 273.2(f)(1)",
     "higherUrl": "https://www.ecfr.gov/current/title-7/section-273.2", // OR null — links the higher citation to its source doc
@@ -90,7 +90,13 @@ Rules of integrity:
 - `topic` must be **unique across all requirements** — it is the chip label and side-panel title, so
   duplicates render as identical chips. Use `"<Area> — <Unique name>"`; the engine trims the
   `"<Area> — "` prefix on the chip, keeping labels short while preserving area grouping elsewhere.
-- `quote` must be **verbatim**; paraphrase belongs in `statement`.
+- `quote` must be **verbatim**; paraphrase belongs in `statement`. It is normally a **single
+  string**. In the rare case that one chip legitimately merges rules from more than one program
+  (e.g. a shared cross-program requirement in a multi-program blueprint), `quote` may instead be an
+  **array** of strings or `{ "quote": "…", "citation": "…" }` objects, so each program keeps its own
+  verbatim text and citation label — each renders as its own blockquote in the side panel. This is
+  an edge case: default to one quote per requirement, and prefer splitting into per-program
+  requirements over merging.
 - Never invent or alter a `citation`. If unsure, leave the requirement out or flag it in `gap`.
 - `citationUrl` is optional. When set, the side panel renders the citation as a link that opens the
   source document in a new tab. Reuse the exact URL from `meta.sources` for that citation's source;

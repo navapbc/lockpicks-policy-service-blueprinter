@@ -85,6 +85,19 @@ def validate(data):
         if r.get("topic") and r["topic"] in topics_seen:
             errors.append(f"requirement {rid} duplicates topic '{r['topic']}' — every requirement needs a unique topic (it is the chip label); use \"<Area> — <Unique name>\".")
         topics_seen.add(r.get("topic"))
+        q = r.get("quote")
+        if isinstance(q, list):
+            if not q:
+                errors.append(f"requirement {rid} quote[] is empty — use a string or a non-empty array.")
+            for j, item in enumerate(q):
+                if isinstance(item, str):
+                    if not item.strip():
+                        errors.append(f"requirement {rid} quote[{j}] is an empty string.")
+                elif isinstance(item, dict):
+                    if not item.get("quote"):
+                        errors.append(f"requirement {rid} quote[{j}] object missing 'quote' text.")
+                else:
+                    errors.append(f"requirement {rid} quote[{j}] must be a string or {{quote, citation}} object.")
         if r.get("tier") and r["tier"] not in tier_keys:
             errors.append(f"requirement {rid} has tier '{r['tier']}' not declared in tiers[].")
         if actors and r.get("actor") and r["actor"] not in actor_keys:

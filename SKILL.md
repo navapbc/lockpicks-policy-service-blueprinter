@@ -64,6 +64,34 @@ Why this matters: the whole value of the blueprint is a clean, standalone statem
 requires. Mixing in current-implementation or legacy-system behavior makes people mistake "how it's
 done" for "what's required" — the exact confusion this tool exists to remove.
 
+## Facts are fetch-only; interpretation is labeled
+
+Two epistemic rules govern everything the skill writes — in the dataset and in conversation:
+
+**1. Facts: fetch-or-don't-assert.** Every factual legal claim — what a rule requires, who it
+covers, any number, deadline, threshold, or dollar figure — must trace to source text **fetched
+this session**. Model background knowledge is never a basis for asserting a fact, no matter how
+confident it feels. A citation that has been confirmed to exist but whose text was not read may be
+cited *as existing* — but its contents may **not** be characterized until fetched: a description of
+unread text is background knowledge wearing a citation. If a fact can't be fetched, leave the
+requirement out or surface the hole in `gap` — never assert it.
+
+**Numeric verify tally.** Figures are the highest-risk facts: they go stale, vary by state, and
+look authoritative on a chip whether or not they're right. Any figure not yet confirmed against
+fetched text is (a) marked "to verify" where it appears (in `gap`), and (b) added to a **running
+verify tally** kept across the whole run. Report the tally on delivery, and offer **one
+consolidated verification pass** against primary sources — rather than verifying piecemeal or,
+worse, asserting.
+
+**2. Interpretation: labeled, never disguised as fact.** Structural and interpretive judgments —
+how to split steps, whether rules merge, what a provision is *for*, which authority likely
+controls — cannot be fetched; they are the skill's reasoning, unavoidably informed by background
+knowledge. Never present them as settled fact. Frame them explicitly as interpretation ("my read"),
+keep them out of dataset fact fields (`statement`, `quote`), and attach a **standing offer to
+corroborate** against primary text or scholarly/expert sources before the judgment is locked into
+the structure. If the user asks what a recommendation rests on, answer plainly and specifically —
+including where it rests on general program knowledge rather than anything read this session.
+
 ## Bundled engine — never swap it, never re-style
 
 This skill ships its own rendering engine and build script. Always build with the **bundled** files:
@@ -118,8 +146,17 @@ dataset JSON, then build.
   off the live form/UI, are not policy and do not belong in the dataset at all — do not label them
   operational, just leave them out (see "Policy is the single source of truth"). Default to `policy`;
   reach for `operational` sparingly and only when a real policy document is the source.
+- **Bluebook-standard citations, always with the jurisdiction qualifier.** Every `citation`,
+  `authority.higher`/`lower`, and every citation you write in conversation follows Bluebook format
+  and names its sovereign: "C.R.S. § 8-73-107" (never a bare "Title 8" or "§ 8-73-107"),
+  "7 C.F.R. § 273.2(b)(3)", "42 U.S.C. § 503(a)(1)", "7 CCR 1101-2". A citation that could be read
+  as belonging to a different sovereign's code is an error — an attorney reading "Title 8" cannot
+  tell the Colorado Revised Statutes from the federal title.
 - **Verbatim `quote` only; never invent a `citation`; `citationUrl` only when a reliable public URL
-  exists** (else `null`, with the local file name in `meta.sources[].note`).
+  exists** (else `null`, with the local file name in `meta.sources[].note`). `quote` is normally a
+  single string; only when one chip legitimately merges rules from more than one program (a rare,
+  multi-program edge case) may it be an array of `{quote, citation}` objects so each program keeps
+  its own verbatim text — see `reference/schema.md`.
 
 Copy `examples/blueprint-starter.json` — it already encodes all of the above.
 
@@ -156,8 +193,18 @@ For each link, get clean source text automatically:
 ### Step 3 — Analyze the sources
 
 Decompose each **policy** source into anchored, verbatim rules with conditions, precedence, and
-ambiguity flags. Use the `policy-document-analysis` skill if it is installed; otherwise analyze
-inline holding to the same rigor. Every requirement in the dataset must trace to a real rule in a
+ambiguity flags.
+
+**Authority anchoring — ask, don't decide.** The usual posture is federal law controlling and state
+law implementing. Some programs invert it: unemployment insurance, for example, is state-anchored —
+the state statute supplies the operative eligibility and disqualification standards while federal
+law acts as a conformity ceiling. If the sources suggest the program's controlling-authority story
+may be inverted (or genuinely ambiguous), do **not** pick an anchoring yourself: tell the user what
+you're seeing and ask how to anchor the tiers — state-anchored with the federal layer noted,
+federal-anchored, or both layers as explicit `authority` callouts — before building the dataset.
+
+Use the `policy-document-analysis` skill if it is installed; otherwise analyze inline holding to
+the same rigor. Every requirement in the dataset must trace to a real rule in a
 **policy document** with a verbatim quote — if the only thing that supports it is the current form,
 a screenshot, or a legacy system's behavior, it is not a requirement and does not go in (see "Policy
 is the single source of truth"). Analyze only policy; ignore non-policy artifacts except to bound
@@ -180,8 +227,43 @@ stop to ask how to split unless the sub-topics are genuinely unclear.
 2. Verify: embedded JSON parses; every requirement surfaces in a column or the crosscut; quotes and
    citations match the sources; actor lanes and operational flags read correctly; source links open
    (and local-only sources show as plain text); the page renders with no console errors.
-3. Deliver the HTML **and** repeat the human-review caveat. Keep the dataset JSON (and analysis)
+3. **Report verbatim-quote coverage and the verify tally on delivery.** State plainly how many requirements carry
+   machine-fetched verbatim source text, and name anything that was left out or flagged in `gap`
+   because its text could not be retrieved. If any source failed to yield verbatim text on the
+   first pass, offer a **targeted second retrieval pass** (rendering browser, alternate official
+   mirrors — eCFR, Cornell LII, govinfo, state code portals) before the user starts reviewing —
+   never let the user discover coverage gaps on their own. In the same report, list the **verify
+   tally** — every figure still marked "to verify" — and offer the consolidated verification pass.
+4. Deliver the HTML **and** repeat the human-review caveat. Keep the dataset JSON (and analysis)
    alongside it so the tool can be regenerated or audited.
+
+### Step 6 — Offer the SME review walkthrough (every time)
+
+Immediately after delivering the initial HTML, **always offer a guided review walkthrough as the
+next step** — this is how the required SME review actually happens, so don't wait to be asked:
+
+> "Want to review it together? I'll walk the blueprint one step at a time — you correct anything
+> that's wrong, and I'll rebuild once at the end."
+
+If accepted, run it like this:
+
+1. **One step at a time, exactly as built.** For each column show the claimant question, inputs,
+   outcomes, and every requirement with its id, actor lane, tier, citation, and one-line rule —
+   then give your read on what's contestable (structure, actor, tier, citation, wording,
+   policy-vs-operational), and let the SME direct the changes. Their read governs; yours is input.
+   Frame your read per the interpretation rule above — judgment, not fact — and where it rests on
+   anything not fetched this session, say so and offer to corroborate before the step is locked.
+2. **Keep a running change log** and restate it as it grows, so the SME always sees the accumulated
+   change set.
+3. **Batch everything into one validated rebuild at the end.** All changes go into the dataset JSON
+   and through `build.py` — never hand-edit the HTML, and don't rebuild mid-walk.
+
+Two working conventions, during the walkthrough and any time after delivery:
+
+- **Preview before commit.** For any visual or structural change to the tool, show a preview or
+  mockup and get a go-ahead before applying it to the real build.
+- **Read back complex direction.** When the user gives a multi-part instruction, restate it back
+  in your own words and confirm before implementing.
 
 ## Reference files (in this package)
 
