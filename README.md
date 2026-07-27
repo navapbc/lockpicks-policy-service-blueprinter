@@ -6,6 +6,13 @@ Turns policy documents — statutes, regulations, official agency guidance — i
 
 Requirements come from **policy only**. This skill does not map legacy system rules or requirements from other sources.
 
+**Every blueprint is research-gated.** This repo now contains two skills that work together:
+
+- **`policy-service-blueprinter`** (repo root) — builds the blueprint.
+- **[`policy-analysis-protocol`](https://github.com/navapbc/policy-analysis-protocol)** (its own repo) — runs an attorney-authored legal research protocol first and produces a **Research Packet**: the verified authority set (federal framework always included), federal–state interaction analysis, currency check, and verify-first list. The blueprinter refuses to build a dataset without one (`build.py` enforces it), but never blocks the user — if no packet exists, it runs the research automatically. The handoff contract is [`reference/research-packet.md`](/reference/research-packet.md).
+
+Install **both** skills. If only the blueprinter is installed it will run the research inline, but the protocol skill is the intended path.
+
 ![DE UI demo](demos/DE-UI-demo.png)
 
 ## Demo

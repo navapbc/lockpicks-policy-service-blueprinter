@@ -4,6 +4,12 @@
     "subtitle": "",
     "authorityLabel": "Multiple policies",
     "authorityBadge": "Multiple policies",
+    "research": {
+      "packet": "<domain>-research-packet.md",
+      "completed": "2026-01-01",
+      "currencyCheck": "2026-01-01",
+      "verifyFlags": 0
+    },
     "sources": [
       {
         "label": "STATE statute — cite (esp. relevant sections)",

@@ -4,6 +4,9 @@
     "subtitle": "",
     "authorityLabel": "Multiple policies",
     "authorityBadge": "Multiple policies",
+    "research": {
+      "packet": "legacy:pre-protocol"
+    },
     "sources": [
       {
         "label": "Delaware statute — Del. Code Ann. tit. 19, ch. 33 (§§ 3301, 3302, 3313–3315, 3317, 3318)",

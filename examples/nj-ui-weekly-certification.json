@@ -4,6 +4,9 @@
     "subtitle": "",
     "authorityLabel": "Multiple policies",
     "authorityBadge": "Multiple policies",
+    "research": {
+      "packet": "legacy:pre-protocol"
+    },
     "sources": [
       {
         "label": "Policy specialist guidance — List of NJ Xlator Source docs",

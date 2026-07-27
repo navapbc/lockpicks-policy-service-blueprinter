@@ -30,9 +30,19 @@ Top-level keys: `meta`, `tiers`, `requirements`, `blueprint`, and optional `outc
   "authorityBadge": "Multiple policies",   // short word shown on the ⚖ badge and the "only ___ links" filter
   "sources": [                              // OPTIONAL — populates the "View sources" drawer
     { "label": "COMAR 07.03.17 — …", "url": "https://…", "note": "User-provided · Maryland SNAP/FSP regulation" }
-  ]
+  ],
+  "research": {                             // REQUIRED — the Step 0 research-gate record (see reference/research-packet.md)
+    "packet": "md-snap-verification-research-packet.md",  // packet file name, kept beside this dataset
+    "completed": "2026-07-27",              // packet manifest `completed` (YYYY-MM-DD)
+    "currencyCheck": "2026-07-27",          // packet manifest `currency_check` (YYYY-MM-DD)
+    "verifyFlags": 3                        // packet manifest `verify_flags` (open [verify] count)
+  }
 }
 ```
+
+`research` is **required**: `build.py` fails validation without it — no completed Research Packet,
+no build. `"packet": "legacy:pre-protocol"` is accepted (with a loud warning, other fields then
+optional) only for datasets that predate the research gate; never write it in new work.
 
 `sources` is an ordered array of `{label, url, note}`. List user-provided link(s) first, then any
 supporting authorities you fetched. Use `authorityBadge`/`authorityLabel` = `"preemption"` for a

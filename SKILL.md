@@ -13,8 +13,10 @@ description: >
   blueprint but the source is unclear — or looks like a legacy system, current implementation, or
   "how it works today" documentation — ask whether the blueprint should be derived from policy
   before proceeding, and do NOT use this skill to blueprint legacy-system or current-implementation
-  behavior. Paste links, answer one scope question, get the tool. Results must be reviewed by a
-  policy SME before use.
+  behavior. Paste links, answer one scope question, get the tool. Every blueprint is
+  research-gated: the policy-analysis-protocol skill runs first (automatically if it hasn't) and
+  produces a Research Packet the dataset must reference — never build without one. Results must be
+  reviewed by a policy SME before use.
 ---
 
 # Policy Service Blueprinter (Team Edition)
@@ -32,6 +34,10 @@ in — do not re-derive them and do not ask the user about styling.
 ## Prerequisites
 
 - **Python 3** — to run `scripts/build.py` (standard library only; no packages to install).
+- **`policy-analysis-protocol` skill (required companion)** — produces the Research Packet that
+  gates every build (see Step 0). If it isn't installed, run the protocol inline to the same
+  rigor: the packet contract is `reference/research-packet.md`, and the full method it points to
+  ships with that skill. Either way, no packet → no dataset.
 - **`policy-document-analysis` skill (recommended, not required)** — the intended companion for the
   analysis step. If it isn't installed, do the same analysis inline to the same rigor (see Step 3);
   the skill still works, it just does more of the reading itself.
@@ -157,15 +163,47 @@ dataset JSON, then build.
   single string; only when one chip legitimately merges rules from more than one program (a rare,
   multi-program edge case) may it be an array of `{quote, citation}` objects so each program keeps
   its own verbatim text — see `reference/schema.md`.
+- **`meta.research` is required in every dataset** — the record of the Step 0 gate. It names the
+  Research Packet file (kept beside the dataset) and carries the packet's `completed`,
+  `currency_check`, and `verify_flags` values (see `reference/research-packet.md`). `build.py`
+  fails without it. The `"legacy:pre-protocol"` value is for pre-gate datasets only — never new
+  work.
 
 Copy `examples/blueprint-starter.json` — it already encodes all of the above.
 
 ## Order of operations
 
+### Step 0 — Research gate (always; auto-satisfy, never hard-block)
+
+**No blueprint dataset is ever built without a completed Research Packet**
+(`reference/research-packet.md`). The gate exists so every blueprint stands on a verified
+authority set — federal framework always established, citations confirmed on official sources,
+currency checked — instead of only whatever links the user happened to paste.
+
+1. **Look for a packet:** one the user provided, one produced earlier this session, or a
+   `<domain>-research-packet.md` beside where the dataset will be built.
+2. **If none exists, run the `policy-analysis-protocol` skill now** (inline to the same rigor if
+   it isn't installed) and produce the packet before proceeding. Do not announce a blocker — the
+   gate is satisfied by *doing the research*, not by refusing. The user experience stays: paste
+   links, answer the intake questions, get the tool.
+3. **If a packet exists, validate it** against the completion checklist in
+   `reference/research-packet.md` (manifest parses; federal layer substantive; sources carry
+   confirmation dates; currency check dated; verify flags collated). An incomplete packet means
+   finishing the research, not building around it.
+4. Carry the packet forward: its source inventory seeds Step 2, its interaction analysis anchors
+   the tiers and `authority` callouts in Steps 3–4, its verify-first list seeds the verify tally,
+   and the dataset's `meta.research` block records it (see locked conventions).
+
+Never write the `legacy:pre-protocol` escape value in a new dataset — it exists only so datasets
+that predate this gate keep building honestly.
+
 ### Step 1 — Intake (ONE question, forgiving defaults)
 
 Non-technical users will usually paste **only links**. Do not hard-stop for a long spec. Confirm you
-have the documents, then ask exactly **one** scope question with a sensible default pre-selected:
+have the documents, then ask exactly **one** scope question with a sensible default pre-selected —
+and if Step 0 is running the research protocol in the same breath, fold its jurisdiction question
+("federal only, or federal plus which state(s)?") into this same intake moment: one pause, two
+questions maximum.
 
 > "I'll map the **whole determination** in these documents into a service blueprint. Want me to
 > narrow it to one slice (e.g. just the weekly certification decision, or just verification at
@@ -177,7 +215,11 @@ Record every link in `meta.sources` (mark local files with `url: null` + file na
 
 ### Step 2 — Gather the sources (self-healing; never make the user debug)
 
-For each link, get clean source text automatically:
+Start from the **Research Packet's source inventory (section 9)**, not just the user's pasted
+links — the packet includes the federal-layer and overlay sources the user didn't know to paste,
+already confirmed against official codifiers. The user's links are a subset of the inventory, not
+the ceiling. Verbatim quotes still require text fetched this session (facts are fetch-only), even
+for sources the packet verified. For each source, get clean text automatically:
 
 1. Fetch the URL (WebFetch / web_fetch).
 2. **Detect a thin/JS-rendered result** — a near-empty body, a "please enable JavaScript" shell,
@@ -226,7 +268,9 @@ stop to ask how to split unless the sub-topics are genuinely unclear.
    review ⚠️ warnings.
 2. Verify: embedded JSON parses; every requirement surfaces in a column or the crosscut; quotes and
    citations match the sources; actor lanes and operational flags read correctly; source links open
-   (and local-only sources show as plain text); the page renders with no console errors.
+   (and local-only sources show as plain text); the page renders with no console errors;
+   `meta.research` points to the packet, the packet sits beside the dataset, and its verify-first
+   list is reflected in the verify tally you report.
 3. **Report verbatim-quote coverage and the verify tally on delivery.** State plainly how many requirements carry
    machine-fetched verbatim source text, and name anything that was left out or flagged in `gap`
    because its text could not be retrieved. If any source failed to yield verbatim text on the
@@ -274,6 +318,9 @@ Two working conventions, during the walkthrough and any time after delivery:
   breaks, so it's safe to wire into CI.
 - `reference/schema.md` — dataset schema.
 - `reference/extraction-guide.md` — analysis → dataset mapping.
+- `reference/research-packet.md` — the Research Packet contract (canonical copy): what the
+  `policy-analysis-protocol` skill must hand over, the completion checklist Step 0 validates, and
+  the `meta.research` dataset block.
 - `examples/blueprint-starter.json` — dataset skeleton with all conventions preset (copy this).
 - `examples/de-ui-initial-claim.json` — a complete worked example (Delaware UI initial-claim
   application): 54 requirements across 15 steps, four authority tiers, three actor lanes. Most

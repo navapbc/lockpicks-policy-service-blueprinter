@@ -25,11 +25,38 @@ VALID_KINDS = {"good", "bad", "partial", "nd", "na", "proc"}
 VALID_NATURE = {"policy", "operational"}
 
 
-def validate(data):
+def validate(data, dataset_dir=None):
     errors, warnings = [], []
     meta = data.get("meta", {})
     if not meta.get("title"):
         warnings.append("meta.title is empty — the tool will use a generic title.")
+
+    # Research gate: every dataset must record its completed Research Packet
+    # (see reference/research-packet.md — produced by the policy-analysis-protocol skill).
+    research = meta.get("research")
+    if not isinstance(research, dict):
+        errors.append("meta.research is missing — every dataset must reference a completed Research Packet "
+                      "(run the policy-analysis-protocol skill first; see reference/research-packet.md).")
+    else:
+        packet = research.get("packet")
+        if packet == "legacy:pre-protocol":
+            warnings.append("meta.research.packet is 'legacy:pre-protocol' — this dataset predates the research "
+                            "gate and is NOT research-gated. Never use this value in new work.")
+        elif not (isinstance(packet, str) and packet.strip()):
+            errors.append("meta.research.packet must name the Research Packet file (e.g. '<domain>-research-packet.md').")
+        else:
+            if not packet.endswith(".md"):
+                warnings.append(f"meta.research.packet '{packet}' does not look like a markdown packet file.")
+            if dataset_dir is not None and not os.path.isfile(os.path.join(dataset_dir, packet)):
+                warnings.append(f"Research Packet '{packet}' not found beside the dataset — keep the pair together "
+                                "so the blueprint can be audited and regenerated.")
+            for f in ("completed", "currencyCheck"):
+                v = research.get(f)
+                if not (isinstance(v, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", v)):
+                    errors.append(f"meta.research.{f} must be a YYYY-MM-DD date (from the packet manifest).")
+            vf = research.get("verifyFlags")
+            if not (isinstance(vf, int) and vf >= 0):
+                warnings.append("meta.research.verifyFlags should be the packet's open [verify] count (integer ≥ 0).")
 
     tiers = data.get("tiers", [])
     if not tiers:
@@ -179,7 +206,7 @@ def main():
     except Exception as e:
         print(f"❌ Could not parse dataset JSON: {e}"); sys.exit(2)
 
-    errors, warnings = validate(data)
+    errors, warnings = validate(data, dataset_dir=os.path.dirname(os.path.abspath(args.dataset)))
     for w in warnings:
         print(f"⚠️  {w}")
     for e in errors:
