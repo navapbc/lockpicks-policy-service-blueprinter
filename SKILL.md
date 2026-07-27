@@ -3,20 +3,16 @@ name: policy-service-blueprinter
 description: >
   Turn a few policy-document links (statutes, regulations, sub-regulatory manuals, agency
   operating procedures) into a claimant-side service blueprint for any government benefits or
-  services use case (UI, SNAP, Medicaid, PFML, VA, and others). Produces a single self-contained
-  HTML tool with actor swimlanes (claimant / system / caseworker), operational-vs-policy flags,
-  per-step input factors, verbatim source quotes, authority/precedence callouts, and plain-language
-  outcomes — in one locked house style every time. Requirements come from policy alone, never the
-  current app, UI, or legacy system. Use when the blueprint is being built FROM policy: someone
-  pastes statute/regulation/official-agency-guidance links, or says "map these regulations for
-  [program]" or "turn this policy into a blueprint/requirements view." If someone asks for a service
-  blueprint but the source is unclear — or looks like a legacy system, current implementation, or
-  "how it works today" documentation — ask whether the blueprint should be derived from policy
-  before proceeding, and do NOT use this skill to blueprint legacy-system or current-implementation
-  behavior. Paste links, answer one scope question, get the tool. Every blueprint is
-  research-gated: the policy-analysis-protocol skill runs first (automatically if it hasn't) and
-  produces a Research Packet the dataset must reference — never build without one. Results must be
-  reviewed by a policy SME before use.
+  services use case (UI, SNAP, Medicaid, PFML, VA, and others). Produces one self-contained HTML
+  tool with actor swimlanes, operational-vs-policy flags, per-step input factors, verbatim source
+  quotes, authority callouts, and plain-language outcomes, in a locked house style.
+  Requirements come from policy alone, never the current app, UI, or legacy system. Use when
+  someone pastes statute/regulation/official-guidance links, says "map these regulations for
+  [program]," or asks to turn policy into a blueprint/requirements view. If the source looks like
+  a legacy system or "how it works today" docs, ask first — never blueprint
+  current-implementation behavior. Every blueprint is research-gated: the
+  policy-analysis-protocol skill runs first and produces the Research Packet the dataset must
+  reference. A policy SME must review results.
 ---
 
 # Policy Service Blueprinter (Team Edition)
@@ -231,6 +227,12 @@ for sources the packet verified. For each source, get clean text automatically:
    when both exist.
 5. Only if a source still can't be read after the browser fallback, tell the user plainly which link
    failed and ask them to paste the text or a different link — never leave them guessing.
+6. **Save what you fetch.** Write each source's clean text into a `sources/` folder beside where
+   the dataset will live (one file per document; user-supplied local corpus files count as already
+   saved). Extract from the saved files with scripts instead of re-reading pages — it keeps the
+   context lean — and it is what makes Step 5's mechanical quote verification possible: a quote
+   whose source text was never saved cannot be verified. Remember WebFetch **summarizes** — for
+   verbatim capture use raw-text endpoints, download-and-extract, or the rendering browser.
 
 ### Step 3 — Analyze the sources
 
@@ -257,6 +259,14 @@ scope.
 Map the analysis into the dataset per `reference/schema.md` and `reference/extraction-guide.md`,
 applying the locked conventions above. Assign each requirement an `actor` and `nature`.
 
+**Overlay completeness check.** A policy-first analysis goes deep on the program's own rules and
+reliably under-collects the generally-applicable federal overlays — civil-rights/language access,
+payment-method and disclosure rules, tax withholding, confidentiality, QC/audit data duties.
+Before building, sweep the Research Packet's federal-framework overlays (section 2) and confirm
+each is either in the dataset — usually as a **crosscut**, since these obligations are pervasive
+rather than step-bound — or explicitly noted out-of-scope in a `gap`. Never let them silently
+vanish.
+
 **Default column-split rule (so density never blocks a non-expert):** no single actor cell may hold
 more than 6 requirement chips. If a step would exceed that, **split it by sub-topic in reading
 order** into adjacent columns (same `group` if grouped), and briefly tell the user you did so. Do not
@@ -264,22 +274,36 @@ stop to ask how to split unless the sub-topics are genuinely unclear.
 
 ### Step 5 — Build, verify, deliver
 
-1. `python3 scripts/build.py <domain>.json --out <Domain>-Blueprint.html`. Fix every ❌ error and
+1. **Mechanically verify every quote first:** `python3 scripts/verify_quotes.py <domain>.json`
+   (checks each `quote` copy-exact — whitespace/punctuation-normalized — against the text saved in
+   `sources/` during Step 2). Fix every miss: a miss is a paraphrase or an unsaved source, and both
+   are build blockers, not footnotes. Verification happens **here, before delivery** — never as a
+   retrofitted audit after the tool has shipped.
+2. `python3 scripts/build.py <domain>.json --out <Domain>-Blueprint.html`. Fix every ❌ error and
    review ⚠️ warnings.
-2. Verify: embedded JSON parses; every requirement surfaces in a column or the crosscut; quotes and
+3. Verify: embedded JSON parses; every requirement surfaces in a column or the crosscut; quotes and
    citations match the sources; actor lanes and operational flags read correctly; source links open
    (and local-only sources show as plain text); the page renders with no console errors;
    `meta.research` points to the packet, the packet sits beside the dataset, and its verify-first
    list is reflected in the verify tally you report.
-3. **Report verbatim-quote coverage and the verify tally on delivery.** State plainly how many requirements carry
-   machine-fetched verbatim source text, and name anything that was left out or flagged in `gap`
-   because its text could not be retrieved. If any source failed to yield verbatim text on the
+4. **Report verbatim-quote coverage and the verify tally on delivery.** State plainly how many
+   requirements carry machine-verified verbatim source text (the step-1 script count), and name
+   anything that was left out or flagged in `gap` because its text could not be retrieved. In every
+   report — and any time you say "verified" afterwards — the word means **machine-verified quote
+   text and nothing more**: tiers, step order, actor lanes, and any applicability judgments are
+   analyst interpretation and never ride under that word. If any source failed to yield verbatim text on the
    first pass, offer a **targeted second retrieval pass** (rendering browser, alternate official
    mirrors — eCFR, Cornell LII, govinfo, state code portals) before the user starts reviewing —
    never let the user discover coverage gaps on their own. In the same report, list the **verify
    tally** — every figure still marked "to verify" — and offer the consolidated verification pass.
-4. Deliver the HTML **and** repeat the human-review caveat. Keep the dataset JSON (and analysis)
-   alongside it so the tool can be regenerated or audited.
+5. **Deliver a known-limitations self-critique with the tool, unprompted.** A short, honest list:
+   method risks (single-pass extraction, the corpus boundary from the Research Packet, unverified
+   quotes), judgment calls a reviewer might contest (step order, actor lanes, merged rules), and
+   currency caveats. The receiving team will critique the work anyway — arrive having done it
+   first.
+6. Deliver the HTML **and** repeat the human-review caveat. Keep the dataset JSON, the Research
+   Packet, the `sources/` folder, and the analysis alongside it so the tool can be regenerated or
+   audited.
 
 ### Step 6 — Offer the SME review walkthrough (every time)
 
@@ -308,11 +332,32 @@ Two working conventions, during the walkthrough and any time after delivery:
   mockup and get a go-ahead before applying it to the real build.
 - **Read back complex direction.** When the user gives a multi-part instruction, restate it back
   in your own words and confirm before implementing.
+- **Re-read before re-editing.** The dataset is a shared artifact — teammates may have reworked it
+  since the last build, reusing requirement ids with new meanings. Before changing any requirement
+  by id, re-read its current content; editing by remembered meaning has destroyed human-authored
+  notes.
+
+## Derived deliverables (tables, CSVs, memos)
+
+Blueprints regularly spawn downstream artifacts — applicant data-element tables, crosswalks,
+handoff memos. Three rules:
+
+- **Ask for the team's format before generating.** If the artifact is going to policy specialists,
+  ask for a sample of the format they already work in (or reuse one from earlier in the session).
+  Discovering the preferred format after delivery costs a full rebuild cycle.
+- **Every row carries traceability:** the requirement id(s)/topic it traces to and the citation, so
+  a reviewer can walk cell → requirement card → verified quote → source.
+- **Label provenance and judgment in reviewer language.** Flag non-primary rows explicitly (e.g.
+  "Present in guidance document, not in policy docs"), and keep analyst-judgment columns
+  (per-persona Yes/No, applicability calls) visibly distinct from machine-verified facts.
 
 ## Reference files (in this package)
 
 - `assets/template.html` — the locked rendering engine.
 - `scripts/build.py` — validate + build.
+- `scripts/verify_quotes.py` — mechanical quote check: every dataset `quote` must be found
+  copy-exact (whitespace/punctuation-normalized) in the text saved under `sources/`. Run it in
+  Step 5 before every delivery.
 - `scripts/test.py` — regression check; validates and fully builds every dataset in `examples/`.
   Run `python3 scripts/test.py` before packaging or sharing — it exits non-zero if any example
   breaks, so it's safe to wire into CI.

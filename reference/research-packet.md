@@ -56,6 +56,12 @@ Each section maps to a protocol step (see `legal-research-protocol.md` in the
 | 8 | **Verify-first list** — every `[verify]` flag collated in priority order: unconfirmed pinpoints, figures, citator statuses | 5, 8 | seed of the blueprinter's **verify tally**; `gap` entries |
 | 9 | **Source inventory** — every document with title, layer/tier, URL (or `null` + file name for local files), and the date its current text was confirmed on the official source | all | `meta.sources`, `citationUrl` values |
 
+**Corpus boundary (required whenever local files are the primary source).** Section 9 must also
+state what the corpus covers and list every framework-identified authority (from section 2's map)
+**not** present in it — each absence echoed on the verify-first list (section 8). A local corpus
+silently defines the universe of what the blueprint can see; an undeclared boundary means missing
+sections vanish without a trace.
+
 ## Completion checklist (the blueprinter validates this before building)
 
 A packet is **complete** only if:
@@ -66,6 +72,8 @@ A packet is **complete** only if:
    (uscode.house.gov, ecfr.gov, govinfo.gov, the state's official codifier) — or a `[verify]` flag.
 4. `currency_check` is dated, and section 7 exists (even if it reads "no motion found").
 5. Section 8 collates every open `[verify]` flag, and `verify_flags` matches its count.
+6. If a local corpus was the primary source, section 9 declares the corpus boundary — coverage
+   plus the framework-identified authorities absent from it.
 
 If any item fails, the gate is not satisfied — finish the research; do not build around it.
 
